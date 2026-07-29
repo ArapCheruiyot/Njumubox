@@ -10,11 +10,11 @@ export const shoes = [
     category: "Gents",
     sizes: [7, 8, 9, 10, 11, 12, 13],
     images: [
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Air+Zoom+1",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Air+Zoom+2",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Air+Zoom+3",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Air+Zoom+4",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Air+Zoom+5"
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/air-zoom-pulse/angle-1.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/air-zoom-pulse/angle-2.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/air-zoom-pulse/angle-3.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/air-zoom-pulse/angle-4.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/air-zoom-pulse/angle-5.jpg"
     ]
   },
   {
@@ -25,11 +25,11 @@ export const shoes = [
     category: "Gents",
     sizes: [7, 8, 9, 10, 11, 12],
     images: [
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Court+Vision+1",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Court+Vision+2",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Court+Vision+3",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Court+Vision+4",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Court+Vision+5"
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/court-vision-low/angle-1.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/court-vision-low/angle-2.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/court-vision-low/angle-3.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/court-vision-low/angle-4.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/court-vision-low/angle-5.jpg"
     ]
   },
   {
@@ -40,11 +40,11 @@ export const shoes = [
     category: "Gents",
     sizes: [7, 8, 9, 10, 11, 12],
     images: [
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Ultraboost+1",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Ultraboost+2",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Ultraboost+3",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Ultraboost+4",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Ultraboost+5"
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/ultraboost-light/angle-1.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/ultraboost-light/angle-2.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/ultraboost-light/angle-3.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/ultraboost-light/angle-4.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/ultraboost-light/angle-5.jpg"
     ]
   },
   {
@@ -55,11 +55,11 @@ export const shoes = [
     category: "Gents",
     sizes: [7, 8, 9, 10, 11, 12],
     images: [
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Old+Skool+1",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Old+Skool+2",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Old+Skool+3",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Old+Skool+4",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Old+Skool+5"
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/old-skool-classic/angle-1.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/old-skool-classic/angle-2.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/old-skool-classic/angle-3.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/old-skool-classic/angle-4.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/old-skool-classic/angle-5.jpg"
     ]
   },
   {
@@ -70,11 +70,11 @@ export const shoes = [
     category: "Gents",
     sizes: [7, 8, 9, 10, 11, 12],
     images: [
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Gel-Kayano+1",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Gel-Kayano+2",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Gel-Kayano+3",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Gel-Kayano+4",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Gel-Kayano+5"
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/gel-kayano-30/angle-1.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/gel-kayano-30/angle-2.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/gel-kayano-30/angle-3.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/gel-kayano-30/angle-4.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/gel-kayano-30/angle-5.jpg"
     ]
   },
   {
@@ -85,11 +85,11 @@ export const shoes = [
     category: "Gents",
     sizes: [7, 8, 9, 10, 11, 12],
     images: [
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Chuck+Taylor+1",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Chuck+Taylor+2",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Chuck+Taylor+3",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Chuck+Taylor+4",
-      "https://via.placeholder.com/600x400/2C3E50/fff?text=Gents+Chuck+Taylor+5"
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/chuck-taylor-all-star/angle-1.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/chuck-taylor-all-star/angle-2.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/chuck-taylor-all-star/angle-3.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/chuck-taylor-all-star/angle-4.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/chuck-taylor-all-star/angle-5.jpg"
     ]
   },
 
@@ -104,11 +104,11 @@ export const shoes = [
     category: "Ladies",
     sizes: [5, 6, 7, 8, 9, 10],
     images: [
-      "https://via.placeholder.com/600x400/FF69B4/fff?text=Ladies+Air+Max+1",
-      "https://via.placeholder.com/600x400/FF69B4/fff?text=Ladies+Air+Max+2",
-      "https://via.placeholder.com/600x400/FF69B4/fff?text=Ladies+Air+Max+3",
-      "https://via.placeholder.com/600x400/FF69B4/fff?text=Ladies+Air+Max+4",
-      "https://via.placeholder.com/600x400/FF69B4/fff?text=Ladies+Air+Max+5"
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/air-max-dawn/angle-1.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/air-max-dawn/angle-2.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/air-max-dawn/angle-3.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/air-max-dawn/angle-4.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/air-max-dawn/angle-5.jpg"
     ]
   },
   {
@@ -119,11 +119,11 @@ export const shoes = [
     category: "Ladies",
     sizes: [5, 6, 7, 8, 9, 10],
     images: [
-      "https://via.placeholder.com/600x400/FF69B4/fff?text=Ladies+Stan+Smith+1",
-      "https://via.placeholder.com/600x400/FF69B4/fff?text=Ladies+Stan+Smith+2",
-      "https://via.placeholder.com/600x400/FF69B4/fff?text=Ladies+Stan+Smith+3",
-      "https://via.placeholder.com/600x400/FF69B4/fff?text=Ladies+Stan+Smith+4",
-      "https://via.placeholder.com/600x400/FF69B4/fff?text=Ladies+Stan+Smith+5"
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/stan-smith-w/angle-1.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/stan-smith-w/angle-2.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/stan-smith-w/angle-3.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/stan-smith-w/angle-4.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/stan-smith-w/angle-5.jpg"
     ]
   },
   {
@@ -134,11 +134,11 @@ export const shoes = [
     category: "Ladies",
     sizes: [5, 6, 7, 8, 9],
     images: [
-      "https://via.placeholder.com/600x400/FF69B4/fff?text=Ladies+Classic+1",
-      "https://via.placeholder.com/600x400/FF69B4/fff?text=Ladies+Classic+2",
-      "https://via.placeholder.com/600x400/FF69B4/fff?text=Ladies+Classic+3",
-      "https://via.placeholder.com/600x400/FF69B4/fff?text=Ladies+Classic+4",
-      "https://via.placeholder.com/600x400/FF69B4/fff?text=Ladies+Classic+5"
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/classic-leather-w/angle-1.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/classic-leather-w/angle-2.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/classic-leather-w/angle-3.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/classic-leather-w/angle-4.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/classic-leather-w/angle-5.jpg"
     ]
   },
   {
@@ -149,11 +149,11 @@ export const shoes = [
     category: "Ladies",
     sizes: [5, 6, 7, 8, 9, 10],
     images: [
-      "https://via.placeholder.com/600x400/FF69B4/fff?text=Ladies+Cloudnova+1",
-      "https://via.placeholder.com/600x400/FF69B4/fff?text=Ladies+Cloudnova+2",
-      "https://via.placeholder.com/600x400/FF69B4/fff?text=Ladies+Cloudnova+3",
-      "https://via.placeholder.com/600x400/FF69B4/fff?text=Ladies+Cloudnova+4",
-      "https://via.placeholder.com/600x400/FF69B4/fff?text=Ladies+Cloudnova+5"
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/cloudnova-w/angle-1.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/cloudnova-w/angle-2.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/cloudnova-w/angle-3.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/cloudnova-w/angle-4.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/cloudnova-w/angle-5.jpg"
     ]
   },
 
@@ -168,11 +168,11 @@ export const shoes = [
     category: "Kids",
     sizes: [1, 2, 3, 4, 5, 6],
     images: [
-      "https://via.placeholder.com/600x400/00CED1/fff?text=Kids+Air+Zoom+1",
-      "https://via.placeholder.com/600x400/00CED1/fff?text=Kids+Air+Zoom+2",
-      "https://via.placeholder.com/600x400/00CED1/fff?text=Kids+Air+Zoom+3",
-      "https://via.placeholder.com/600x400/00CED1/fff?text=Kids+Air+Zoom+4",
-      "https://via.placeholder.com/600x400/00CED1/fff?text=Kids+Air+Zoom+5"
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/kids-air-zoom/angle-1.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/kids-air-zoom/angle-2.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/kids-air-zoom/angle-3.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/kids-air-zoom/angle-4.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/kids-air-zoom/angle-5.jpg"
     ]
   },
   {
@@ -183,11 +183,11 @@ export const shoes = [
     category: "Kids",
     sizes: [1, 2, 3, 4, 5, 6],
     images: [
-      "https://via.placeholder.com/600x400/00CED1/fff?text=Kids+Ultraboost+1",
-      "https://via.placeholder.com/600x400/00CED1/fff?text=Kids+Ultraboost+2",
-      "https://via.placeholder.com/600x400/00CED1/fff?text=Kids+Ultraboost+3",
-      "https://via.placeholder.com/600x400/00CED1/fff?text=Kids+Ultraboost+4",
-      "https://via.placeholder.com/600x400/00CED1/fff?text=Kids+Ultraboost+5"
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/kids-ultraboost/angle-1.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/kids-ultraboost/angle-2.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/kids-ultraboost/angle-3.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/kids-ultraboost/angle-4.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/kids-ultraboost/angle-5.jpg"
     ]
   },
   {
@@ -198,11 +198,11 @@ export const shoes = [
     category: "Kids",
     sizes: [1, 2, 3, 4, 5],
     images: [
-      "https://via.placeholder.com/600x400/00CED1/fff?text=Kids+Old+Skool+1",
-      "https://via.placeholder.com/600x400/00CED1/fff?text=Kids+Old+Skool+2",
-      "https://via.placeholder.com/600x400/00CED1/fff?text=Kids+Old+Skool+3",
-      "https://via.placeholder.com/600x400/00CED1/fff?text=Kids+Old+Skool+4",
-      "https://via.placeholder.com/600x400/00CED1/fff?text=Kids+Old+Skool+5"
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/kids-old-skool/angle-1.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/kids-old-skool/angle-2.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/kids-old-skool/angle-3.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/kids-old-skool/angle-4.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/kids-old-skool/angle-5.jpg"
     ]
   },
   {
@@ -213,11 +213,11 @@ export const shoes = [
     category: "Kids",
     sizes: [1, 2, 3, 4, 5, 6],
     images: [
-      "https://via.placeholder.com/600x400/00CED1/fff?text=Kids+Chuck+Taylor+1",
-      "https://via.placeholder.com/600x400/00CED1/fff?text=Kids+Chuck+Taylor+2",
-      "https://via.placeholder.com/600x400/00CED1/fff?text=Kids+Chuck+Taylor+3",
-      "https://via.placeholder.com/600x400/00CED1/fff?text=Kids+Chuck+Taylor+4",
-      "https://via.placeholder.com/600x400/00CED1/fff?text=Kids+Chuck+Taylor+5"
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/kids-chuck-taylor/angle-1.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/kids-chuck-taylor/angle-2.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/kids-chuck-taylor/angle-3.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/kids-chuck-taylor/angle-4.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/kids-chuck-taylor/angle-5.jpg"
     ]
   },
 
@@ -232,11 +232,11 @@ export const shoes = [
     category: "Running",
     sizes: [6, 7, 8, 9, 10, 11, 12],
     images: [
-      "https://via.placeholder.com/600x400/FF6B35/fff?text=Running+Ghost+1",
-      "https://via.placeholder.com/600x400/FF6B35/fff?text=Running+Ghost+2",
-      "https://via.placeholder.com/600x400/FF6B35/fff?text=Running+Ghost+3",
-      "https://via.placeholder.com/600x400/FF6B35/fff?text=Running+Ghost+4",
-      "https://via.placeholder.com/600x400/FF6B35/fff?text=Running+Ghost+5"
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/ghost-15/angle-1.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/ghost-15/angle-2.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/ghost-15/angle-3.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/ghost-15/angle-4.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/ghost-15/angle-5.jpg"
     ]
   },
   {
@@ -247,11 +247,11 @@ export const shoes = [
     category: "Running",
     sizes: [6, 7, 8, 9, 10, 11, 12],
     images: [
-      "https://via.placeholder.com/600x400/FF6B35/fff?text=Running+Clifton+1",
-      "https://via.placeholder.com/600x400/FF6B35/fff?text=Running+Clifton+2",
-      "https://via.placeholder.com/600x400/FF6B35/fff?text=Running+Clifton+3",
-      "https://via.placeholder.com/600x400/FF6B35/fff?text=Running+Clifton+4",
-      "https://via.placeholder.com/600x400/FF6B35/fff?text=Running+Clifton+5"
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/clifton-9/angle-1.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/clifton-9/angle-2.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/clifton-9/angle-3.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/clifton-9/angle-4.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/clifton-9/angle-5.jpg"
     ]
   },
 
@@ -266,11 +266,11 @@ export const shoes = [
     category: "Casual",
     sizes: [6, 7, 8, 9, 10, 11, 12],
     images: [
-      "https://via.placeholder.com/600x400/4A90D9/fff?text=Casual+574+1",
-      "https://via.placeholder.com/600x400/4A90D9/fff?text=Casual+574+2",
-      "https://via.placeholder.com/600x400/4A90D9/fff?text=Casual+574+3",
-      "https://via.placeholder.com/600x400/4A90D9/fff?text=Casual+574+4",
-      "https://via.placeholder.com/600x400/4A90D9/fff?text=Casual+574+5"
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/574-classic/angle-1.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/574-classic/angle-2.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/574-classic/angle-3.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/574-classic/angle-4.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/574-classic/angle-5.jpg"
     ]
   },
   {
@@ -281,11 +281,11 @@ export const shoes = [
     category: "Casual",
     sizes: [6, 7, 8, 9, 10, 11, 12],
     images: [
-      "https://via.placeholder.com/600x400/4A90D9/fff?text=Casual+Superstar+1",
-      "https://via.placeholder.com/600x400/4A90D9/fff?text=Casual+Superstar+2",
-      "https://via.placeholder.com/600x400/4A90D9/fff?text=Casual+Superstar+3",
-      "https://via.placeholder.com/600x400/4A90D9/fff?text=Casual+Superstar+4",
-      "https://via.placeholder.com/600x400/4A90D9/fff?text=Casual+Superstar+5"
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/superstar/angle-1.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/superstar/angle-2.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/superstar/angle-3.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/superstar/angle-4.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/superstar/angle-5.jpg"
     ]
   },
 
@@ -300,11 +300,11 @@ export const shoes = [
     category: "Skate",
     sizes: [6, 7, 8, 9, 10, 11, 12],
     images: [
-      "https://via.placeholder.com/600x400/8B4513/fff?text=Skate+Sk8-Hi+1",
-      "https://via.placeholder.com/600x400/8B4513/fff?text=Skate+Sk8-Hi+2",
-      "https://via.placeholder.com/600x400/8B4513/fff?text=Skate+Sk8-Hi+3",
-      "https://via.placeholder.com/600x400/8B4513/fff?text=Skate+Sk8-Hi+4",
-      "https://via.placeholder.com/600x400/8B4513/fff?text=Skate+Sk8-Hi+5"
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/sk8-hi-pro/angle-1.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/sk8-hi-pro/angle-2.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/sk8-hi-pro/angle-3.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/sk8-hi-pro/angle-4.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/sk8-hi-pro/angle-5.jpg"
     ]
   },
   {
@@ -315,11 +315,11 @@ export const shoes = [
     category: "Skate",
     sizes: [6, 7, 8, 9, 10, 11, 12],
     images: [
-      "https://via.placeholder.com/600x400/8B4513/fff?text=Skate+Busenitz+1",
-      "https://via.placeholder.com/600x400/8B4513/fff?text=Skate+Busenitz+2",
-      "https://via.placeholder.com/600x400/8B4513/fff?text=Skate+Busenitz+3",
-      "https://via.placeholder.com/600x400/8B4513/fff?text=Skate+Busenitz+4",
-      "https://via.placeholder.com/600x400/8B4513/fff?text=Skate+Busenitz+5"
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/busenitz-pro/angle-1.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/busenitz-pro/angle-2.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/busenitz-pro/angle-3.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/busenitz-pro/angle-4.jpg",
+      "https://res.cloudinary.com/decckqobb/image/upload/v1/ndulabox/shoes/busenitz-pro/angle-5.jpg"
     ]
   }
 ];

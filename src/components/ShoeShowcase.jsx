@@ -20,7 +20,7 @@ function ShoeShowcase() {
   const autoRotateTimerRef = useRef(null);
   const advanceTimerRef = useRef(null);
   const imageContainerRef = useRef(null);
-  const currentIndexRef = useRef(0); // Track current index for interval
+  const currentIndexRef = useRef(0);
 
   // Load shoes from localStorage OR use default shoes
   useEffect(() => {
@@ -73,7 +73,7 @@ function ShoeShowcase() {
     stopAutoRotate();
   };
 
-  // Handle scroll detection - auto-select shoe in center
+  // Handle scroll detection for horizontal thumbnails
   const handleScroll = () => {
     const container = thumbnailsContainerRef.current;
     if (!container) return;
@@ -130,26 +130,18 @@ function ShoeShowcase() {
 
   // ===== 360° ROTATION FUNCTIONS =====
   
-  // Move to next image - FIXED VERSION
+  // Move to next image
   const goToNextImage = () => {
-    if (!selectedShoe || selectedShoe.images.length <= 1) {
-      console.log('❌ No shoe or only 1 image');
-      return;
-    }
+    if (!selectedShoe || selectedShoe.images.length <= 1) return;
     
-    // Calculate next index using ref to avoid stale state
     const totalImages = selectedShoe.images.length;
     const nextIndex = (currentIndexRef.current + 1) % totalImages;
     
-    console.log(`🔄 Moving to image ${nextIndex + 1}/${totalImages}`);
-    
-    // Update both state and ref
     setCurrentImageIndex(nextIndex);
     currentIndexRef.current = nextIndex;
     
     // If we've completed all images, advance to next shoe
     if (nextIndex === 0 && filteredShoes.length > 1) {
-      console.log('📦 Completed all images, moving to next shoe');
       setTimeout(() => {
         const currentShoeIndex = filteredShoes.findIndex(s => s.id === selectedShoe.id);
         const nextShoeIndex = (currentShoeIndex + 1) % filteredShoes.length;
@@ -158,7 +150,6 @@ function ShoeShowcase() {
           setSelectedShoe(nextShoe);
           setCurrentImageIndex(0);
           currentIndexRef.current = 0;
-          // Scroll thumbnail to show the selected shoe
           const thumbElement = thumbnailRefs.current[nextShoe.id];
           if (thumbElement) {
             thumbElement.scrollIntoView({ 
@@ -174,26 +165,14 @@ function ShoeShowcase() {
 
   // Start auto-rotation
   const startAutoRotate = () => {
-    if (!selectedShoe || selectedShoe.images.length <= 1) {
-      console.log('❌ Cannot start auto-rotation: no shoe or only 1 image');
-      return;
-    }
+    if (!selectedShoe || selectedShoe.images.length <= 1) return;
     
-    // Stop any existing rotation
     stopAutoRotate();
     
-    console.log(`🔄 Starting auto-rotation for: ${selectedShoe.name} (${selectedShoe.images.length} images)`);
     setIsAutoRotating(true);
-    
-    // Reset index if at the end
-    if (currentIndexRef.current >= selectedShoe.images.length) {
-      currentIndexRef.current = 0;
-      setCurrentImageIndex(0);
-    }
-    
     autoRotateTimerRef.current = setInterval(() => {
       goToNextImage();
-    }, 2500); // 2.5 seconds per image
+    }, 2500);
   };
 
   // Stop auto-rotation
@@ -202,7 +181,6 @@ function ShoeShowcase() {
     if (autoRotateTimerRef.current) {
       clearInterval(autoRotateTimerRef.current);
       autoRotateTimerRef.current = null;
-      console.log('⏹️ Auto-rotation stopped');
     }
   };
 
@@ -241,9 +219,17 @@ function ShoeShowcase() {
     }
   };
 
-  // Touch events for mobile
+  // Touch events for mobile - IMPROVED SCROLL DETECTION
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let isSwiping = false;
+
   const handleTouchStart = (e) => {
     if (!selectedShoe || selectedShoe.images.length <= 1) return;
+    
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    isSwiping = false;
     
     stopAutoRotate();
     setIsDragging(true);
@@ -252,21 +238,34 @@ function ShoeShowcase() {
   };
 
   const handleTouchMove = (e) => {
-    if (!isDragging) return;
+    if (!selectedShoe || selectedShoe.images.length <= 1) return;
     
-    const deltaX = e.touches[0].clientX - startX;
-    const angleChange = Math.round(deltaX / 10);
-    let newIndex = startAngle + angleChange;
+    const deltaX = e.touches[0].clientX - touchStartX;
+    const deltaY = e.touches[0].clientY - touchStartY;
     
-    while (newIndex < 0) newIndex += selectedShoe.images.length;
-    while (newIndex >= selectedShoe.images.length) newIndex -= selectedShoe.images.length;
+    // If vertical movement is greater → SCROLL (don't block)
+    if (Math.abs(deltaY) > Math.abs(deltaX) * 1.5) {
+      return; // Let the page scroll
+    }
     
-    setCurrentImageIndex(newIndex);
-    currentIndexRef.current = newIndex;
+    // If horizontal movement is significant → DRAG TO ROTATE
+    if (Math.abs(deltaX) > 10) {
+      e.preventDefault();
+      isSwiping = true;
+      
+      const angleChange = Math.round(deltaX / 10);
+      let newIndex = startAngle + angleChange;
+      
+      while (newIndex < 0) newIndex += selectedShoe.images.length;
+      while (newIndex >= selectedShoe.images.length) newIndex -= selectedShoe.images.length;
+      
+      setCurrentImageIndex(newIndex);
+      currentIndexRef.current = newIndex;
+    }
   };
 
   const handleTouchEnd = () => {
-    if (isDragging) {
+    if (isSwiping) {
       setIsDragging(false);
       setTimeout(() => {
         if (!isDragging && selectedShoe && selectedShoe.images.length > 1) {
@@ -343,12 +342,12 @@ function ShoeShowcase() {
         ))}
       </div>
 
-      {/* Main Display Area */}
+      {/* Main Display Area - IMAGE + SUSPENDED THUMBNAILS */}
       <div 
         className="showcase-main"
         ref={imageContainerRef}
       >
-        {/* Large Shoe Image - With 360° Interaction */}
+        {/* Large Shoe Image Container */}
         <div 
           className="main-image-container"
           onMouseDown={handleMouseDown}
@@ -360,167 +359,142 @@ function ShoeShowcase() {
           onTouchEnd={handleTouchEnd}
           style={{ cursor: totalImages > 1 ? 'grab' : 'default' }}
         >
+          {/* Main Image */}
           {selectedShoe.images && selectedShoe.images.length > 0 && (
-            <>
-              <img 
-                src={selectedShoe.images[currentImageIndex]} 
-                alt={`${selectedShoe.name} - Angle ${currentImageIndex + 1}`}
-                className="main-shoe-image"
-                key={selectedShoe.id + currentImageIndex}
-                draggable={false}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  maxHeight: '100%',
-                  objectFit: 'contain',
-                  padding: '0',
-                  transition: 'opacity 0.3s ease-in-out'
-                }}
-              />
-              
-              {/* 360° Badge */}
-              {totalImages > 1 && (
-                <div className="rotation-badge">
-                  🔄 {isAutoRotating ? 'Auto-Rotating' : 'Drag to rotate'} • {currentImageIndex + 1}/{totalImages}
-                </div>
-              )}
+            <img 
+              src={selectedShoe.images[currentImageIndex]} 
+              alt={`${selectedShoe.name} - Angle ${currentImageIndex + 1}`}
+              className="main-shoe-image"
+              key={selectedShoe.id + currentImageIndex}
+              draggable={false}
+              style={{
+                width: '100%',
+                height: '100%',
+                maxHeight: '100%',
+                objectFit: 'contain',
+                padding: '0',
+                transition: 'opacity 0.3s ease-in-out'
+              }}
+            />
+          )}
+          
+          {/* 360° Badge */}
+          {totalImages > 1 && (
+            <div className="rotation-badge">
+              🔄 {isAutoRotating ? 'Auto-Rotating' : 'Drag to rotate'} • {currentImageIndex + 1}/{totalImages}
+            </div>
+          )}
 
-              {/* Angle Indicator Dots */}
-              {totalImages > 1 && (
-                <div className="angle-dots">
-                  {Array.from({ length: totalImages }).map((_, index) => (
-                    <span 
-                      key={index}
-                      className={`dot ${currentImageIndex === index ? 'active' : ''}`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setCurrentImageIndex(index);
-                        currentIndexRef.current = index;
-                        stopAutoRotate();
-                      }}
-                    />
-                  ))}
-                </div>
-              )}
-
-              {/* Play/Pause Button */}
-              {totalImages > 1 && (
-                <button 
-                  className="rotation-toggle-btn"
+          {/* Angle Indicator Dots */}
+          {totalImages > 1 && (
+            <div className="angle-dots">
+              {Array.from({ length: totalImages }).map((_, index) => (
+                <span 
+                  key={index}
+                  className={`dot ${currentImageIndex === index ? 'active' : ''}`}
                   onClick={(e) => {
                     e.stopPropagation();
-                    if (isAutoRotating) {
-                      stopAutoRotate();
-                    } else {
-                      startAutoRotate();
-                    }
+                    setCurrentImageIndex(index);
+                    currentIndexRef.current = index;
+                    stopAutoRotate();
                   }}
-                >
-                  {isAutoRotating ? '⏸' : '▶'}
-                </button>
-              )}
-            </>
-          )}
-        </div>
-
-        {/* Shoe Details */}
-        <div className="shoe-details">
-          <h2 className="shoe-name">{selectedShoe.name}</h2>
-          <p className="shoe-brand">{selectedShoe.brand}</p>
-          <p className="shoe-price">Ksh {selectedShoe.price.toLocaleString()}</p>
-          
-          {totalImages > 1 && (
-            <p className="rotation-hint">
-              👆 Drag image to rotate • Auto-rotating
-            </p>
-          )}
-          
-          <div className="size-selector">
-            <label>Select Size:</label>
-            <div className="size-buttons">
-              {selectedShoe.sizes.map((size) => (
-                <button
-                  key={size}
-                  className={`size-btn ${selectedSize === size ? 'active' : ''}`}
-                  onClick={() => setSelectedSize(size)}
-                >
-                  {size}
-                </button>
+                />
               ))}
             </div>
-          </div>
+          )}
 
-          <button 
-            className={`add-to-cart-btn ${isAdded ? 'added' : ''}`}
-            onClick={handleAddToCart}
-          >
-            {isAdded ? '✓ Added to Cart!' : 'Add to Cart 🛒'}
-          </button>
-
-          {/* Try-On Placeholder */}
-          <div className="try-on-section">
+          {/* Play/Pause Button */}
+          {totalImages > 1 && (
             <button 
-              className="try-on-btn"
-              onClick={() => {
-                alert('👟 Virtual Try-On Coming Soon!\n\nTry shoes on your feet before buying.\nWe\'ll notify you when it\'s ready!');
-              }}
-            >
-              👟 Try On (Coming Soon)
-            </button>
-            <div className="try-on-message">
-              <span className="coming-soon-badge">⚡ Coming Soon</span>
-              <span className="try-on-hint">
-                Try shoes on your feet before buying!
-              </span>
-            </div>
-            <div className="try-on-notify">
-              <input 
-                type="email" 
-                placeholder="Enter email to get notified..." 
-                className="try-on-notify-input"
-              />
-              <button 
-                className="try-on-notify-btn"
-                onClick={() => {
-                  alert('✅ Thank you! We\'ll notify you when Virtual Try-On is ready.');
-                }}
-              >
-                🔔 Notify Me
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Thumbnails - ONE image per shoe */}
-      <div className="thumbnails-container">
-        <div 
-          className="thumbnails-scroll"
-          ref={thumbnailsContainerRef}
-          onScroll={handleScroll}
-        >
-          {filteredShoes.map((shoe) => (
-            <div 
-              key={shoe.id} 
-              className="thumbnail-group"
-              ref={(el) => {
-                if (el) {
-                  thumbnailRefs.current[shoe.id] = el;
+              className="rotation-toggle-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (isAutoRotating) {
+                  stopAutoRotate();
+                } else {
+                  startAutoRotate();
                 }
               }}
             >
-              {shoe.images && shoe.images.length > 0 && (
-                <img
-                  src={shoe.images[0]}
-                  alt={shoe.name}
-                  className={`thumbnail ${selectedShoe.id === shoe.id ? 'active' : ''}`}
-                  onClick={() => handleThumbnailClick(shoe)}
-                  loading="lazy"
-                  title={shoe.name}
-                />
-              )}
+              {isAutoRotating ? '⏸' : '▶'}
+            </button>
+          )}
+
+          {/* ============================================
+              SUSPENDED THUMBNAILS (INSIDE IMAGE)
+              ============================================ */}
+          <div className="suspended-thumbnails">
+            <div 
+              className="thumbnails-scroll"
+              ref={thumbnailsContainerRef}
+              onScroll={handleScroll}
+            >
+              {filteredShoes.map((shoe) => (
+                <div 
+                  key={shoe.id} 
+                  className="thumbnail-group"
+                  ref={(el) => {
+                    if (el) {
+                      thumbnailRefs.current[shoe.id] = el;
+                    }
+                  }}
+                >
+                  {shoe.images && shoe.images.length > 0 && (
+                    <img
+                      src={shoe.images[0]}
+                      alt={shoe.name}
+                      className={`thumbnail ${selectedShoe.id === shoe.id ? 'active' : ''}`}
+                      onClick={() => handleThumbnailClick(shoe)}
+                      loading="lazy"
+                      title={shoe.name}
+                    />
+                  )}
+                </div>
+              ))}
             </div>
-          ))}
+            {/* Scroll hint - only show if more than 5 shoes */}
+            {filteredShoes.length > 5 && (
+              <div className="scroll-hint">← Scroll →</div>
+            )}
+          </div>
+
+          {/* Shoe Details - OVERLAY ON BOTTOM OF IMAGE */}
+          <div className="shoe-details-overlay">
+            <h2 className="shoe-name">{selectedShoe.name}</h2>
+            <p className="shoe-brand">{selectedShoe.brand}</p>
+            <p className="shoe-price">Ksh {selectedShoe.price.toLocaleString()}</p>
+            
+            <div className="size-selector">
+              <div className="size-buttons">
+                {selectedShoe.sizes.map((size) => (
+                  <button
+                    key={size}
+                    className={`size-btn ${selectedSize === size ? 'active' : ''}`}
+                    onClick={() => setSelectedSize(size)}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="action-buttons">
+              <button 
+                className={`add-to-cart-btn ${isAdded ? 'added' : ''}`}
+                onClick={handleAddToCart}
+              >
+                {isAdded ? '✓ Added!' : '🛒 Add to Cart'}
+              </button>
+              <button 
+                className="try-on-btn"
+                onClick={() => {
+                  alert('👟 Virtual Try-On Coming Soon!\n\nTry shoes on your feet before buying.\nWe\'ll notify you when it\'s ready!');
+                }}
+              >
+                👟 Try On
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
