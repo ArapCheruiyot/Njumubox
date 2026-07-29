@@ -1,0 +1,1015 @@
+/* ============================================
+   MAIN CSS - Import all modular CSS files
+   ============================================ */
+
+/* Import 360° rotation styles */
+@import './css/rotation.css';
+
+/* ============================================
+   RESET & BASE STYLES
+   ============================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f2f5;
+  color: #1a1a1a;
+  min-height: 100vh;
+}
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* ============================================
+   HEADER - FIXED (No Sticky)
+   ============================================ */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 30px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  margin-bottom: 30px;
+  /* Removed sticky positioning so it doesn't cover content */
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo-image {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.logo-image:hover {
+  transform: scale(1.05) rotate(-5deg);
+}
+
+.logo-text {
+  font-size: 2.2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.tagline {
+  color: #888;
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  padding: 6px 14px;
+  background: #f8f9fa;
+  border-radius: 20px;
+}
+
+.admin-link {
+  padding: 8px 20px;
+  border: 2px solid #3498db;
+  background: white;
+  color: #3498db;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.admin-link:hover {
+  background: #3498db;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.cart-icon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.2rem;
+  color: #2c3e50;
+  cursor: pointer;
+  padding: 8px 18px;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  border: 2px solid #e8ecf0;
+  background: white;
+  font-weight: 600;
+}
+
+.cart-icon:hover {
+  background: #f8f9fa;
+  border-color: #3498db;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+}
+
+.cart-count {
+  background: #3498db;
+  color: white;
+  border-radius: 50%;
+  padding: 1px 9px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 22px;
+  text-align: center;
+}
+
+/* ============================================
+   CATEGORY FILTERS
+   ============================================ */
+.category-filters {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  padding: 6px;
+}
+
+.filter-btn {
+  padding: 10px 28px;
+  border: 2px solid #e8ecf0;
+  background: white;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #555;
+  letter-spacing: 0.3px;
+}
+
+.filter-btn:hover {
+  border-color: #3498db;
+  color: #3498db;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.1);
+}
+
+.filter-btn.active {
+  background: #3498db;
+  color: white;
+  border-color: #3498db;
+  box-shadow: 0 4px 20px rgba(52, 152, 219, 0.3);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   SHOWCASE CONTAINER
+   ============================================ */
+.showcase-container {
+  background: white;
+  border-radius: 24px;
+  padding: 35px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.showcase-container:hover {
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* ============================================
+   SHOWCASE MAIN (Big Image + Details)
+   ============================================ */
+.showcase-main {
+  display: flex;
+  gap: 50px;
+  align-items: stretch;
+  margin-bottom: 30px;
+}
+
+/* --- Large Image --- */
+.main-image-container {
+  flex: 1;
+  background: linear-gradient(135deg, #f8f9fa 0%, #eef1f5 100%);
+  border-radius: 20px;
+  overflow: hidden;
+  min-height: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.main-image-container::before {
+  content: '👟';
+  position: absolute;
+  font-size: 8rem;
+  opacity: 0.05;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ============================================
+   SMOOTH IMAGE TRANSITIONS
+   ============================================ */
+.main-shoe-image {
+  width: 100%;
+  height: 100%;
+  max-height: 500px;
+  object-fit: contain;
+  padding: 0;
+  position: relative;
+  z-index: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.main-shoe-image.fade-out {
+  opacity: 0;
+}
+
+.main-shoe-image.fade-in {
+  opacity: 1;
+}
+
+/* Remove hover zoom when 360° is active */
+.main-shoe-image:hover {
+  transform: none;
+}
+
+/* --- Shoe Details --- */
+.shoe-details {
+  flex: 0 0 320px;
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.shoe-name {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+
+.shoe-brand {
+  color: #888;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  font-weight: 400;
+}
+
+.shoe-price {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #27ae60;
+  margin-bottom: 20px;
+  padding: 8px 0;
+  border-bottom: 3px solid #27ae6030;
+}
+
+.shoe-price::before {
+  content: '💰 ';
+  font-size: 1.6rem;
+}
+
+.size-selector {
+  margin: 10px 0 20px;
+}
+
+.size-selector label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+.size-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.size-btn {
+  width: 48px;
+  height: 48px;
+  border: 2px solid #e8ecf0;
+  background: white;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  color: #555;
+}
+
+.size-btn:hover {
+  border-color: #3498db;
+  color: #3498db;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+}
+
+.size-btn.active {
+  background: #3498db;
+  color: white;
+  border-color: #3498db;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+  transform: translateY(-2px);
+}
+
+.add-to-cart-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.add-to-cart-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.add-to-cart-btn:hover::after {
+  left: 100%;
+}
+
+.add-to-cart-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(26, 37, 47, 0.3);
+}
+
+.add-to-cart-btn.added {
+  background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%);
+}
+
+/* ============================================
+   TRY-ON PLACEHOLDER (Coming Soon)
+   ============================================ */
+.try-on-section {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.try-on-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #8e44ad 0%, #6c3483 100%);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.try-on-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(142, 68, 173, 0.4);
+}
+
+.try-on-btn:active {
+  transform: scale(0.98);
+}
+
+.try-on-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  transition: left 0.5s ease;
+}
+
+.try-on-btn:hover::after {
+  left: 100%;
+}
+
+.try-on-message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  padding: 8px;
+  background: #f8f4fd;
+  border-radius: 10px;
+  border: 1px dashed #8e44ad;
+}
+
+.coming-soon-badge {
+  background: #8e44ad;
+  color: white;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.try-on-hint {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+/* --- Try-On Notification Form --- */
+.try-on-notify {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.try-on-notify-input {
+  flex: 1;
+  min-width: 180px;
+  padding: 10px 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  transition: border-color 0.3s ease;
+}
+
+.try-on-notify-input:focus {
+  outline: none;
+  border-color: #8e44ad;
+  box-shadow: 0 0 0 3px rgba(142, 68, 173, 0.1);
+}
+
+.try-on-notify-btn {
+  padding: 10px 20px;
+  background: #8e44ad;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.try-on-notify-btn:hover {
+  background: #6c3483;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(142, 68, 173, 0.3);
+}
+
+/* --- Responsive Try-On --- */
+@media (max-width: 768px) {
+  .try-on-message {
+    flex-wrap: wrap;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .try-on-notify {
+    flex-direction: column;
+  }
+  
+  .try-on-notify-input {
+    width: 100%;
+    min-width: unset;
+  }
+  
+  .try-on-notify-btn {
+    width: 100%;
+  }
+}
+
+/* ============================================
+   THUMBNAILS
+   ============================================ */
+.thumbnails-container {
+  margin-top: 10px;
+  padding-top: 25px;
+  border-top: 2px solid #f0f2f5;
+}
+
+.thumbnails-scroll {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  padding: 10px 5px 15px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.thumbnails-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.thumbnails-scroll::-webkit-scrollbar-track {
+  background: #f0f2f5;
+  border-radius: 10px;
+}
+
+.thumbnails-scroll::-webkit-scrollbar-thumb {
+  background: #d0d5dd;
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.thumbnails-scroll::-webkit-scrollbar-thumb:hover {
+  background: #a0a8b5;
+}
+
+.thumbnail-group {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+  padding: 4px;
+}
+
+.thumbnail {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  background: #f8f9fa;
+  border-radius: 14px;
+  padding: 12px;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.thumbnail:hover {
+  transform: scale(1.08);
+  border-color: #3498db;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.15);
+}
+
+.thumbnail.active {
+  border-color: #3498db;
+  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2), 0 4px 20px rgba(52, 152, 219, 0.15);
+  transform: scale(1.05);
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.footer {
+  text-align: center;
+  padding: 35px 20px 20px;
+  border-top: 2px solid #f0f2f5;
+  margin-top: 40px;
+  color: #aaa;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.footer-contact {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-contact a {
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.footer-contact a:hover {
+  color: #2980b9;
+  background: #f0f2f5;
+}
+
+.footer-contact a[href*="wa.me"] {
+  color: #25D366;
+}
+
+.footer-contact a[href*="wa.me"]:hover {
+  color: #128C7E;
+}
+
+.footer-contact a[href*="tel:"] {
+  color: #FF6B35;
+}
+
+.footer-contact a[href*="tel:"]:hover {
+  color: #E55A2B;
+}
+
+/* ============================================
+   FLOATING ACTION BUTTONS
+   ============================================ */
+.floating-buttons {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 999;
+}
+
+.float-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  border-radius: 50px;
+  text-decoration: none;
+  color: white;
+  font-weight: 700;
+  font-size: 0.95rem;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  min-width: 140px;
+  justify-content: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* WhatsApp Button */
+.float-btn.whatsapp {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+}
+
+.float-btn.whatsapp:hover {
+  transform: translateX(-5px) scale(1.05);
+  box-shadow: 0 8px 35px rgba(37, 211, 102, 0.4);
+}
+
+.float-btn.whatsapp::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  transition: left 0.5s ease;
+}
+
+.float-btn.whatsapp:hover::before {
+  left: 100%;
+}
+
+/* Call Button */
+.float-btn.call {
+  background: linear-gradient(135deg, #FF6B35 0%, #E55A2B 100%);
+}
+
+.float-btn.call:hover {
+  transform: translateX(-5px) scale(1.05);
+  box-shadow: 0 8px 35px rgba(255, 107, 53, 0.4);
+}
+
+.float-btn.call::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  transition: left 0.5s ease;
+}
+
+.float-btn.call:hover::before {
+  left: 100%;
+}
+
+.float-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.float-label {
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+
+/* Pulse Animation for WhatsApp */
+.float-btn.whatsapp {
+  animation: pulse-whatsapp 2s infinite;
+}
+
+@keyframes pulse-whatsapp {
+  0%, 100% {
+    box-shadow: 0 6px 25px rgba(37, 211, 102, 0.3);
+  }
+  50% {
+    box-shadow: 0 6px 35px rgba(37, 211, 102, 0.6), 0 0 60px rgba(37, 211, 102, 0.1);
+  }
+}
+
+/* Pulse Animation for Call */
+.float-btn.call {
+  animation: pulse-call 2.5s infinite;
+}
+
+@keyframes pulse-call {
+  0%, 100% {
+    box-shadow: 0 6px 25px rgba(255, 107, 53, 0.3);
+  }
+  50% {
+    box-shadow: 0 6px 35px rgba(255, 107, 53, 0.6), 0 0 60px rgba(255, 107, 53, 0.1);
+  }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 992px) {
+  .showcase-main {
+    gap: 30px;
+  }
+  
+  .shoe-details {
+    flex: 0 0 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .app {
+    padding: 12px;
+  }
+  
+  .header {
+    padding: 12px 20px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+  }
+  
+  .logo-image {
+    width: 55px;
+    height: 55px;
+  }
+  
+  .logo-text {
+    font-size: 1.8rem;
+  }
+  
+  .tagline {
+    display: none;
+  }
+  
+  .showcase-main {
+    flex-direction: column;
+    gap: 25px;
+  }
+  
+  .shoe-details {
+    flex: 1;
+    width: 100%;
+    padding: 0;
+  }
+  
+  .main-image-container {
+    min-height: 320px;
+  }
+  
+  .main-shoe-image {
+    max-height: 320px;
+    padding: 0;
+  }
+  
+  .showcase-container {
+    padding: 20px;
+    border-radius: 18px;
+  }
+  
+  .shoe-name {
+    font-size: 1.8rem;
+  }
+  
+  .shoe-price {
+    font-size: 2rem;
+  }
+  
+  .thumbnail {
+    width: 80px;
+    height: 80px;
+    padding: 8px;
+  }
+  
+  .filter-btn {
+    padding: 8px 20px;
+    font-size: 0.8rem;
+  }
+  
+  .floating-buttons {
+    bottom: 20px;
+    right: 15px;
+    gap: 10px;
+  }
+
+  .float-btn {
+    padding: 12px 16px;
+    min-width: 50px;
+    border-radius: 50px;
+    justify-content: center;
+  }
+
+  .float-label {
+    display: none;
+  }
+
+  .float-icon {
+    font-size: 1.8rem;
+  }
+
+  .float-btn {
+    min-width: auto;
+    padding: 14px 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app {
+    padding: 8px;
+  }
+  
+  .header {
+    padding: 10px 14px;
+    border-radius: 12px;
+  }
+  
+  .logo-container {
+    gap: 8px;
+  }
+  
+  .logo-image {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .logo-text {
+    font-size: 1.4rem;
+  }
+  
+  .cart-icon {
+    font-size: 1rem;
+    padding: 5px 12px;
+  }
+  
+  .cart-count {
+    font-size: 0.65rem;
+    padding: 0px 7px;
+    min-width: 18px;
+  }
+  
+  .showcase-container {
+    padding: 14px;
+    border-radius: 14px;
+  }
+  
+  .main-image-container {
+    min-height: 250px;
+    border-radius: 14px;
+  }
+  
+  .main-shoe-image {
+    max-height: 250px;
+    padding: 0;
+  }
+  
+  .shoe-name {
+    font-size: 1.5rem;
+  }
+  
+  .shoe-brand {
+    font-size: 0.95rem;
+  }
+  
+  .shoe-price {
+    font-size: 1.6rem;
+  }
+  
+  .category-filters {
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  
+  .filter-btn {
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    border-radius: 30px;
+  }
+  
+  .size-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 0.8rem;
+    border-radius: 10px;
+  }
+  
+  .add-to-cart-btn {
+    padding: 14px;
+    font-size: 1rem;
+    border-radius: 12px;
+  }
+  
+  .thumbnail {
+    width: 65px;
+    height: 65px;
+    padding: 6px;
+    border-radius: 10px;
+  }
+  
+  .thumbnails-scroll {
+    gap: 10px;
+  }
+  
+  .thumbnail-group {
+    gap: 8px;
+  }
+  
+  .footer {
+    font-size: 0.75rem;
+    padding: 25px 15px 15px;
+  }
+
+  .floating-buttons {
+    bottom: 15px;
+    right: 12px;
+    gap: 8px;
+  }
+
+  .float-btn {
+    padding: 12px 14px;
+    border-radius: 50px;
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
+  }
+
+  .float-icon {
+    font-size: 1.6rem;
+  }
+
+  .float-label {
+    display: none;
+  }
+
+  .footer-contact {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+}
+
+/* Show labels on desktop */
+@media (min-width: 769px) {
+  .float-label {
+    display: inline-block;
+  }
+}
