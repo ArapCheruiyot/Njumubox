@@ -130,7 +130,6 @@ function ShoeShowcase() {
 
   // ===== 360° ROTATION FUNCTIONS =====
   
-  // Move to next image
   const goToNextImage = () => {
     if (!selectedShoe || selectedShoe.images.length <= 1) return;
     
@@ -140,7 +139,6 @@ function ShoeShowcase() {
     setCurrentImageIndex(nextIndex);
     currentIndexRef.current = nextIndex;
     
-    // If we've completed all images, advance to next shoe
     if (nextIndex === 0 && filteredShoes.length > 1) {
       setTimeout(() => {
         const currentShoeIndex = filteredShoes.findIndex(s => s.id === selectedShoe.id);
@@ -163,19 +161,15 @@ function ShoeShowcase() {
     }
   };
 
-  // Start auto-rotation
   const startAutoRotate = () => {
     if (!selectedShoe || selectedShoe.images.length <= 1) return;
-    
     stopAutoRotate();
-    
     setIsAutoRotating(true);
     autoRotateTimerRef.current = setInterval(() => {
       goToNextImage();
     }, 2500);
   };
 
-  // Stop auto-rotation
   const stopAutoRotate = () => {
     setIsAutoRotating(false);
     if (autoRotateTimerRef.current) {
@@ -187,7 +181,6 @@ function ShoeShowcase() {
   // Mouse drag for 360° rotation
   const handleMouseDown = (e) => {
     if (!selectedShoe || selectedShoe.images.length <= 1) return;
-    
     stopAutoRotate();
     setIsDragging(true);
     setStartX(e.clientX);
@@ -196,14 +189,11 @@ function ShoeShowcase() {
 
   const handleMouseMove = (e) => {
     if (!isDragging) return;
-    
     const deltaX = e.clientX - startX;
     const angleChange = Math.round(deltaX / 10);
     let newIndex = startAngle + angleChange;
-    
     while (newIndex < 0) newIndex += selectedShoe.images.length;
     while (newIndex >= selectedShoe.images.length) newIndex -= selectedShoe.images.length;
-    
     setCurrentImageIndex(newIndex);
     currentIndexRef.current = newIndex;
   };
@@ -219,18 +209,16 @@ function ShoeShowcase() {
     }
   };
 
-  // Touch events for mobile - IMPROVED SCROLL DETECTION
+  // Touch events for mobile
   let touchStartX = 0;
   let touchStartY = 0;
   let isSwiping = false;
 
   const handleTouchStart = (e) => {
     if (!selectedShoe || selectedShoe.images.length <= 1) return;
-    
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
     isSwiping = false;
-    
     stopAutoRotate();
     setIsDragging(true);
     setStartX(e.touches[0].clientX);
@@ -239,26 +227,20 @@ function ShoeShowcase() {
 
   const handleTouchMove = (e) => {
     if (!selectedShoe || selectedShoe.images.length <= 1) return;
-    
     const deltaX = e.touches[0].clientX - touchStartX;
     const deltaY = e.touches[0].clientY - touchStartY;
     
-    // If vertical movement is greater → SCROLL (don't block)
     if (Math.abs(deltaY) > Math.abs(deltaX) * 1.5) {
-      return; // Let the page scroll
+      return;
     }
     
-    // If horizontal movement is significant → DRAG TO ROTATE
     if (Math.abs(deltaX) > 10) {
       e.preventDefault();
       isSwiping = true;
-      
       const angleChange = Math.round(deltaX / 10);
       let newIndex = startAngle + angleChange;
-      
       while (newIndex < 0) newIndex += selectedShoe.images.length;
       while (newIndex >= selectedShoe.images.length) newIndex -= selectedShoe.images.length;
-      
       setCurrentImageIndex(newIndex);
       currentIndexRef.current = newIndex;
     }
@@ -302,7 +284,6 @@ function ShoeShowcase() {
       alert('👟 Please select a size first!');
       return;
     }
-    
     setIsAdded(true);
     alert(`🛒 Added ${selectedShoe.name} (Size ${selectedSize}) to cart!`);
     setTimeout(() => setIsAdded(false), 2000);
@@ -329,20 +310,7 @@ function ShoeShowcase() {
 
   return (
     <div className="showcase-container">
-      {/* Category Filters */}
-      <div className="category-filters">
-        {categories.map((category) => (
-          <button
-            key={category}
-            className={`filter-btn ${activeCategory === category ? 'active' : ''}`}
-            onClick={() => handleCategoryChange(category)}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
-
-      {/* Main Display Area - IMAGE + SUSPENDED THUMBNAILS */}
+      {/* Main Display Area - FULL SCREEN IMAGE WITH ALL ELEMENTS SUSPENDED */}
       <div 
         className="showcase-main"
         ref={imageContainerRef}
@@ -378,6 +346,21 @@ function ShoeShowcase() {
             />
           )}
           
+          {/* ============================================
+              SUSPENDED CATEGORIES (TOP)
+              ============================================ */}
+          <div className="suspended-categories">
+            {categories.map((category) => (
+              <button
+                key={category}
+                className={`category-btn ${activeCategory === category ? 'active' : ''}`}
+                onClick={() => handleCategoryChange(category)}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+
           {/* 360° Badge */}
           {totalImages > 1 && (
             <div className="rotation-badge">
@@ -421,7 +404,7 @@ function ShoeShowcase() {
           )}
 
           {/* ============================================
-              SUSPENDED THUMBNAILS (INSIDE IMAGE)
+              SUSPENDED THUMBNAILS (MIDDLE)
               ============================================ */}
           <div className="suspended-thumbnails">
             <div 
@@ -452,13 +435,14 @@ function ShoeShowcase() {
                 </div>
               ))}
             </div>
-            {/* Scroll hint - only show if more than 5 shoes */}
             {filteredShoes.length > 5 && (
               <div className="scroll-hint">← Scroll →</div>
             )}
           </div>
 
-          {/* Shoe Details - OVERLAY ON BOTTOM OF IMAGE */}
+          {/* ============================================
+              SHOE DETAILS OVERLAY (BOTTOM)
+              ============================================ */}
           <div className="shoe-details-overlay">
             <h2 className="shoe-name">{selectedShoe.name}</h2>
             <p className="shoe-brand">{selectedShoe.brand}</p>
@@ -488,7 +472,7 @@ function ShoeShowcase() {
               <button 
                 className="try-on-btn"
                 onClick={() => {
-                  alert('👟 Virtual Try-On Coming Soon!\n\nTry shoes on your feet before buying.\nWe\'ll notify you when it\'s ready!');
+                  alert('👟 Virtual Try-On Coming Soon!');
                 }}
               >
                 👟 Try On
