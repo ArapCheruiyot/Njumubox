@@ -310,7 +310,7 @@ function ShoeShowcase() {
 
   return (
     <div className="showcase-container">
-      {/* Main Display Area - FULL SCREEN IMAGE WITH ALL ELEMENTS SUSPENDED */}
+      {/* Main Display Area */}
       <div 
         className="showcase-main"
         ref={imageContainerRef}
@@ -422,65 +422,80 @@ function ShoeShowcase() {
               {isAutoRotating ? '⏸' : '▶'}
             </button>
           )}
+        </div>
 
-          {/* ============================================
-              SUSPENDED THUMBNAILS (MIDDLE)
-              ============================================ */}
-          <div className="suspended-thumbnails">
-            <div 
-              className="thumbnails-scroll"
-              ref={thumbnailsContainerRef}
-              onScroll={handleScroll}
-            >
-              {filteredShoes.map((shoe) => (
-                <div 
-                  key={shoe.id} 
-                  className="thumbnail-group"
-                  ref={(el) => {
-                    if (el) {
-                      thumbnailRefs.current[shoe.id] = el;
-                    }
-                  }}
-                >
-                  {shoe.images && shoe.images.length > 0 && (
-                    <img
-                      src={shoe.images[0]}
-                      alt={shoe.name}
-                      className={`thumbnail ${selectedShoe.id === shoe.id ? 'active' : ''}`}
-                      onClick={() => handleThumbnailClick(shoe)}
-                      loading="lazy"
-                      title={shoe.name}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-            {filteredShoes.length > 5 && (
-              <div className="scroll-hint">← Scroll →</div>
-            )}
-          </div>
-
-          {/* ============================================
-              SHOE DETAILS OVERLAY (BOTTOM) - NO BUTTONS
-              ============================================ */}
-          <div className="shoe-details-overlay">
-            <h2 className="shoe-name">{selectedShoe.name}</h2>
-            <p className="shoe-brand">{selectedShoe.brand}</p>
-            <p className="shoe-price">Ksh {selectedShoe.price.toLocaleString()}</p>
-            
-            <div className="size-selector">
-              <div className="size-buttons">
-                {selectedShoe.sizes.map((size) => (
-                  <button
-                    key={size}
-                    className={`size-btn ${selectedSize === size ? 'active' : ''}`}
-                    onClick={() => setSelectedSize(size)}
-                  >
-                    {size}
-                  </button>
-                ))}
+        {/* ============================================
+            THUMBNAILS - BELOW IMAGE
+            ============================================ */}
+        <div className="thumbnails-container">
+          <div 
+            className="thumbnails-scroll"
+            ref={thumbnailsContainerRef}
+            onScroll={handleScroll}
+          >
+            {filteredShoes.map((shoe) => (
+              <div 
+                key={shoe.id} 
+                className="thumbnail-group"
+                ref={(el) => {
+                  if (el) {
+                    thumbnailRefs.current[shoe.id] = el;
+                  }
+                }}
+              >
+                {shoe.images && shoe.images.length > 0 && (
+                  <img
+                    src={shoe.images[0]}
+                    alt={shoe.name}
+                    className={`thumbnail ${selectedShoe.id === shoe.id ? 'active' : ''}`}
+                    onClick={() => handleThumbnailClick(shoe)}
+                    loading="lazy"
+                    title={shoe.name}
+                  />
+                )}
               </div>
-            </div>
+            ))}
+          </div>
+          {filteredShoes.length > 5 && (
+            <div className="scroll-hint">← Scroll →</div>
+          )}
+        </div>
+
+        {/* ============================================
+            SHOE DETAILS - BELOW THUMBNAILS
+            ============================================ */}
+        <div className="shoe-details-section">
+          <h2 className="shoe-name">{selectedShoe.name}</h2>
+          <p className="shoe-brand">{selectedShoe.brand}</p>
+          <p className="shoe-price">Ksh {selectedShoe.price.toLocaleString()}</p>
+          
+          <div className="size-buttons">
+            {selectedShoe.sizes.map((size) => (
+              <button
+                key={size}
+                className={`size-btn ${selectedSize === size ? 'active' : ''}`}
+                onClick={() => setSelectedSize(size)}
+              >
+                {size}
+              </button>
+            ))}
+          </div>
+          
+          <div className="action-buttons-bottom">
+            <button 
+              className={`add-to-cart-btn ${isAdded ? 'added' : ''}`}
+              onClick={handleAddToCart}
+            >
+              {isAdded ? '✓ Added!' : '🛒 Add to Cart'}
+            </button>
+            <button 
+              className="try-on-btn"
+              onClick={() => {
+                alert('👟 Virtual Try-On Coming Soon!');
+              }}
+            >
+              👟 Try On
+            </button>
           </div>
         </div>
       </div>
