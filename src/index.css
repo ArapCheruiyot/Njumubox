@@ -205,7 +205,7 @@ body {
 }
 
 /* ============================================
-   SUSPENDED CATEGORIES (TOP)
+   SUSPENDED CATEGORIES (TOP CENTER)
    ============================================ */
 .suspended-categories {
   position: absolute;
@@ -223,7 +223,7 @@ body {
   padding: 6px 12px;
   border-radius: 30px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  max-width: 92%;
+  max-width: 70%;
 }
 
 .category-btn {
@@ -253,7 +253,67 @@ body {
 }
 
 /* ============================================
-   ROTATION CONTROLS - MOVED UP
+   TOP RIGHT ACTION BUTTONS (ADD TO CART + TRY ON)
+   ============================================ */
+.top-right-actions {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 35;
+}
+
+.top-right-actions .add-to-cart-btn {
+  padding: 8px 14px;
+  background: linear-gradient(135deg, #27ae60, #1e8449);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  min-width: 100px;
+  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+  letter-spacing: 0.5px;
+}
+
+.top-right-actions .add-to-cart-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 25px rgba(39, 174, 96, 0.5);
+}
+
+.top-right-actions .add-to-cart-btn.added {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+
+.top-right-actions .try-on-btn {
+  padding: 8px 14px;
+  background: rgba(142, 68, 173, 0.3);
+  color: white;
+  border: 1px solid rgba(142, 68, 173, 0.4);
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  min-width: 100px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.5px;
+}
+
+.top-right-actions .try-on-btn:hover {
+  background: rgba(142, 68, 173, 0.5);
+  border-color: rgba(142, 68, 173, 0.6);
+  transform: translateY(-2px) scale(1.03);
+}
+
+/* ============================================
+   ROTATION CONTROLS
    ============================================ */
 .rotation-badge {
   position: absolute;
@@ -331,7 +391,7 @@ body {
 }
 
 /* ============================================
-   SUSPENDED THUMBNAILS - MOVED LOWER
+   SUSPENDED THUMBNAILS
    ============================================ */
 .suspended-thumbnails {
   position: absolute;
@@ -487,61 +547,6 @@ body {
 }
 
 /* ============================================
-   ACTION BUTTONS - MIDDLE SECTION (BETWEEN DETAILS AND FLOATING BUTTONS)
-   ============================================ */
-.action-buttons {
-  display: flex;
-  gap: 8px;
-  margin-top: 4px;
-  width: 100%;
-  justify-content: space-between;
-}
-
-.shoe-details-overlay .add-to-cart-btn {
-  flex: 1;
-  padding: 8px 10px;
-  background: linear-gradient(135deg, #27ae60, #1e8449);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-align: center;
-  min-width: 60px;
-}
-
-.shoe-details-overlay .add-to-cart-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
-}
-
-.shoe-details-overlay .add-to-cart-btn.added {
-  background: linear-gradient(135deg, #2ecc71, #27ae60);
-}
-
-.shoe-details-overlay .try-on-btn {
-  flex: 1;
-  padding: 8px 8px;
-  background: rgba(142, 68, 173, 0.25);
-  color: white;
-  border: 1px solid rgba(142, 68, 173, 0.3);
-  border-radius: 8px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-align: center;
-  min-width: 50px;
-}
-
-.shoe-details-overlay .try-on-btn:hover {
-  background: rgba(142, 68, 173, 0.4);
-  border-color: rgba(142, 68, 173, 0.5);
-}
-
-/* ============================================
    FOOTER - HIDDEN (No space)
    ============================================ */
 .footer {
@@ -686,11 +691,33 @@ body {
     padding: 4px 10px;
     gap: 4px;
     border-radius: 16px;
+    max-width: 75%;
   }
 
   .category-btn {
-    font-size: 0.6rem;
-    padding: 3px 10px;
+    font-size: 0.55rem;
+    padding: 3px 8px;
+  }
+
+  /* ===== TOP RIGHT BUTTONS - MOBILE ===== */
+  .top-right-actions {
+    top: 12px;
+    right: 12px;
+    gap: 6px;
+  }
+
+  .top-right-actions .add-to-cart-btn {
+    padding: 6px 10px;
+    font-size: 0.7rem;
+    min-width: 70px;
+    border-radius: 8px;
+  }
+
+  .top-right-actions .try-on-btn {
+    padding: 6px 10px;
+    font-size: 0.65rem;
+    min-width: 70px;
+    border-radius: 8px;
   }
 
   /* ===== MOBILE - THUMBNAILS ===== */
@@ -717,21 +744,21 @@ body {
   }
 
   .shoe-details-overlay .shoe-name {
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 700;
   }
 
   .shoe-details-overlay .shoe-brand {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
   }
 
   .shoe-details-overlay .shoe-price {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .shoe-details-overlay .shoe-price::before {
     content: '💰 ';
-    font-size: 0.7rem;
+    font-size: 0.65rem;
   }
 
   .shoe-details-overlay .size-buttons {
@@ -744,26 +771,6 @@ body {
     height: 24px;
     font-size: 0.6rem;
     border-radius: 4px;
-  }
-
-  /* ===== MOBILE - ACTION BUTTONS IN MIDDLE ===== */
-  .action-buttons {
-    gap: 6px;
-    margin-top: 3px;
-  }
-
-  .shoe-details-overlay .add-to-cart-btn {
-    padding: 6px 8px;
-    font-size: 0.75rem;
-    min-width: 50px;
-    border-radius: 6px;
-  }
-
-  .shoe-details-overlay .try-on-btn {
-    padding: 6px 6px;
-    font-size: 0.7rem;
-    min-width: 40px;
-    border-radius: 6px;
   }
 
   .rotation-badge {
@@ -850,11 +857,33 @@ body {
     padding: 3px 8px;
     gap: 3px;
     border-radius: 14px;
+    max-width: 80%;
   }
 
   .category-btn {
-    font-size: 0.5rem;
-    padding: 2px 8px;
+    font-size: 0.45rem;
+    padding: 2px 6px;
+  }
+
+  /* ===== TOP RIGHT BUTTONS - SMALL PHONE ===== */
+  .top-right-actions {
+    top: 8px;
+    right: 8px;
+    gap: 4px;
+  }
+
+  .top-right-actions .add-to-cart-btn {
+    padding: 5px 8px;
+    font-size: 0.6rem;
+    min-width: 55px;
+    border-radius: 6px;
+  }
+
+  .top-right-actions .try-on-btn {
+    padding: 5px 8px;
+    font-size: 0.55rem;
+    min-width: 55px;
+    border-radius: 6px;
   }
 
   /* ===== MOBILE - THUMBNAILS ===== */
@@ -881,21 +910,21 @@ body {
   }
 
   .shoe-details-overlay .shoe-name {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 700;
   }
 
   .shoe-details-overlay .shoe-brand {
-    font-size: 0.6rem;
+    font-size: 0.55rem;
   }
 
   .shoe-details-overlay .shoe-price {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 
   .shoe-details-overlay .shoe-price::before {
     content: '💰 ';
-    font-size: 0.6rem;
+    font-size: 0.55rem;
   }
 
   .shoe-details-overlay .size-buttons {
@@ -908,26 +937,6 @@ body {
     height: 20px;
     font-size: 0.5rem;
     border-radius: 3px;
-  }
-
-  /* ===== MOBILE - ACTION BUTTONS IN MIDDLE ===== */
-  .action-buttons {
-    gap: 4px;
-    margin-top: 2px;
-  }
-
-  .shoe-details-overlay .add-to-cart-btn {
-    padding: 5px 6px;
-    font-size: 0.7rem;
-    min-width: 40px;
-    border-radius: 5px;
-  }
-
-  .shoe-details-overlay .try-on-btn {
-    padding: 5px 4px;
-    font-size: 0.65rem;
-    min-width: 30px;
-    border-radius: 5px;
   }
 
   .rotation-badge {

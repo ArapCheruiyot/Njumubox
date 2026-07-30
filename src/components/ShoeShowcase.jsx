@@ -347,7 +347,27 @@ function ShoeShowcase() {
           )}
           
           {/* ============================================
-              SUSPENDED CATEGORIES (TOP)
+              TOP RIGHT ACTION BUTTONS (ADD TO CART + TRY ON)
+              ============================================ */}
+          <div className="top-right-actions">
+            <button 
+              className={`add-to-cart-btn ${isAdded ? 'added' : ''}`}
+              onClick={handleAddToCart}
+            >
+              {isAdded ? '✓ Added!' : '🛒 Add to Cart'}
+            </button>
+            <button 
+              className="try-on-btn"
+              onClick={() => {
+                alert('👟 Virtual Try-On Coming Soon!');
+              }}
+            >
+              👟 Try On
+            </button>
+          </div>
+
+          {/* ============================================
+              SUSPENDED CATEGORIES (TOP CENTER)
               ============================================ */}
           <div className="suspended-categories">
             {categories.map((category) => (
@@ -441,7 +461,7 @@ function ShoeShowcase() {
           </div>
 
           {/* ============================================
-              SHOE DETAILS OVERLAY (BOTTOM)
+              SHOE DETAILS OVERLAY (BOTTOM) - NO BUTTONS
               ============================================ */}
           <div className="shoe-details-overlay">
             <h2 className="shoe-name">{selectedShoe.name}</h2>
@@ -460,23 +480,6 @@ function ShoeShowcase() {
                   </button>
                 ))}
               </div>
-            </div>
-
-            <div className="action-buttons">
-              <button 
-                className={`add-to-cart-btn ${isAdded ? 'added' : ''}`}
-                onClick={handleAddToCart}
-              >
-                {isAdded ? '✓ Added!' : '🛒 Add to Cart'}
-              </button>
-              <button 
-                className="try-on-btn"
-                onClick={() => {
-                  alert('👟 Virtual Try-On Coming Soon!');
-                }}
-              >
-                👟 Try On
-              </button>
             </div>
           </div>
         </div>
