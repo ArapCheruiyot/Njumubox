@@ -78,7 +78,7 @@ body {
 }
 
 /* ============================================
-   RESPONSIVE - MOBILE
+   RESPONSIVE - TABLET
    ============================================ */
 @media (max-width: 768px) {
   .header {
@@ -111,19 +111,25 @@ body {
     padding: 0px 5px;
   }
 
+  /* ===== THUMBNAILS - MOVED UP (CENTER) ===== */
   .suspended-thumbnails {
-    bottom: 100px;
+    bottom: 140px;          /* ← MOVED UP (was 100px) */
     padding: 4px 8px;
-    width: 88%;
-    max-width: 350px;
+    width: 80%;             /* ← REDUCED WIDTH (was 88%) */
+    max-width: 320px;       /* ← REDUCED (was 350px) */
   }
 
   .suspended-thumbnails .thumbnail {
-    width: 36px;
-    height: 36px;
+    width: 34px;            /* ← SLIGHTLY SMALLER (was 36px) */
+    height: 34px;
     padding: 3px;
   }
 
+  .suspended-thumbnails .thumbnails-scroll {
+    gap: 5px;               /* ← REDUCED SPACE */
+  }
+
+  /* ===== DETAILS ===== */
   .shoe-details-overlay {
     padding: 14px 16px 16px;
   }
@@ -146,18 +152,19 @@ body {
     font-size: 0.65rem;
   }
 
+  /* ===== ROTATION CONTROLS - ADJUSTED ===== */
   .rotation-badge {
-    bottom: 180px;
+    bottom: 190px;          /* ← ADJUSTED (was 180px) */
     font-size: 0.5rem;
     padding: 2px 10px;
   }
 
   .angle-dots {
-    bottom: 160px;
+    bottom: 170px;          /* ← ADJUSTED (was 160px) */
   }
 
   .rotation-toggle-btn {
-    bottom: 180px;
+    bottom: 190px;          /* ← ADJUSTED (was 180px) */
     right: 8px;
     width: 22px;
     height: 22px;
@@ -174,6 +181,9 @@ body {
   }
 }
 
+/* ============================================
+   RESPONSIVE - SMALL PHONE
+   ============================================ */
 @media (max-width: 480px) {
   .header {
     height: 48px;
@@ -205,19 +215,29 @@ body {
     padding: 0px 4px;
   }
 
+  /* ===== THUMBNAILS - MOVED UP (CENTER) ===== */
   .suspended-thumbnails {
-    bottom: 90px;
+    bottom: 120px;          /* ← MOVED UP (was 90px) */
     padding: 3px 6px;
-    width: 92%;
-    max-width: 290px;
+    width: 85%;             /* ← REDUCED (was 92%) */
+    max-width: 260px;       /* ← REDUCED (was 290px) */
   }
 
   .suspended-thumbnails .thumbnail {
-    width: 30px;
-    height: 30px;
+    width: 28px;            /* ← SMALLER (was 30px) */
+    height: 28px;
     padding: 2px;
   }
 
+  .suspended-thumbnails .thumbnails-scroll {
+    gap: 4px;
+  }
+
+  .scroll-hint {
+    font-size: 0.3rem;
+  }
+
+  /* ===== DETAILS ===== */
   .shoe-details-overlay {
     padding: 12px 14px 14px;
   }
@@ -240,18 +260,19 @@ body {
     font-size: 0.55rem;
   }
 
+  /* ===== ROTATION CONTROLS - ADJUSTED ===== */
   .rotation-badge {
-    bottom: 165px;
+    bottom: 175px;          /* ← ADJUSTED (was 165px) */
     font-size: 0.45rem;
     padding: 2px 8px;
   }
 
   .angle-dots {
-    bottom: 148px;
+    bottom: 158px;          /* ← ADJUSTED (was 148px) */
   }
 
   .rotation-toggle-btn {
-    bottom: 165px;
+    bottom: 175px;          /* ← ADJUSTED (was 165px) */
     right: 6px;
     width: 20px;
     height: 20px;
@@ -272,7 +293,9 @@ body {
   }
 }
 
-/* Show labels on desktop */
+/* ============================================
+   RESPONSIVE - DESKTOP
+   ============================================ */
 @media (min-width: 769px) {
   .float-label {
     display: inline-block;
