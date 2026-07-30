@@ -216,15 +216,18 @@ body {
   }
 
   /* ===== THUMBNAILS - MOVED UP (CENTER) ===== */
+  @media (max-width: 480px) {
+  /* ... other styles ... */
+
   .suspended-thumbnails {
-    bottom: 120px;          /* ← MOVED UP (was 90px) */
+    bottom: 120px;          /* ← CHANGE THIS VALUE to move up/down on phone */
     padding: 3px 6px;
-    width: 85%;             /* ← REDUCED (was 92%) */
-    max-width: 260px;       /* ← REDUCED (was 290px) */
+    width: 85%;
+    max-width: 260px;
   }
 
   .suspended-thumbnails .thumbnail {
-    width: 28px;            /* ← SMALLER (was 30px) */
+    width: 28px;
     height: 28px;
     padding: 2px;
   }
@@ -232,6 +235,7 @@ body {
   .suspended-thumbnails .thumbnails-scroll {
     gap: 4px;
   }
+}
 
   .scroll-hint {
     font-size: 0.3rem;
