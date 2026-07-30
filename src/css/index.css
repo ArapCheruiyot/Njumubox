@@ -82,33 +82,33 @@ body {
    ============================================ */
 @media (max-width: 768px) {
   .header {
-    height: 56px;
-    padding: 4px 12px;
+    height: 64px;
+    padding: 6px 16px;
   }
 
   .logo-image {
-    width: 36px;
-    height: 36px;
+    width: 42px;
+    height: 42px;
   }
 
   .logo-text {
-    font-size: 1.1rem;
+    font-size: 1.4rem;
   }
 
   .admin-link {
-    font-size: 0.55rem;
-    padding: 4px 10px;
+    font-size: 0.7rem;
+    padding: 5px 14px;
   }
 
   .cart-icon {
-    font-size: 0.75rem;
-    padding: 4px 10px;
+    font-size: 0.9rem;
+    padding: 5px 14px;
   }
 
   .cart-count {
-    font-size: 0.55rem;
-    min-width: 16px;
-    padding: 0px 5px;
+    font-size: 0.65rem;
+    min-width: 18px;
+    padding: 0px 6px;
   }
 
   /* ===== THUMBNAILS - MOVED UP (CENTER) ===== */
@@ -199,33 +199,33 @@ body {
    ============================================ */
 @media (max-width: 480px) {
   .header {
-    height: 48px;
-    padding: 3px 10px;
+    height: 56px;
+    padding: 4px 12px;
   }
 
   .logo-image {
-    width: 30px;
-    height: 30px;
+    width: 36px;
+    height: 36px;
   }
 
   .logo-text {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
   }
 
   .admin-link {
-    font-size: 0.45rem;
-    padding: 3px 8px;
+    font-size: 0.6rem;
+    padding: 4px 12px;
   }
 
   .cart-icon {
-    font-size: 0.65rem;
-    padding: 3px 8px;
+    font-size: 0.8rem;
+    padding: 4px 12px;
   }
 
   .cart-count {
-    font-size: 0.45rem;
-    min-width: 14px;
-    padding: 0px 4px;
+    font-size: 0.6rem;
+    min-width: 16px;
+    padding: 0px 5px;
   }
 
   /* ===== THUMBNAILS - MOVED UP (CENTER) ===== */
