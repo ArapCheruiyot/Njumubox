@@ -19,48 +19,48 @@ body {
   background: #0f0f1a;
   color: #1a1a1a;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .app {
   max-width: 100%;
   margin: 0;
   padding: 0;
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   background: #0f0f1a;
+  overflow: hidden;
 }
 
 /* ============================================
-   HEADER
+   HEADER - COMPACT
    ============================================ */
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 20px;
+  padding: 6px 14px;
   background: rgba(15, 15, 26, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   margin-bottom: 0;
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 100;
   flex-shrink: 0;
-  height: 70px;
+  height: 56px;
 }
 
 .logo-container {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
 }
 
 .logo-image {
-  width: 50px;
-  height: 50px;
+  width: 36px;
+  height: 36px;
   object-fit: contain;
   transition: transform 0.3s ease;
 }
@@ -70,7 +70,7 @@ body {
 }
 
 .logo-text {
-  font-size: 1.8rem;
+  font-size: 1.2rem;
   font-weight: 800;
   background: linear-gradient(135deg, #ffffff 0%, #3498db 100%);
   -webkit-background-clip: text;
@@ -82,7 +82,7 @@ body {
 .header-right {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 8px;
 }
 
 .tagline {
@@ -90,15 +90,15 @@ body {
 }
 
 .admin-link {
-  padding: 6px 16px;
+  padding: 4px 10px;
   border: 1px solid #3498db;
   background: transparent;
   color: #3498db;
-  border-radius: 20px;
+  border-radius: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 0.85rem;
+  font-size: 0.6rem;
   text-decoration: none;
   display: inline-block;
 }
@@ -111,12 +111,12 @@ body {
 .cart-icon {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 1.1rem;
+  gap: 4px;
+  font-size: 0.8rem;
   color: white;
   cursor: pointer;
-  padding: 6px 14px;
-  border-radius: 20px;
+  padding: 4px 10px;
+  border-radius: 16px;
   transition: all 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.05);
@@ -132,10 +132,10 @@ body {
   background: #3498db;
   color: white;
   border-radius: 50%;
-  padding: 0px 8px;
-  font-size: 0.75rem;
+  padding: 0px 5px;
+  font-size: 0.55rem;
   font-weight: 700;
-  min-width: 20px;
+  min-width: 16px;
   text-align: center;
 }
 
@@ -165,7 +165,7 @@ body {
 }
 
 /* ============================================
-   MAIN IMAGE CONTAINER - FULL HEIGHT
+   MAIN IMAGE CONTAINER
    ============================================ */
 .main-image-container {
   width: 100%;
@@ -183,7 +183,7 @@ body {
 .main-image-container::before {
   content: '👟';
   position: absolute;
-  font-size: 8rem;
+  font-size: 6rem;
   opacity: 0.05;
   top: 50%;
   left: 50%;
@@ -209,30 +209,30 @@ body {
    ============================================ */
 .suspended-categories {
   position: absolute;
-  top: 16px;
+  top: 8px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 8px;
+  gap: 4px;
   flex-wrap: wrap;
   justify-content: center;
   z-index: 30;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 8px 16px;
-  border-radius: 30px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 4px 10px;
+  border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  max-width: 75%;
+  max-width: 90%;
 }
 
 .category-btn {
-  padding: 5px 14px;
+  padding: 2px 8px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.05);
   color: rgba(255, 255, 255, 0.6);
-  border-radius: 20px;
-  font-size: 0.8rem;
+  border-radius: 14px;
+  font-size: 0.55rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -253,37 +253,36 @@ body {
 }
 
 /* ============================================
-   TOP RIGHT ACTION BUTTONS (ADD TO CART + TRY ON)
+   TOP RIGHT ACTION BUTTONS
    ============================================ */
 .top-right-actions {
   position: absolute;
-  top: 18px;
-  right: 18px;
+  top: 8px;
+  right: 8px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 4px;
   z-index: 35;
 }
 
 .top-right-actions .add-to-cart-btn {
-  padding: 10px 18px;
+  padding: 4px 10px;
   background: linear-gradient(135deg, #27ae60, #1e8449);
   color: white;
   border: none;
-  border-radius: 12px;
-  font-size: 0.95rem;
+  border-radius: 8px;
+  font-size: 0.6rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: center;
-  min-width: 120px;
-  box-shadow: 0 4px 20px rgba(39, 174, 96, 0.35);
-  letter-spacing: 0.5px;
+  min-width: 60px;
+  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+  letter-spacing: 0.3px;
 }
 
 .top-right-actions .add-to-cart-btn:hover {
   transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 8px 30px rgba(39, 174, 96, 0.5);
 }
 
 .top-right-actions .add-to-cart-btn.added {
@@ -291,25 +290,23 @@ body {
 }
 
 .top-right-actions .try-on-btn {
-  padding: 10px 18px;
-  background: rgba(142, 68, 173, 0.35);
+  padding: 4px 10px;
+  background: rgba(142, 68, 173, 0.3);
   color: white;
-  border: 1px solid rgba(142, 68, 173, 0.4);
-  border-radius: 12px;
-  font-size: 0.85rem;
+  border: 1px solid rgba(142, 68, 173, 0.3);
+  border-radius: 8px;
+  font-size: 0.55rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: center;
-  min-width: 120px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  letter-spacing: 0.5px;
+  min-width: 60px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .top-right-actions .try-on-btn:hover {
   background: rgba(142, 68, 173, 0.5);
-  border-color: rgba(142, 68, 173, 0.6);
-  transform: translateY(-2px) scale(1.03);
+  border-color: rgba(142, 68, 173, 0.5);
 }
 
 /* ============================================
@@ -317,14 +314,14 @@ body {
    ============================================ */
 .rotation-badge {
   position: absolute;
-  bottom: 260px;
+  bottom: 105px;
   left: 50%;
   transform: translateX(-50%);
   background: rgba(0, 0, 0, 0.6);
   color: white;
-  padding: 4px 14px;
-  border-radius: 14px;
-  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.45rem;
   font-weight: 600;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -336,19 +333,19 @@ body {
 
 .angle-dots {
   position: absolute;
-  bottom: 235px;
+  bottom: 88px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 6px;
+  gap: 4px;
   z-index: 15;
 }
 
 .dot {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.2);
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -361,20 +358,20 @@ body {
 .dot.active {
   background: #3498db;
   transform: scale(1.2);
-  box-shadow: 0 0 12px rgba(52, 152, 219, 0.5);
+  box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
 }
 
 .rotation-toggle-btn {
   position: absolute;
-  bottom: 260px;
-  right: 12px;
+  bottom: 105px;
+  right: 6px;
   background: rgba(0, 0, 0, 0.6);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  width: 28px;
-  height: 28px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  font-size: 0.7rem;
+  font-size: 0.45rem;
   cursor: pointer;
   transition: all 0.3s ease;
   z-index: 15;
@@ -395,25 +392,25 @@ body {
    ============================================ */
 .suspended-thumbnails {
   position: absolute;
-  bottom: 120px;
+  bottom: 50px;
   left: 50%;
   transform: translateX(-50%);
-  width: 92%;
-  max-width: 500px;
+  width: 96%;
+  max-width: 400px;
   z-index: 20;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 14px;
-  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 10px;
+  padding: 3px 6px;
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .suspended-thumbnails .thumbnails-scroll {
   display: flex;
-  gap: 8px;
+  gap: 4px;
   overflow-x: auto;
-  padding: 4px 2px;
+  padding: 2px 2px;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
@@ -421,7 +418,7 @@ body {
 }
 
 .suspended-thumbnails .thumbnails-scroll::-webkit-scrollbar {
-  height: 3px;
+  height: 2px;
 }
 
 .suspended-thumbnails .thumbnails-scroll::-webkit-scrollbar-track {
@@ -438,12 +435,12 @@ body {
 }
 
 .suspended-thumbnails .thumbnail {
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   object-fit: contain;
   background: rgba(255, 255, 255, 0.06);
-  border-radius: 10px;
-  padding: 4px;
+  border-radius: 6px;
+  padding: 2px;
   cursor: pointer;
   border: 2px solid transparent;
   transition: all 0.3s ease;
@@ -459,75 +456,75 @@ body {
 .suspended-thumbnails .thumbnail.active {
   opacity: 1;
   border-color: #3498db;
-  box-shadow: 0 0 20px rgba(52, 152, 219, 0.4);
+  box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
   transform: scale(1.1);
 }
 
 .scroll-hint {
   text-align: center;
-  color: rgba(255, 255, 255, 0.2);
-  font-size: 0.5rem;
+  color: rgba(255, 255, 255, 0.15);
+  font-size: 0.35rem;
   letter-spacing: 2px;
-  padding: 2px 0 0;
+  padding: 1px 0 0;
   font-weight: 300;
   text-transform: uppercase;
 }
 
 /* ============================================
-   SHOE DETAILS OVERLAY (BOTTOM)
+   SHOE DETAILS OVERLAY (BOTTOM) - VISIBLE
    ============================================ */
 .shoe-details-overlay {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.2) 50%, transparent 100%);
-  padding: 16px 20px 18px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.3) 55%, transparent 100%);
+  padding: 12px 14px 14px;
   z-index: 10;
   color: white;
 }
 
 .shoe-details-overlay .shoe-name {
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: white;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .shoe-details-overlay .shoe-brand {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 0.95rem;
-  margin-bottom: 2px;
+  font-size: 0.75rem;
+  margin-bottom: 1px;
 }
 
 .shoe-details-overlay .shoe-price {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #2ecc71;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .shoe-details-overlay .shoe-price::before {
   content: '💰 ';
-  font-size: 0.9rem;
+  font-size: 0.7rem;
 }
 
 .shoe-details-overlay .size-buttons {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   flex-wrap: wrap;
-  margin: 4px 0 0;
+  margin: 2px 0 0;
 }
 
 .shoe-details-overlay .size-btn {
-  width: 34px;
-  height: 34px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  width: 26px;
+  height: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.06);
-  border-radius: 6px;
-  font-size: 0.8rem;
+  border-radius: 5px;
+  font-size: 0.6rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.25s ease;
@@ -547,7 +544,7 @@ body {
 }
 
 /* ============================================
-   FOOTER - HIDDEN (No space)
+   FOOTER - HIDDEN
    ============================================ */
 .footer {
   display: none;
@@ -558,25 +555,25 @@ body {
    ============================================ */
 .floating-buttons {
   position: fixed;
-  bottom: 16px;
-  right: 16px;
+  bottom: 10px;
+  right: 10px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   z-index: 999;
 }
 
 .float-btn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
+  gap: 4px;
+  padding: 4px 10px;
   border-radius: 50px;
   text-decoration: none;
   color: white;
   font-weight: 700;
-  font-size: 0.8rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  font-size: 0.55rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   border: none;
@@ -592,7 +589,6 @@ body {
 
 .float-btn.whatsapp:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
 }
 
 .float-btn.whatsapp::before {
@@ -616,7 +612,6 @@ body {
 
 .float-btn.call:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 30px rgba(255, 107, 53, 0.4);
 }
 
 .float-btn.call::before {
@@ -635,207 +630,28 @@ body {
 }
 
 .float-icon {
-  font-size: 1.1rem;
+  font-size: 0.8rem;
   line-height: 1;
 }
 
 .float-label {
-  font-size: 0.7rem;
-  letter-spacing: 0.5px;
+  font-size: 0.5rem;
+  letter-spacing: 0.3px;
 }
 
 /* ============================================
-   RESPONSIVE DESIGN - MOBILE FIXED
+   RESPONSIVE DESIGN - MOBILE ONLY
    ============================================ */
 
 @media (max-width: 768px) {
   .header {
-    height: 56px;
-    padding: 4px 14px;
-  }
-
-  .logo-image {
-    width: 36px;
-    height: 36px;
-  }
-
-  .logo-text {
-    font-size: 1.2rem;
-  }
-
-  .admin-link {
-    font-size: 0.6rem;
-    padding: 4px 10px;
-  }
-
-  .cart-icon {
-    font-size: 0.8rem;
-    padding: 4px 10px;
-  }
-
-  .cart-count {
-    font-size: 0.6rem;
-    min-width: 16px;
-    padding: 0px 5px;
-  }
-
-  .showcase-container {
-    height: calc(100vh - 56px);
-    min-height: 0;
-    max-height: none;
-    border-radius: 0;
-  }
-
-  /* ===== MOBILE - REDUCE IMAGE HEIGHT ===== */
-  .main-image-container {
-    height: 100%;
-    min-height: 0 !important;
-  }
-
-  /* ===== MOBILE - CATEGORIES ===== */
-  .suspended-categories {
-    top: 6px;
-    padding: 4px 10px;
-    gap: 4px;
-    border-radius: 16px;
-    max-width: 85%;
-  }
-
-  .category-btn {
-    font-size: 0.55rem;
-    padding: 3px 8px;
-  }
-
-  /* ===== MOBILE - TOP RIGHT BUTTONS ===== */
-  .top-right-actions {
-    top: 8px;
-    right: 8px;
-    gap: 5px;
-  }
-
-  .top-right-actions .add-to-cart-btn {
-    padding: 5px 10px;
-    font-size: 0.6rem;
-    min-width: 65px;
-    border-radius: 8px;
-  }
-
-  .top-right-actions .try-on-btn {
-    padding: 5px 10px;
-    font-size: 0.55rem;
-    min-width: 65px;
-    border-radius: 8px;
-  }
-
-  /* ===== MOBILE - THUMBNAILS ===== */
-  .suspended-thumbnails {
-    bottom: 85px;
-    padding: 4px 8px;
-    border-radius: 10px;
-  }
-
-  .suspended-thumbnails .thumbnail {
-    width: 34px;
-    height: 34px;
-    padding: 2px;
-    border-radius: 6px;
-  }
-
-  .suspended-thumbnails .thumbnails-scroll {
-    gap: 5px;
-  }
-
-  /* ===== MOBILE - DETAILS - BIGGER & VISIBLE ===== */
-  .shoe-details-overlay {
-    padding: 10px 14px 12px;
-  }
-
-  .shoe-details-overlay .shoe-name {
-    font-size: 1.1rem;
-    font-weight: 700;
-  }
-
-  .shoe-details-overlay .shoe-brand {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.5);
-  }
-
-  .shoe-details-overlay .shoe-price {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #2ecc71;
-  }
-
-  .shoe-details-overlay .shoe-price::before {
-    content: '💰 ';
-    font-size: 0.7rem;
-  }
-
-  .shoe-details-overlay .size-buttons {
-    gap: 4px;
-    margin: 3px 0 0;
-  }
-
-  .shoe-details-overlay .size-btn {
-    width: 28px;
-    height: 28px;
-    font-size: 0.65rem;
-    border-radius: 5px;
-  }
-
-  .rotation-badge {
-    bottom: 160px;
-    font-size: 0.5rem;
-    padding: 2px 8px;
-  }
-
-  .angle-dots {
-    bottom: 145px;
-    gap: 4px;
-  }
-
-  .dot {
-    width: 4px;
-    height: 4px;
-  }
-
-  .rotation-toggle-btn {
-    bottom: 160px;
-    right: 8px;
-    width: 20px;
-    height: 20px;
-    font-size: 0.5rem;
-  }
-
-  .floating-buttons {
-    bottom: 10px;
-    right: 10px;
-    gap: 5px;
-  }
-
-  .float-btn {
-    padding: 5px 10px;
-    font-size: 0.6rem;
-  }
-
-  .float-icon {
-    font-size: 0.8rem;
-  }
-
-  .float-label {
-    display: none;
-  }
-}
-
-@media (max-width: 480px) {
-  .header {
     height: 50px;
-    padding: 3px 10px;
+    padding: 4px 12px;
   }
 
   .logo-image {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
   }
 
   .logo-text {
@@ -859,20 +675,20 @@ body {
   }
 
   .showcase-container {
-    height: calc(100vh - 50px);
+    height: calc(100dvh - 50px);
   }
 
-  /* ===== SMALL PHONE - DETAILS ===== */
+  /* ===== MOBILE - DETAILS ===== */
   .shoe-details-overlay {
-    padding: 8px 10px 10px;
+    padding: 10px 12px 12px;
   }
 
   .shoe-details-overlay .shoe-name {
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
 
   .shoe-details-overlay .shoe-brand {
-    font-size: 0.65rem;
+    font-size: 0.7rem;
   }
 
   .shoe-details-overlay .shoe-price {
@@ -884,56 +700,72 @@ body {
     font-size: 0.6rem;
   }
 
-  .shoe-details-overlay .size-buttons {
-    gap: 3px;
-  }
-
   .shoe-details-overlay .size-btn {
     width: 24px;
     height: 24px;
     font-size: 0.55rem;
-    border-radius: 4px;
   }
 
+  /* ===== MOBILE - THUMBNAILS ===== */
   .suspended-thumbnails {
-    bottom: 75px;
+    bottom: 45px;
     padding: 3px 6px;
     border-radius: 8px;
   }
 
   .suspended-thumbnails .thumbnail {
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     padding: 2px;
     border-radius: 5px;
   }
 
   .suspended-thumbnails .thumbnails-scroll {
-    gap: 4px;
+    gap: 3px;
+  }
+
+  /* ===== MOBILE - CATEGORIES ===== */
+  .suspended-categories {
+    top: 6px;
+    padding: 3px 8px;
+    gap: 3px;
+    border-radius: 14px;
+  }
+
+  .category-btn {
+    font-size: 0.5rem;
+    padding: 2px 6px;
+  }
+
+  /* ===== MOBILE - TOP RIGHT BUTTONS ===== */
+  .top-right-actions {
+    top: 6px;
+    right: 6px;
+    gap: 3px;
   }
 
   .top-right-actions .add-to-cart-btn {
-    padding: 4px 8px;
+    padding: 3px 8px;
     font-size: 0.5rem;
     min-width: 50px;
     border-radius: 6px;
   }
 
   .top-right-actions .try-on-btn {
-    padding: 4px 8px;
-    font-size: 0.5rem;
+    padding: 3px 8px;
+    font-size: 0.45rem;
     min-width: 50px;
     border-radius: 6px;
   }
 
   .rotation-badge {
-    bottom: 140px;
+    bottom: 90px;
     font-size: 0.4rem;
     padding: 2px 6px;
   }
 
   .angle-dots {
-    bottom: 125px;
+    bottom: 75px;
     gap: 3px;
   }
 
@@ -943,16 +775,22 @@ body {
   }
 
   .rotation-toggle-btn {
-    bottom: 140px;
+    bottom: 90px;
     right: 6px;
     width: 16px;
     height: 16px;
     font-size: 0.4rem;
   }
 
+  .floating-buttons {
+    bottom: 8px;
+    right: 8px;
+    gap: 4px;
+  }
+
   .float-btn {
-    padding: 4px 8px;
-    font-size: 0.5rem;
+    padding: 3px 8px;
+    font-size: 0.45rem;
   }
 
   .float-icon {
@@ -961,6 +799,124 @@ body {
 
   .float-label {
     display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    height: 44px;
+    padding: 3px 10px;
+  }
+
+  .logo-image {
+    width: 28px;
+    height: 28px;
+  }
+
+  .logo-text {
+    font-size: 0.85rem;
+  }
+
+  .admin-link {
+    font-size: 0.45rem;
+    padding: 2px 6px;
+  }
+
+  .cart-icon {
+    font-size: 0.6rem;
+    padding: 2px 6px;
+  }
+
+  .cart-count {
+    font-size: 0.4rem;
+    min-width: 12px;
+    padding: 0px 3px;
+  }
+
+  .showcase-container {
+    height: calc(100dvh - 44px);
+  }
+
+  .shoe-details-overlay {
+    padding: 8px 10px 10px;
+  }
+
+  .shoe-details-overlay .shoe-name {
+    font-size: 0.85rem;
+  }
+
+  .shoe-details-overlay .shoe-brand {
+    font-size: 0.6rem;
+  }
+
+  .shoe-details-overlay .shoe-price {
+    font-size: 0.8rem;
+  }
+
+  .shoe-details-overlay .shoe-price::before {
+    content: '💰 ';
+    font-size: 0.5rem;
+  }
+
+  .shoe-details-overlay .size-btn {
+    width: 20px;
+    height: 20px;
+    font-size: 0.45rem;
+  }
+
+  .suspended-thumbnails {
+    bottom: 40px;
+    padding: 2px 4px;
+    border-radius: 6px;
+  }
+
+  .suspended-thumbnails .thumbnail {
+    width: 22px;
+    height: 22px;
+    padding: 1px;
+    border-radius: 4px;
+  }
+
+  .suspended-thumbnails .thumbnails-scroll {
+    gap: 2px;
+  }
+
+  .top-right-actions .add-to-cart-btn {
+    padding: 2px 6px;
+    font-size: 0.4rem;
+    min-width: 40px;
+    border-radius: 4px;
+  }
+
+  .top-right-actions .try-on-btn {
+    padding: 2px 6px;
+    font-size: 0.4rem;
+    min-width: 40px;
+    border-radius: 4px;
+  }
+
+  .rotation-badge {
+    bottom: 75px;
+    font-size: 0.35rem;
+    padding: 1px 5px;
+  }
+
+  .angle-dots {
+    bottom: 62px;
+    gap: 2px;
+  }
+
+  .dot {
+    width: 2.5px;
+    height: 2.5px;
+  }
+
+  .rotation-toggle-btn {
+    bottom: 75px;
+    right: 4px;
+    width: 14px;
+    height: 14px;
+    font-size: 0.35rem;
   }
 }
 
