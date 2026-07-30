@@ -262,7 +262,7 @@ body {
    ============================================ */
 .rotation-badge {
   position: absolute;
-  bottom: 180px;
+  bottom: 160px;
   left: 50%;
   transform: translateX(-50%);
   background: rgba(0, 0, 0, 0.6);
@@ -278,7 +278,7 @@ body {
 
 .angle-dots {
   position: absolute;
-  bottom: 160px;
+  bottom: 140px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -301,7 +301,7 @@ body {
 
 .rotation-toggle-btn {
   position: absolute;
-  bottom: 180px;
+  bottom: 160px;
   right: 10px;
   background: rgba(0, 0, 0, 0.6);
   color: white;
@@ -318,15 +318,15 @@ body {
 }
 
 /* ============================================
-   SUSPENDED THUMBNAILS
+   SUSPENDED THUMBNAILS - REDUCED SIZE
    ============================================ */
 .suspended-thumbnails {
   position: absolute;
-  bottom: 90px;
+  bottom: 75px;
   left: 50%;
   transform: translateX(-50%);
-  width: 94%;
-  max-width: 420px;
+  width: 80%;
+  max-width: 380px;
   z-index: 20;
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(8px);
@@ -359,12 +359,12 @@ body {
 }
 
 .suspended-thumbnails .thumbnail {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   object-fit: contain;
   background: rgba(255, 255, 255, 0.06);
   border-radius: 6px;
-  padding: 3px;
+  padding: 2px;
   cursor: pointer;
   border: 2px solid transparent;
   opacity: 0.5;
@@ -383,7 +383,7 @@ body {
 .scroll-hint {
   text-align: center;
   color: rgba(255, 255, 255, 0.15);
-  font-size: 0.4rem;
+  font-size: 0.35rem;
   letter-spacing: 2px;
   padding: 1px 0 0;
 }
@@ -549,15 +549,17 @@ body {
     padding: 0px 5px;
   }
 
-  /* ===== MOBILE - THUMBNAILS ===== */
+  /* ===== MOBILE - THUMBNAILS SMALLER ===== */
   .suspended-thumbnails {
-    bottom: 85px;
+    bottom: 70px;
     padding: 3px 6px;
+    width: 85%;
+    max-width: 320px;
   }
 
   .suspended-thumbnails .thumbnail {
-    width: 34px;
-    height: 34px;
+    width: 30px;
+    height: 30px;
     padding: 2px;
   }
 
@@ -590,17 +592,17 @@ body {
   }
 
   .rotation-badge {
-    bottom: 160px;
+    bottom: 145px;
     font-size: 0.5rem;
     padding: 2px 10px;
   }
 
   .angle-dots {
-    bottom: 140px;
+    bottom: 125px;
   }
 
   .rotation-toggle-btn {
-    bottom: 160px;
+    bottom: 145px;
     right: 8px;
     width: 22px;
     height: 22px;
@@ -648,16 +650,18 @@ body {
     padding: 0px 4px;
   }
 
-  /* ===== SMALL PHONE - THUMBNAILS ===== */
+  /* ===== SMALL PHONE - THUMBNAILS SMALLER ===== */
   .suspended-thumbnails {
-    bottom: 75px;
+    bottom: 65px;
     padding: 2px 4px;
+    width: 90%;
+    max-width: 260px;
   }
 
   .suspended-thumbnails .thumbnail {
-    width: 28px;
-    height: 28px;
-    padding: 2px;
+    width: 26px;
+    height: 26px;
+    padding: 1px;
   }
 
   /* ===== SMALL PHONE - DETAILS BIGGER ===== */
@@ -689,17 +693,17 @@ body {
   }
 
   .rotation-badge {
-    bottom: 140px;
+    bottom: 130px;
     font-size: 0.45rem;
     padding: 2px 8px;
   }
 
   .angle-dots {
-    bottom: 125px;
+    bottom: 112px;
   }
 
   .rotation-toggle-btn {
-    bottom: 140px;
+    bottom: 130px;
     right: 6px;
     width: 20px;
     height: 20px;
