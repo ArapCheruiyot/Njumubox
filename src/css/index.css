@@ -113,20 +113,20 @@ body {
 
   /* ===== THUMBNAILS - MOVED UP (CENTER) ===== */
   .suspended-thumbnails {
-    bottom: 140px;          /* ← MOVED UP (was 100px) */
+    bottom: 140px;
     padding: 4px 8px;
-    width: 80%;             /* ← REDUCED WIDTH (was 88%) */
-    max-width: 320px;       /* ← REDUCED (was 350px) */
+    width: 80%;
+    max-width: 320px;
   }
 
   .suspended-thumbnails .thumbnail {
-    width: 34px;            /* ← SLIGHTLY SMALLER (was 36px) */
+    width: 34px;
     height: 34px;
     padding: 3px;
   }
 
   .suspended-thumbnails .thumbnails-scroll {
-    gap: 5px;               /* ← REDUCED SPACE */
+    gap: 5px;
   }
 
   /* ===== DETAILS ===== */
@@ -154,30 +154,43 @@ body {
 
   /* ===== ROTATION CONTROLS - ADJUSTED ===== */
   .rotation-badge {
-    bottom: 190px;          /* ← ADJUSTED (was 180px) */
+    bottom: 190px;
     font-size: 0.5rem;
     padding: 2px 10px;
   }
 
   .angle-dots {
-    bottom: 170px;          /* ← ADJUSTED (was 160px) */
+    bottom: 170px;
   }
 
   .rotation-toggle-btn {
-    bottom: 190px;          /* ← ADJUSTED (was 180px) */
+    bottom: 190px;
     right: 8px;
     width: 22px;
     height: 22px;
     font-size: 0.55rem;
   }
 
+  /* ===== FLOATING BUTTONS - BIGGER ON TABLET ===== */
+  .floating-buttons {
+    bottom: 18px;
+    right: 18px;
+    gap: 8px;
+  }
+
   .float-btn {
-    padding: 5px 12px;
-    font-size: 0.6rem;
+    padding: 10px 16px;
+    font-size: 0.8rem;
+    gap: 8px;
+    min-width: 60px;
   }
 
   .float-icon {
-    font-size: 0.85rem;
+    font-size: 1.2rem;
+  }
+
+  .float-label {
+    font-size: 0.75rem;
   }
 }
 
@@ -216,11 +229,8 @@ body {
   }
 
   /* ===== THUMBNAILS - MOVED UP (CENTER) ===== */
-  @media (max-width: 480px) {
-  /* ... other styles ... */
-
   .suspended-thumbnails {
-    bottom: 120px;          /* ← CHANGE THIS VALUE to move up/down on phone */
+    bottom: 120px;
     padding: 3px 6px;
     width: 85%;
     max-width: 260px;
@@ -235,7 +245,6 @@ body {
   .suspended-thumbnails .thumbnails-scroll {
     gap: 4px;
   }
-}
 
   .scroll-hint {
     font-size: 0.3rem;
@@ -266,34 +275,44 @@ body {
 
   /* ===== ROTATION CONTROLS - ADJUSTED ===== */
   .rotation-badge {
-    bottom: 175px;          /* ← ADJUSTED (was 165px) */
+    bottom: 175px;
     font-size: 0.45rem;
     padding: 2px 8px;
   }
 
   .angle-dots {
-    bottom: 158px;          /* ← ADJUSTED (was 148px) */
+    bottom: 158px;
   }
 
   .rotation-toggle-btn {
-    bottom: 175px;          /* ← ADJUSTED (was 165px) */
+    bottom: 175px;
     right: 6px;
     width: 20px;
     height: 20px;
     font-size: 0.45rem;
   }
 
+  /* ===== FLOATING BUTTONS - BIGGER ON PHONE ===== */
+  .floating-buttons {
+    bottom: 16px;
+    right: 16px;
+    gap: 8px;
+  }
+
   .float-btn {
-    padding: 4px 10px;
-    font-size: 0.5rem;
+    padding: 12px 16px;
+    font-size: 0.75rem;
+    gap: 8px;
+    min-width: 56px;
+    border-radius: 40px;
   }
 
   .float-icon {
-    font-size: 0.75rem;
+    font-size: 1.1rem;
   }
 
   .float-label {
-    display: none;
+    font-size: 0.7rem;
   }
 }
 
