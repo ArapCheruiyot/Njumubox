@@ -1,0 +1,91 @@
+/* ============================================
+   TOP RIGHT ACTION BUTTONS
+   ============================================ */
+.top-right-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 35;
+}
+
+.top-right-actions .add-to-cart-btn {
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #27ae60, #1e8449);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-width: 70px;
+  text-align: center;
+}
+
+.top-right-actions .add-to-cart-btn.added {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+
+.top-right-actions .try-on-btn {
+  padding: 6px 12px;
+  background: rgba(142, 68, 173, 0.3);
+  color: white;
+  border: 1px solid rgba(142, 68, 173, 0.3);
+  border-radius: 8px;
+  font-size: 0.6rem;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 70px;
+  text-align: center;
+}
+
+/* ============================================
+   FLOATING ACTION BUTTONS (WhatsApp & Call)
+   ============================================ */
+.floating-buttons {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 999;
+}
+
+.float-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 50px;
+  text-decoration: none;
+  color: white;
+  font-weight: 700;
+  font-size: 0.7rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  border: none;
+  justify-content: center;
+}
+
+.float-btn.whatsapp {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+}
+
+.float-btn.call {
+  background: linear-gradient(135deg, #FF6B35 0%, #E55A2B 100%);
+}
+
+.float-btn:hover {
+  transform: scale(1.05);
+}
+
+.float-icon {
+  font-size: 1rem;
+}
+
+.float-label {
+  font-size: 0.6rem;
+}

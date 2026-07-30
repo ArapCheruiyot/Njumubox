@@ -34,10 +34,7 @@ function Home() {
       
       <footer className="footer">
         <p>© 2026 NdulaBox. All rights reserved.</p>
-        <p className="footer-contact">
-          📞 <a href={callLink}>Call us</a> • 
-          💬 <a href={whatsappLink} target="_blank" rel="noopener noreferrer">WhatsApp</a>
-        </p>
+        {/* REMOVED the footer contact links - only floating buttons remain */}
       </footer>
 
       {/* ===== FLOATING ACTION BUTTONS ===== */}

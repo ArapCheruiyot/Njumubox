@@ -1,0 +1,70 @@
+/* ============================================
+   SUSPENDED THUMBNAILS
+   ============================================ */
+.suspended-thumbnails {
+  position: absolute;
+  bottom: 110px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 82%;
+  max-width: 400px;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 5px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.suspended-thumbnails .thumbnails-scroll {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 4px 2px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.suspended-thumbnails .thumbnails-scroll::-webkit-scrollbar {
+  height: 2px;
+}
+
+.suspended-thumbnails .thumbnails-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.suspended-thumbnails .thumbnail-group {
+  flex-shrink: 0;
+}
+
+.suspended-thumbnails .thumbnail {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 3px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  opacity: 0.5;
+}
+
+.suspended-thumbnails .thumbnail:hover {
+  opacity: 1;
+}
+
+.suspended-thumbnails .thumbnail.active {
+  opacity: 1;
+  border-color: #3498db;
+  box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
+}
+
+.scroll-hint {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.15);
+  font-size: 0.35rem;
+  letter-spacing: 2px;
+  padding: 1px 0 0;
+}
