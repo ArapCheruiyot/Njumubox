@@ -6,7 +6,7 @@
 @import './css/rotation.css';
 
 /* ============================================
-   RESET & BASE STYLES
+   RESET & BASE STYLES - FULL SCREEN
    ============================================ */
 * {
   margin: 0;
@@ -19,7 +19,6 @@ body {
   background: #0f0f1a;
   color: #1a1a1a;
   min-height: 100vh;
-  overflow-y: auto;
   overflow-x: hidden;
 }
 
@@ -27,45 +26,46 @@ body {
   max-width: 100%;
   margin: 0;
   padding: 0;
-  min-height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   background: #0f0f1a;
 }
 
 /* ============================================
-   HEADER - FIXED TOP
+   HEADER
    ============================================ */
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px;
-  background: rgba(15, 15, 26, 0.95);
+  padding: 8px 16px;
+  background: rgba(15, 15, 26, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 0;
   position: sticky;
   top: 0;
   z-index: 100;
   flex-shrink: 0;
-  min-height: 60px;
+  height: 64px;
 }
 
 .logo-container {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .logo-image {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   object-fit: contain;
 }
 
 .logo-text {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: 800;
   background: linear-gradient(135deg, #ffffff 0%, #3498db 100%);
   -webkit-background-clip: text;
@@ -76,25 +76,34 @@ body {
 .header-right {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+}
+
+.tagline {
+  display: none;
 }
 
 .admin-link {
-  padding: 5px 12px;
+  padding: 5px 14px;
   border: 1px solid #3498db;
   background: transparent;
   color: #3498db;
   border-radius: 20px;
   font-weight: 600;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   text-decoration: none;
+}
+
+.admin-link:hover {
+  background: #3498db;
+  color: white;
 }
 
 .cart-icon {
   display: flex;
   align-items: center;
-  gap: 4px;
-  font-size: 0.85rem;
+  gap: 5px;
+  font-size: 0.9rem;
   color: white;
   padding: 5px 12px;
   border-radius: 20px;
@@ -108,82 +117,77 @@ body {
   color: white;
   border-radius: 50%;
   padding: 0px 7px;
-  font-size: 0.6rem;
+  font-size: 0.65rem;
   font-weight: 700;
   min-width: 18px;
   text-align: center;
 }
 
 /* ============================================
-   SHOWCASE CONTAINER - SCROLLABLE
+   SHOWCASE CONTAINER
    ============================================ */
 .showcase-container {
   background: transparent;
+  border-radius: 0;
   padding: 0;
   flex: 1;
-  min-height: calc(100vh - 60px);
-  display: flex;
-  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+  overflow: hidden;
+  position: relative;
 }
 
 .showcase-main {
   width: 100%;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 80vh;
+  height: 100%;
 }
 
 /* ============================================
-   MAIN IMAGE CONTAINER - FIXED HEIGHT
+   MAIN IMAGE CONTAINER - FULL HEIGHT
    ============================================ */
 .main-image-container {
   width: 100%;
-  height: 60vh;
-  min-height: 350px;
-  max-height: 70vh;
+  height: 100%;
+  min-height: unset !important;
+  border-radius: 0 !important;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
 
 .main-shoe-image {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  padding: 10px;
+  padding: 0;
+  position: relative;
+  z-index: 1;
+  transition: opacity 0.3s ease-in-out;
 }
 
 /* ============================================
-   SUSPENDED CATEGORIES - FULL WIDTH SCROLLABLE
+   SUSPENDED CATEGORIES (TOP CENTER)
    ============================================ */
 .suspended-categories {
   position: absolute;
-  top: 8px;
+  top: 10px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 4px;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  justify-content: flex-start;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: center;
   z-index: 30;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(8px);
-  padding: 4px 10px;
-  border-radius: 16px;
+  padding: 5px 12px;
+  border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  max-width: 92%;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-
-.suspended-categories::-webkit-scrollbar {
-  display: none;
+  max-width: 85%;
 }
 
 .category-btn {
@@ -191,18 +195,23 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.05);
   color: rgba(255, 255, 255, 0.6);
-  border-radius: 14px;
+  border-radius: 16px;
   font-size: 0.6rem;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
-  flex-shrink: 0;
+}
+
+.category-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
 }
 
 .category-btn.active {
   background: #3498db;
   color: white;
   border-color: #3498db;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
 }
 
 /* ============================================
@@ -210,11 +219,11 @@ body {
    ============================================ */
 .top-right-actions {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 10px;
+  right: 10px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
   z-index: 35;
 }
 
@@ -224,7 +233,7 @@ body {
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 700;
   cursor: pointer;
   min-width: 70px;
@@ -237,11 +246,11 @@ body {
 
 .top-right-actions .try-on-btn {
   padding: 6px 12px;
-  background: rgba(142, 68, 173, 0.35);
+  background: rgba(142, 68, 173, 0.3);
   color: white;
   border: 1px solid rgba(142, 68, 173, 0.3);
   border-radius: 8px;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 600;
   cursor: pointer;
   min-width: 70px;
@@ -253,22 +262,23 @@ body {
    ============================================ */
 .rotation-badge {
   position: absolute;
-  bottom: 60px;
+  bottom: 180px;
   left: 50%;
   transform: translateX(-50%);
   background: rgba(0, 0, 0, 0.6);
   color: white;
-  padding: 2px 10px;
-  border-radius: 10px;
+  padding: 3px 10px;
+  border-radius: 12px;
   font-size: 0.5rem;
   font-weight: 600;
+  backdrop-filter: blur(8px);
   z-index: 15;
   white-space: nowrap;
 }
 
 .angle-dots {
   position: absolute;
-  bottom: 40px;
+  bottom: 160px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -291,7 +301,7 @@ body {
 
 .rotation-toggle-btn {
   position: absolute;
-  bottom: 60px;
+  bottom: 180px;
   right: 10px;
   background: rgba(0, 0, 0, 0.6);
   color: white;
@@ -308,168 +318,149 @@ body {
 }
 
 /* ============================================
-   THUMBNAILS - BELOW IMAGE
+   SUSPENDED THUMBNAILS
    ============================================ */
-.thumbnails-container {
-  padding: 10px 12px;
-  background: rgba(15, 15, 26, 0.95);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  flex-shrink: 0;
+.suspended-thumbnails {
+  position: absolute;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 94%;
+  max-width: 420px;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  border-radius: 10px;
+  padding: 4px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.thumbnails-scroll {
+.suspended-thumbnails .thumbnails-scroll {
   display: flex;
-  gap: 8px;
+  gap: 5px;
   overflow-x: auto;
-  padding: 4px 0;
+  padding: 3px 2px;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
 }
 
-.thumbnails-scroll::-webkit-scrollbar {
-  height: 3px;
+.suspended-thumbnails .thumbnails-scroll::-webkit-scrollbar {
+  height: 2px;
 }
 
-.thumbnails-scroll::-webkit-scrollbar-thumb {
+.suspended-thumbnails .thumbnails-scroll::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
 }
 
-.thumbnail-group {
+.suspended-thumbnails .thumbnail-group {
   flex-shrink: 0;
 }
 
-.thumbnail {
-  width: 55px;
-  height: 55px;
+.suspended-thumbnails .thumbnail {
+  width: 40px;
+  height: 40px;
   object-fit: contain;
   background: rgba(255, 255, 255, 0.06);
-  border-radius: 8px;
-  padding: 4px;
+  border-radius: 6px;
+  padding: 3px;
   cursor: pointer;
   border: 2px solid transparent;
-  transition: all 0.3s ease;
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
-.thumbnail:hover {
+.suspended-thumbnails .thumbnail:hover {
   opacity: 1;
 }
 
-.thumbnail.active {
+.suspended-thumbnails .thumbnail.active {
   opacity: 1;
   border-color: #3498db;
-  box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);
+  box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
+}
+
+.scroll-hint {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.15);
+  font-size: 0.4rem;
+  letter-spacing: 2px;
+  padding: 1px 0 0;
 }
 
 /* ============================================
-   SHOE DETAILS - BELOW THUMBNAILS
+   SHOE DETAILS OVERLAY (BOTTOM)
    ============================================ */
-.shoe-details-section {
-  padding: 12px 16px 20px;
-  background: rgba(15, 15, 26, 0.95);
-  flex: 1;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.shoe-details-section .shoe-name {
-  font-size: 1.4rem;
-  font-weight: 700;
+.shoe-details-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.3) 55%, transparent 100%);
+  padding: 14px 16px 16px;
+  z-index: 10;
   color: white;
-  margin-bottom: 2px;
 }
 
-.shoe-details-section .shoe-brand {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.85rem;
-  margin-bottom: 2px;
-}
-
-.shoe-details-section .shoe-price {
+.shoe-details-overlay .shoe-name {
   font-size: 1.3rem;
   font-weight: 700;
+  color: white;
+  margin-bottom: 1px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.shoe-details-overlay .shoe-brand {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  margin-bottom: 1px;
+}
+
+.shoe-details-overlay .shoe-price {
+  font-size: 1.2rem;
+  font-weight: 700;
   color: #2ecc71;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
-.shoe-details-section .shoe-price::before {
+.shoe-details-overlay .shoe-price::before {
   content: '💰 ';
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
-.shoe-details-section .size-buttons {
+.shoe-details-overlay .size-buttons {
   display: flex;
-  gap: 6px;
+  gap: 5px;
   flex-wrap: wrap;
-  margin-bottom: 10px;
+  margin: 2px 0 0;
 }
 
-.shoe-details-section .size-btn {
-  width: 32px;
-  height: 32px;
+.shoe-details-overlay .size-btn {
+  width: 30px;
+  height: 30px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.06);
-  border-radius: 6px;
+  border-radius: 5px;
   font-size: 0.7rem;
   font-weight: 700;
   cursor: pointer;
   color: rgba(255, 255, 255, 0.6);
-  transition: all 0.25s ease;
 }
 
-.shoe-details-section .size-btn:hover {
+.shoe-details-overlay .size-btn:hover {
   border-color: #3498db;
   color: white;
 }
 
-.shoe-details-section .size-btn.active {
+.shoe-details-overlay .size-btn.active {
   background: #3498db;
   color: white;
   border-color: #3498db;
 }
 
 /* ============================================
-   ACTION BUTTONS - BOTTOM
-   ============================================ */
-.action-buttons-bottom {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.action-buttons-bottom .add-to-cart-btn {
-  flex: 2;
-  padding: 12px;
-  background: linear-gradient(135deg, #27ae60, #1e8449);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  text-align: center;
-}
-
-.action-buttons-bottom .add-to-cart-btn.added {
-  background: linear-gradient(135deg, #2ecc71, #27ae60);
-}
-
-.action-buttons-bottom .try-on-btn {
-  flex: 1;
-  padding: 12px;
-  background: rgba(142, 68, 173, 0.25);
-  color: white;
-  border: 1px solid rgba(142, 68, 173, 0.3);
-  border-radius: 10px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  text-align: center;
-}
-
-/* ============================================
-   FOOTER
+   FOOTER - HIDDEN
    ============================================ */
 .footer {
   display: none;
@@ -499,7 +490,6 @@ body {
   font-weight: 700;
   font-size: 0.7rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
   cursor: pointer;
   border: none;
   justify-content: center;
@@ -524,15 +514,16 @@ body {
 /* ============================================
    RESPONSIVE - MOBILE
    ============================================ */
+
 @media (max-width: 768px) {
   .header {
-    min-height: 52px;
-    padding: 6px 12px;
+    height: 56px;
+    padding: 4px 12px;
   }
 
   .logo-image {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
   }
 
   .logo-text {
@@ -545,133 +536,83 @@ body {
   }
 
   .cart-icon {
-    font-size: 0.7rem;
-    padding: 4px 10px;
-  }
-
-  .main-image-container {
-    height: 45vh;
-    min-height: 280px;
-    max-height: 50vh;
-  }
-
-  .suspended-categories {
-    top: 6px;
-    padding: 3px 8px;
-    max-width: 90%;
-  }
-
-  .category-btn {
-    font-size: 0.5rem;
-    padding: 2px 8px;
-  }
-
-  .top-right-actions {
-    top: 6px;
-    right: 6px;
-    gap: 3px;
-  }
-
-  .top-right-actions .add-to-cart-btn {
-    padding: 4px 10px;
-    font-size: 0.55rem;
-    min-width: 55px;
-  }
-
-  .top-right-actions .try-on-btn {
-    padding: 4px 10px;
-    font-size: 0.5rem;
-    min-width: 55px;
-  }
-
-  .thumbnail {
-    width: 44px;
-    height: 44px;
-  }
-
-  .shoe-details-section {
-    padding: 10px 14px 16px;
-  }
-
-  .shoe-details-section .shoe-name {
-    font-size: 1.1rem;
-  }
-
-  .shoe-details-section .shoe-brand {
     font-size: 0.75rem;
+    padding: 4px 10px;
   }
 
-  .shoe-details-section .shoe-price {
+  .cart-count {
+    font-size: 0.55rem;
+    min-width: 16px;
+    padding: 0px 5px;
+  }
+
+  /* ===== MOBILE - THUMBNAILS SMALLER ===== */
+  .suspended-thumbnails {
+    bottom: 80px;
+    padding: 3px 6px;
+  }
+
+  .suspended-thumbnails .thumbnail {
+    width: 34px;
+    height: 34px;
+    padding: 2px;
+  }
+
+  /* ===== MOBILE - DETAILS MORE COMPACT ===== */
+  .shoe-details-overlay {
+    padding: 10px 14px 12px;
+  }
+
+  .shoe-details-overlay .shoe-name {
     font-size: 1rem;
   }
 
-  .shoe-details-section .size-btn {
-    width: 28px;
-    height: 28px;
+  .shoe-details-overlay .shoe-brand {
+    font-size: 0.7rem;
+  }
+
+  .shoe-details-overlay .shoe-price {
+    font-size: 0.95rem;
+  }
+
+  .shoe-details-overlay .size-btn {
+    width: 26px;
+    height: 26px;
     font-size: 0.6rem;
   }
 
-  .action-buttons-bottom .add-to-cart-btn {
-    padding: 10px;
-    font-size: 0.85rem;
-  }
-
-  .action-buttons-bottom .try-on-btn {
-    padding: 10px;
-    font-size: 0.8rem;
-  }
-
   .rotation-badge {
-    bottom: 50px;
+    bottom: 150px;
     font-size: 0.45rem;
     padding: 2px 8px;
   }
 
   .angle-dots {
-    bottom: 32px;
+    bottom: 130px;
   }
 
   .rotation-toggle-btn {
-    bottom: 50px;
+    bottom: 150px;
     right: 8px;
     width: 20px;
     height: 20px;
     font-size: 0.5rem;
   }
-
-  .floating-buttons {
-    bottom: 12px;
-    right: 12px;
-    gap: 4px;
-  }
-
-  .float-btn {
-    padding: 4px 10px;
-    font-size: 0.55rem;
-  }
-
-  .float-icon {
-    font-size: 0.8rem;
-  }
-
-  .float-label {
-    display: none;
-  }
 }
 
 @media (max-width: 480px) {
   .header {
-    min-height: 46px;
-    padding: 4px 10px;
+    height: 48px;
+    padding: 3px 10px;
   }
 
   .logo-image {
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
   }
 
   .logo-text {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
   .admin-link {
@@ -680,43 +621,80 @@ body {
   }
 
   .cart-icon {
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     padding: 3px 8px;
   }
 
-  .main-image-container {
-    height: 40vh;
-    min-height: 220px;
-    max-height: 45vh;
+  .cart-count {
+    font-size: 0.45rem;
+    min-width: 14px;
+    padding: 0px 4px;
   }
 
-  .thumbnail {
-    width: 38px;
-    height: 38px;
+  /* ===== SMALL PHONE - THUMBNAILS ===== */
+  .suspended-thumbnails {
+    bottom: 70px;
+    padding: 2px 4px;
   }
 
-  .shoe-details-section .shoe-name {
-    font-size: 0.95rem;
+  .suspended-thumbnails .thumbnail {
+    width: 28px;
+    height: 28px;
+    padding: 2px;
   }
 
-  .shoe-details-section .shoe-price {
-    font-size: 0.9rem;
+  /* ===== SMALL PHONE - DETAILS ===== */
+  .shoe-details-overlay {
+    padding: 8px 12px 10px;
   }
 
-  .shoe-details-section .size-btn {
-    width: 24px;
-    height: 24px;
+  .shoe-details-overlay .shoe-name {
+    font-size: 0.85rem;
+  }
+
+  .shoe-details-overlay .shoe-brand {
+    font-size: 0.6rem;
+  }
+
+  .shoe-details-overlay .shoe-price {
+    font-size: 0.8rem;
+  }
+
+  .shoe-details-overlay .size-btn {
+    width: 22px;
+    height: 22px;
     font-size: 0.5rem;
   }
 
-  .action-buttons-bottom .add-to-cart-btn {
-    padding: 8px;
+  .rotation-badge {
+    bottom: 130px;
+    font-size: 0.4rem;
+    padding: 2px 6px;
+  }
+
+  .angle-dots {
+    bottom: 115px;
+  }
+
+  .rotation-toggle-btn {
+    bottom: 130px;
+    right: 6px;
+    width: 18px;
+    height: 18px;
+    font-size: 0.4rem;
+  }
+
+  .float-btn {
+    padding: 4px 10px;
+    font-size: 0.5rem;
+  }
+
+  .float-icon {
     font-size: 0.75rem;
   }
 
-  .action-buttons-bottom .try-on-btn {
-    padding: 8px;
-    font-size: 0.7rem;
+  .float-label {
+    display: none;
   }
 }
 
