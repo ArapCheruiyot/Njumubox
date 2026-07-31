@@ -15,8 +15,9 @@ function ShoeShowcase() {
   const [startAngle, setStartAngle] = useState(0);
   const [isAutoRotating, setIsAutoRotating] = useState(false);
   
-  const thumbnailsContainerRef = useRef(null);
-  const thumbnailRefs = useRef({});
+  // Thumbnail navigation states
+  const [visibleThumbs, setVisibleThumbs] = useState([]);
+  
   const autoRotateTimerRef = useRef(null);
   const advanceTimerRef = useRef(null);
   const imageContainerRef = useRef(null);
@@ -51,6 +52,32 @@ function ShoeShowcase() {
   // Get unique categories
   const categories = ['All', ...new Set(shoes.map(shoe => shoe.category))];
 
+  // Update visible thumbnails when filtered shoes or current index changes
+  useEffect(() => {
+    if (filteredShoes.length === 0 || !selectedShoe) return;
+    
+    const visibleCount = 3;
+    const total = filteredShoes.length;
+    
+    // Find the index of the selected shoe
+    const selectedIndex = filteredShoes.findIndex(s => s.id === selectedShoe?.id);
+    if (selectedIndex === -1) return;
+    
+    // Calculate visible range (center on selected)
+    let start = Math.max(0, selectedIndex - 1);
+    let end = Math.min(total, start + visibleCount);
+    
+    // Adjust if at the end
+    if (end - start < visibleCount && start > 0) {
+      start = Math.max(0, total - visibleCount);
+      end = total;
+    }
+    
+    const visible = filteredShoes.slice(start, end);
+    setVisibleThumbs(visible);
+    
+  }, [filteredShoes, selectedShoe]);
+
   // Handle category change
   const handleCategoryChange = (category) => {
     setActiveCategory(category);
@@ -59,9 +86,7 @@ function ShoeShowcase() {
       setSelectedShoe(newShoes[0]);
       setCurrentImageIndex(0);
       currentIndexRef.current = 0;
-      if (thumbnailsContainerRef.current) {
-        thumbnailsContainerRef.current.scrollLeft = 0;
-      }
+      stopAutoRotate();
     }
   };
 
@@ -73,49 +98,26 @@ function ShoeShowcase() {
     stopAutoRotate();
   };
 
-  // Handle scroll detection for horizontal thumbnails
-  const handleScroll = () => {
-    const container = thumbnailsContainerRef.current;
-    if (!container) return;
+  // Navigation functions
+  const goToPrevShoe = () => {
+    const currentIndex = filteredShoes.findIndex(s => s.id === selectedShoe?.id);
+    if (currentIndex > 0) {
+      const prevShoe = filteredShoes[currentIndex - 1];
+      setSelectedShoe(prevShoe);
+      setCurrentImageIndex(0);
+      currentIndexRef.current = 0;
+      stopAutoRotate();
+    }
+  };
 
-    const containerWidth = container.clientWidth;
-    const scrollLeft = container.scrollLeft;
-    const centerX = scrollLeft + containerWidth / 2;
-
-    let closestShoe = null;
-    let closestDistance = Infinity;
-    let closestShoeId = null;
-
-    Object.keys(thumbnailRefs.current).forEach((key) => {
-      const ref = thumbnailRefs.current[key];
-      if (!ref) return;
-
-      const rect = ref.getBoundingClientRect();
-      const containerRect = container.getBoundingClientRect();
-      const elementCenterX = rect.left + rect.width / 2 - containerRect.left + container.scrollLeft;
-      
-      const distance = Math.abs(elementCenterX - centerX);
-      
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestShoeId = key;
-      }
-    });
-
-    if (closestShoeId) {
-      const shoe = filteredShoes.find(s => s.id === parseInt(closestShoeId));
-      if (shoe && shoe.id !== selectedShoe?.id) {
-        setSelectedShoe(shoe);
-        setCurrentImageIndex(0);
-        currentIndexRef.current = 0;
-        stopAutoRotate();
-        clearTimeout(advanceTimerRef.current);
-        advanceTimerRef.current = setTimeout(() => {
-          if (!isDragging && selectedShoe && selectedShoe.images.length > 1) {
-            startAutoRotate();
-          }
-        }, 3000);
-      }
+  const goToNextShoe = () => {
+    const currentIndex = filteredShoes.findIndex(s => s.id === selectedShoe?.id);
+    if (currentIndex < filteredShoes.length - 1) {
+      const nextShoe = filteredShoes[currentIndex + 1];
+      setSelectedShoe(nextShoe);
+      setCurrentImageIndex(0);
+      currentIndexRef.current = 0;
+      stopAutoRotate();
     }
   };
 
@@ -148,14 +150,6 @@ function ShoeShowcase() {
           setSelectedShoe(nextShoe);
           setCurrentImageIndex(0);
           currentIndexRef.current = 0;
-          const thumbElement = thumbnailRefs.current[nextShoe.id];
-          if (thumbElement) {
-            thumbElement.scrollIntoView({ 
-              behavior: 'smooth', 
-              block: 'nearest', 
-              inline: 'center' 
-            });
-          }
         }
       }, 800);
     }
@@ -307,6 +301,7 @@ function ShoeShowcase() {
   }
 
   const totalImages = selectedShoe.images ? selectedShoe.images.length : 0;
+  const currentIndex = filteredShoes.findIndex(s => s.id === selectedShoe.id);
 
   return (
     <div className="showcase-container">
@@ -424,24 +419,23 @@ function ShoeShowcase() {
           )}
 
           {/* ============================================
-              SUSPENDED THUMBNAILS (MIDDLE)
+              SUSPENDED THUMBNAILS - NEW ARROW-BASED NAVIGATION
               ============================================ */}
           <div className="suspended-thumbnails">
-            <div 
-              className="thumbnails-scroll"
-              ref={thumbnailsContainerRef}
-              onScroll={handleScroll}
+            {/* Previous Arrow */}
+            <button 
+              className="nav-arrow" 
+              onClick={goToPrevShoe}
+              disabled={currentIndex === 0}
+              aria-label="Previous shoe"
             >
-              {filteredShoes.map((shoe) => (
-                <div 
-                  key={shoe.id} 
-                  className="thumbnail-group"
-                  ref={(el) => {
-                    if (el) {
-                      thumbnailRefs.current[shoe.id] = el;
-                    }
-                  }}
-                >
+              ‹
+            </button>
+
+            {/* Thumbnail Container */}
+            <div className="thumbnail-container">
+              {visibleThumbs.map((shoe) => (
+                <div key={shoe.id} className="thumbnail-wrapper">
                   {shoe.images && shoe.images.length > 0 && (
                     <img
                       src={shoe.images[0]}
@@ -455,9 +449,35 @@ function ShoeShowcase() {
                 </div>
               ))}
             </div>
-            {filteredShoes.length > 5 && (
-              <div className="scroll-hint">← Scroll →</div>
-            )}
+
+            {/* Next Arrow */}
+            <button 
+              className="nav-arrow" 
+              onClick={goToNextShoe}
+              disabled={currentIndex === filteredShoes.length - 1}
+              aria-label="Next shoe"
+            >
+              ›
+            </button>
+
+            {/* Position Indicator Dots */}
+            <div className="position-indicator">
+              {filteredShoes.map((_, index) => (
+                <span 
+                  key={index}
+                  className={`dot ${currentIndex === index ? 'active' : ''}`}
+                  onClick={() => {
+                    const shoe = filteredShoes[index];
+                    if (shoe) {
+                      setSelectedShoe(shoe);
+                      setCurrentImageIndex(0);
+                      currentIndexRef.current = 0;
+                      stopAutoRotate();
+                    }
+                  }}
+                />
+              ))}
+            </div>
           </div>
 
           {/* ============================================
