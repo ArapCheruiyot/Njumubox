@@ -9,29 +9,29 @@
   z-index: 20;
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  padding: 4px 8px;
-  border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
-  max-width: 200px;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 6px 12px;
+  border-radius: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  max-width: 280px;
   width: auto;
   transition: all 0.3s ease;
 }
 
 /* Arrows - Larger and more prominent */
 .rack-arrow {
-  width: 36px;
-  height: 36px;
-  min-width: 36px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
   color: #fff;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 300;
   line-height: 1;
   cursor: pointer;
@@ -68,21 +68,21 @@
   justify-content: center;
   padding: 2px 0;
   flex: 1;
-  min-width: 50px;
+  min-width: 80px;
 }
 
 .rack-thumb-wrapper {
-  flex: 0 0 50px;
+  flex: 0 0 80px;
   transition: all 0.3s ease;
 }
 
 .rack-thumb {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  border: 2.5px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
   background: rgba(255, 255, 255, 0.05);
   display: block;
@@ -91,38 +91,38 @@
 
 .rack-thumb.active {
   border-color: #3498db;
-  box-shadow: 0 0 20px rgba(52, 152, 219, 0.2);
+  box-shadow: 0 0 30px rgba(52, 152, 219, 0.3);
   transform: scale(1.05);
 }
 
 /* Dots indicator - Minimal */
 .rack-dots {
   display: flex;
-  gap: 4px;
-  padding: 0 2px;
-  min-width: 12px;
+  gap: 5px;
+  padding: 0 4px;
+  min-width: 16px;
   justify-content: center;
   align-items: center;
 }
 
 .rack-dot {
-  width: 4px;
-  height: 4px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
   cursor: pointer;
   touch-action: manipulation;
 }
 
 .rack-dot:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.4);
 }
 
 .rack-dot.active {
   background: #3498db;
-  width: 8px;
-  border-radius: 2px;
+  width: 10px;
+  border-radius: 3px;
 }
 
 /* ============================================
@@ -130,27 +130,91 @@
    ============================================ */
 @media (max-width: 768px) {
   .thumbnail-rack {
-    bottom: 150px;
-    padding: 4px 6px;
+    bottom: 160px;
+    padding: 5px 10px;
+    gap: 6px;
+    max-width: 230px;
+    border-radius: 35px;
+  }
+
+  .rack-arrow {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    font-size: 20px;
+  }
+
+  .rack-thumb {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+  }
+
+  .rack-thumb-wrapper {
+    flex: 0 0 70px;
+  }
+
+  .rack-thumbnails {
+    min-width: 70px;
+  }
+
+  .rack-dots {
     gap: 4px;
-    max-width: 160px;
-    border-radius: 25px;
+    min-width: 14px;
+  }
+
+  .rack-dot {
+    width: 4px;
+    height: 4px;
+  }
+
+  .rack-dot.active {
+    width: 8px;
+  }
+}
+
+/* ============================================
+   RESPONSIVE - SMALL PHONE (MOST IMPORTANT)
+   ============================================ */
+@media (max-width: 480px) {
+  .thumbnail-rack {
+    bottom: 140px;
+    padding: 4px 8px;
+    gap: 5px;
+    max-width: 190px;
+    border-radius: 30px;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
   }
 
   .rack-arrow {
     width: 32px;
     height: 32px;
     min-width: 32px;
-    font-size: 18px;
+    font-size: 16px;
+    border-width: 1.5px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .rack-arrow:active:not(:disabled) {
+    transform: scale(0.85);
   }
 
   .rack-thumb {
-    width: 44px;
-    height: 44px;
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    border-width: 2px;
   }
 
   .rack-thumb-wrapper {
-    flex: 0 0 44px;
+    flex: 0 0 60px;
+  }
+
+  .rack-thumbnails {
+    min-width: 60px;
+    padding: 1px 0;
   }
 
   .rack-dots {
@@ -169,18 +233,15 @@
 }
 
 /* ============================================
-   RESPONSIVE - SMALL PHONE (MOST IMPORTANT)
+   RESPONSIVE - VERY SMALL PHONES (iPhone SE, etc)
    ============================================ */
-@media (max-width: 480px) {
+@media (max-width: 380px) {
   .thumbnail-rack {
-    bottom: 130px;
-    padding: 3px 5px;
-    gap: 3px;
-    max-width: 130px;
-    border-radius: 20px;
-    background: rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    bottom: 125px;
+    padding: 3px 6px;
+    gap: 4px;
+    max-width: 160px;
+    border-radius: 25px;
   }
 
   .rack-arrow {
@@ -188,76 +249,20 @@
     height: 28px;
     min-width: 28px;
     font-size: 14px;
-    border-width: 1px;
-    background: rgba(255, 255, 255, 0.08);
-  }
-
-  .rack-arrow:active:not(:disabled) {
-    transform: scale(0.85);
   }
 
   .rack-thumb {
-    width: 36px;
-    height: 36px;
+    width: 50px;
+    height: 50px;
     border-radius: 6px;
-    border-width: 1.5px;
   }
 
   .rack-thumb-wrapper {
-    flex: 0 0 36px;
+    flex: 0 0 50px;
   }
 
   .rack-thumbnails {
-    min-width: 36px;
-    padding: 1px 0;
-  }
-
-  .rack-dots {
-    gap: 2px;
-    min-width: 8px;
-  }
-
-  .rack-dot {
-    width: 3px;
-    height: 3px;
-  }
-
-  .rack-dot.active {
-    width: 5px;
-  }
-}
-
-/* ============================================
-   RESPONSIVE - VERY SMALL PHONES (iPhone SE, etc)
-   ============================================ */
-@media (max-width: 380px) {
-  .thumbnail-rack {
-    bottom: 115px;
-    padding: 2px 4px;
-    gap: 2px;
-    max-width: 110px;
-    border-radius: 16px;
-  }
-
-  .rack-arrow {
-    width: 24px;
-    height: 24px;
-    min-width: 24px;
-    font-size: 12px;
-  }
-
-  .rack-thumb {
-    width: 30px;
-    height: 30px;
-    border-radius: 4px;
-  }
-
-  .rack-thumb-wrapper {
-    flex: 0 0 30px;
-  }
-
-  .rack-thumbnails {
-    min-width: 30px;
+    min-width: 50px;
   }
 
   .rack-dots {
@@ -270,27 +275,31 @@
    ============================================ */
 @media (max-height: 500px) and (orientation: landscape) {
   .thumbnail-rack {
-    bottom: 70px;
-    padding: 3px 6px;
-    max-width: 140px;
-    gap: 4px;
-    border-radius: 20px;
+    bottom: 80px;
+    padding: 4px 8px;
+    max-width: 180px;
+    gap: 5px;
+    border-radius: 28px;
   }
 
   .rack-arrow {
-    width: 26px;
-    height: 26px;
-    min-width: 26px;
-    font-size: 14px;
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    font-size: 16px;
   }
 
   .rack-thumb {
-    width: 34px;
-    height: 34px;
+    width: 55px;
+    height: 55px;
   }
 
   .rack-thumb-wrapper {
-    flex: 0 0 34px;
+    flex: 0 0 55px;
+  }
+
+  .rack-thumbnails {
+    min-width: 55px;
   }
 
   .rack-dots {
@@ -325,9 +334,9 @@
    ONLY 1 SHOE - Hide arrows and show single thumbnail
    ============================================ */
 .thumbnail-rack:has(.rack-arrow:disabled.rack-arrow-prev):has(.rack-arrow:disabled.rack-arrow-next) {
-  max-width: 80px;
-  padding: 4px 8px;
-  background: rgba(0, 0, 0, 0.1);
+  max-width: 120px;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.15);
 }
 
 .thumbnail-rack:has(.rack-arrow:disabled.rack-arrow-prev):has(.rack-arrow:disabled.rack-arrow-next) .rack-arrow {
@@ -336,9 +345,18 @@
 
 @media (max-width: 480px) {
   .thumbnail-rack:has(.rack-arrow:disabled.rack-arrow-prev):has(.rack-arrow:disabled.rack-arrow-next) {
-    max-width: 56px;
+    max-width: 90px;
+    padding: 4px 8px;
+    border-radius: 24px;
+    bottom: 145px;
+  }
+}
+
+@media (max-width: 380px) {
+  .thumbnail-rack:has(.rack-arrow:disabled.rack-arrow-prev):has(.rack-arrow:disabled.rack-arrow-next) {
+    max-width: 76px;
     padding: 3px 6px;
-    border-radius: 16px;
-    bottom: 135px;
+    border-radius: 20px;
+    bottom: 130px;
   }
 }
