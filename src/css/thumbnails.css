@@ -19,6 +19,7 @@
   align-items: center;
   gap: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
 }
 
 /* Navigation Arrows */
@@ -40,6 +41,7 @@
   backdrop-filter: blur(4px);
   padding: 0;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .suspended-thumbnails .nav-arrow:hover:not(:disabled) {
@@ -48,13 +50,17 @@
   transform: scale(1.1);
 }
 
+.suspended-thumbnails .nav-arrow:active:not(:disabled) {
+  transform: scale(0.9);
+}
+
 .suspended-thumbnails .nav-arrow:disabled {
   opacity: 0.2;
   cursor: not-allowed;
   transform: none;
 }
 
-/* Thumbnail Container - Shows 2-3 at a time */
+/* Thumbnail Container */
 .suspended-thumbnails .thumbnail-container {
   display: flex;
   gap: 6px;
@@ -62,6 +68,7 @@
   padding: 2px 0;
   flex: 1;
   justify-content: center;
+  align-items: center;
 }
 
 .suspended-thumbnails .thumbnail-wrapper {
@@ -80,11 +87,16 @@
   transition: all 0.3s ease;
   background: rgba(255, 255, 255, 0.05);
   display: block;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .suspended-thumbnails .thumbnail:hover {
   opacity: 0.8;
   transform: scale(1.05);
+}
+
+.suspended-thumbnails .thumbnail:active {
+  transform: scale(0.95);
 }
 
 .suspended-thumbnails .thumbnail.active {
@@ -101,6 +113,7 @@
   padding: 0 4px;
   min-width: 20px;
   justify-content: center;
+  align-items: center;
 }
 
 .suspended-thumbnails .dot {
@@ -109,6 +122,8 @@
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .suspended-thumbnails .dot.active {
@@ -117,28 +132,167 @@
   border-radius: 2px;
 }
 
-/* Responsive adjustments */
+/* ============================================
+   RESPONSIVE - TABLET
+   ============================================ */
 @media (max-width: 768px) {
   .suspended-thumbnails {
     bottom: 140px;
-    padding: 4px 8px;
-    gap: 4px;
-    max-width: 300px;
-  }
-  
-  .suspended-thumbnails .thumbnail {
-    width: 40px;
-    height: 40px;
-  }
-  
-  .suspended-thumbnails .thumbnail-wrapper {
-    flex: 0 0 40px;
+    padding: 5px 10px;
+    gap: 6px;
+    max-width: 320px;
+    border-radius: 40px;
   }
   
   .suspended-thumbnails .nav-arrow {
-    width: 26px;
-    height: 26px;
-    min-width: 26px;
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    font-size: 16px;
+  }
+  
+  .suspended-thumbnails .thumbnail-wrapper {
+    flex: 0 0 42px;
+  }
+  
+  .suspended-thumbnails .thumbnail {
+    width: 42px;
+    height: 42px;
+    border-radius: 6px;
+  }
+  
+  .suspended-thumbnails .thumbnail-container {
+    gap: 5px;
+  }
+  
+  .suspended-thumbnails .position-indicator {
+    min-width: 16px;
+    gap: 3px;
+  }
+  
+  .suspended-thumbnails .dot {
+    width: 3px;
+    height: 3px;
+  }
+  
+  .suspended-thumbnails .dot.active {
+    width: 6px;
+  }
+}
+
+/* ============================================
+   RESPONSIVE - SMALL PHONE
+   ============================================ */
+@media (max-width: 480px) {
+  .suspended-thumbnails {
+    bottom: 120px;
+    padding: 4px 8px;
+    gap: 4px;
+    max-width: 260px;
+    border-radius: 30px;
+    background: rgba(0, 0, 0, 0.35);
+  }
+  
+  .suspended-thumbnails .nav-arrow {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
     font-size: 14px;
+    border-width: 1px;
+  }
+  
+  .suspended-thumbnails .thumbnail-wrapper {
+    flex: 0 0 34px;
+  }
+  
+  .suspended-thumbnails .thumbnail {
+    width: 34px;
+    height: 34px;
+    border-radius: 5px;
+    border-width: 1.5px;
+  }
+  
+  .suspended-thumbnails .thumbnail-container {
+    gap: 4px;
+  }
+  
+  .suspended-thumbnails .position-indicator {
+    min-width: 12px;
+    gap: 3px;
+  }
+  
+  .suspended-thumbnails .dot {
+    width: 3px;
+    height: 3px;
+  }
+  
+  .suspended-thumbnails .dot.active {
+    width: 5px;
+  }
+}
+
+/* ============================================
+   RESPONSIVE - VERY SMALL PHONES (<= 360px)
+   ============================================ */
+@media (max-width: 360px) {
+  .suspended-thumbnails {
+    bottom: 110px;
+    padding: 3px 6px;
+    gap: 3px;
+    max-width: 200px;
+    border-radius: 25px;
+  }
+  
+  .suspended-thumbnails .nav-arrow {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    font-size: 12px;
+  }
+  
+  .suspended-thumbnails .thumbnail-wrapper {
+    flex: 0 0 28px;
+  }
+  
+  .suspended-thumbnails .thumbnail {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    border-width: 1.5px;
+  }
+  
+  .suspended-thumbnails .thumbnail-container {
+    gap: 3px;
+  }
+  
+  .suspended-thumbnails .position-indicator {
+    display: none; /* Hide dots on very small screens to save space */
+  }
+}
+
+/* ============================================
+   RESPONSIVE - LANDSCAPE PHONE
+   ============================================ */
+@media (max-height: 600px) and (orientation: landscape) {
+  .suspended-thumbnails {
+    bottom: 80px;
+    padding: 3px 8px;
+    max-width: 280px;
+  }
+  
+  .suspended-thumbnails .thumbnail {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .suspended-thumbnails .thumbnail-wrapper {
+    flex: 0 0 30px;
+  }
+  
+  .suspended-thumbnails .nav-arrow {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    font-size: 12px;
   }
 }
