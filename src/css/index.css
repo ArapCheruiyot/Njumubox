@@ -5,7 +5,7 @@
 /* ===== IMPORT ALL MODULES ===== */
 @import './header.css';
 @import './details.css';
-@import './thumbnails.css';
+/* @import './thumbnails.css'; */ /* ← REMOVED - Now using ThumbnailRack.css */
 @import './categories.css';
 @import './buttons.css';
 @import './rotation.css';

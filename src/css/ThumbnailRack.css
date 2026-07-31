@@ -1,44 +1,44 @@
 /* ============================================
-   THUMBNAIL RACK - Standalone Component
+   THUMBNAIL RACK - Minimalistic Navigation
    ============================================ */
 .thumbnail-rack {
   position: absolute;
-  bottom: 170px;
+  bottom: 180px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 20;
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 6px 12px;
-  border-radius: 50px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  max-width: 400px;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 4px 8px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  max-width: 200px;
   width: auto;
   transition: all 0.3s ease;
 }
 
-/* Arrows */
+/* Arrows - Larger and more prominent */
 .rack-arrow {
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   color: #fff;
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: 300;
   line-height: 1;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  backdrop-filter: blur(4px);
   padding: 0;
   user-select: none;
   touch-action: manipulation;
@@ -52,22 +52,23 @@
 
 .rack-arrow:active:not(:disabled) {
   transform: scale(0.9);
+  background: rgba(52, 152, 219, 0.3);
 }
 
 .rack-arrow:disabled {
-  opacity: 0.2;
+  opacity: 0.15;
   cursor: not-allowed;
   transform: none;
 }
 
-/* Thumbnail container */
+/* Thumbnail container - Shows current shoe only */
 .rack-thumbnails {
   display: flex;
-  gap: 6px;
   align-items: center;
   justify-content: center;
   padding: 2px 0;
   flex: 1;
+  min-width: 50px;
 }
 
 .rack-thumb-wrapper {
@@ -81,36 +82,25 @@
   object-fit: cover;
   border-radius: 8px;
   cursor: pointer;
-  border: 2px solid transparent;
-  opacity: 0.5;
+  border: 2px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
   background: rgba(255, 255, 255, 0.05);
   display: block;
   touch-action: manipulation;
 }
 
-.rack-thumb:hover {
-  opacity: 0.8;
+.rack-thumb.active {
+  border-color: #3498db;
+  box-shadow: 0 0 20px rgba(52, 152, 219, 0.2);
   transform: scale(1.05);
 }
 
-.rack-thumb:active {
-  transform: scale(0.95);
-}
-
-.rack-thumb.active {
-  opacity: 1;
-  border-color: #3498db;
-  box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);
-  transform: scale(1.1);
-}
-
-/* Dots indicator */
+/* Dots indicator - Minimal */
 .rack-dots {
   display: flex;
   gap: 4px;
-  padding: 0 4px;
-  min-width: 20px;
+  padding: 0 2px;
+  min-width: 12px;
   justify-content: center;
   align-items: center;
 }
@@ -119,14 +109,14 @@
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
   transition: all 0.3s ease;
   cursor: pointer;
   touch-action: manipulation;
 }
 
 .rack-dot:hover {
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .rack-dot.active {
@@ -140,39 +130,37 @@
    ============================================ */
 @media (max-width: 768px) {
   .thumbnail-rack {
-    bottom: 140px;
-    padding: 4px 8px;
-    gap: 6px;
-    max-width: 320px;
-    border-radius: 40px;
-    width: 80%;
-  }
-
-  .rack-thumb {
-    width: 40px;
-    height: 40px;
-    border-radius: 6px;
-  }
-
-  .rack-thumb-wrapper {
-    flex: 0 0 40px;
+    bottom: 150px;
+    padding: 4px 6px;
+    gap: 4px;
+    max-width: 160px;
+    border-radius: 25px;
   }
 
   .rack-arrow {
-    width: 28px;
-    height: 28px;
-    min-width: 28px;
-    font-size: 16px;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    font-size: 18px;
+  }
+
+  .rack-thumb {
+    width: 44px;
+    height: 44px;
+  }
+
+  .rack-thumb-wrapper {
+    flex: 0 0 44px;
   }
 
   .rack-dots {
     gap: 3px;
-    min-width: 16px;
+    min-width: 10px;
   }
 
   .rack-dot {
-    width: 4px;
-    height: 4px;
+    width: 3px;
+    height: 3px;
   }
 
   .rack-dot.active {
@@ -181,45 +169,52 @@
 }
 
 /* ============================================
-   RESPONSIVE - SMALL PHONE
+   RESPONSIVE - SMALL PHONE (MOST IMPORTANT)
    ============================================ */
 @media (max-width: 480px) {
   .thumbnail-rack {
-    bottom: 120px;
-    padding: 4px 6px;
-    gap: 4px;
-    max-width: 280px;
-    width: 85%;
-    border-radius: 30px;
+    bottom: 130px;
+    padding: 3px 5px;
+    gap: 3px;
+    max-width: 130px;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  .rack-arrow {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    font-size: 14px;
+    border-width: 1px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .rack-arrow:active:not(:disabled) {
+    transform: scale(0.85);
   }
 
   .rack-thumb {
-    width: 32px;
-    height: 32px;
-    border-radius: 4px;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
     border-width: 1.5px;
   }
 
   .rack-thumb-wrapper {
-    flex: 0 0 32px;
-  }
-
-  .rack-arrow {
-    width: 24px;
-    height: 24px;
-    min-width: 24px;
-    font-size: 12px;
-    border-width: 1px;
+    flex: 0 0 36px;
   }
 
   .rack-thumbnails {
-    gap: 4px;
+    min-width: 36px;
     padding: 1px 0;
   }
 
   .rack-dots {
-    gap: 3px;
-    min-width: 12px;
+    gap: 2px;
+    min-width: 8px;
   }
 
   .rack-dot {
@@ -233,36 +228,36 @@
 }
 
 /* ============================================
-   RESPONSIVE - VERY SMALL PHONES
+   RESPONSIVE - VERY SMALL PHONES (iPhone SE, etc)
    ============================================ */
-@media (max-width: 360px) {
+@media (max-width: 380px) {
   .thumbnail-rack {
-    bottom: 110px;
-    padding: 3px 5px;
-    gap: 3px;
-    max-width: 220px;
-    width: 90%;
-    border-radius: 25px;
-  }
-
-  .rack-thumb {
-    width: 28px;
-    height: 28px;
-  }
-
-  .rack-thumb-wrapper {
-    flex: 0 0 28px;
+    bottom: 115px;
+    padding: 2px 4px;
+    gap: 2px;
+    max-width: 110px;
+    border-radius: 16px;
   }
 
   .rack-arrow {
-    width: 20px;
-    height: 20px;
-    min-width: 20px;
-    font-size: 10px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    font-size: 12px;
+  }
+
+  .rack-thumb {
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+  }
+
+  .rack-thumb-wrapper {
+    flex: 0 0 30px;
   }
 
   .rack-thumbnails {
-    gap: 3px;
+    min-width: 30px;
   }
 
   .rack-dots {
@@ -271,34 +266,35 @@
 }
 
 /* ============================================
-   RESPONSIVE - LANDSCAPE MODE
+   RESPONSIVE - LANDSCAPE MODE ON PHONES
    ============================================ */
 @media (max-height: 500px) and (orientation: landscape) {
   .thumbnail-rack {
-    bottom: 80px;
+    bottom: 70px;
     padding: 3px 6px;
-    max-width: 250px;
+    max-width: 140px;
     gap: 4px;
-  }
-
-  .rack-thumb {
-    width: 30px;
-    height: 30px;
-  }
-
-  .rack-thumb-wrapper {
-    flex: 0 0 30px;
+    border-radius: 20px;
   }
 
   .rack-arrow {
-    width: 22px;
-    height: 22px;
-    min-width: 22px;
-    font-size: 12px;
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    font-size: 14px;
+  }
+
+  .rack-thumb {
+    width: 34px;
+    height: 34px;
+  }
+
+  .rack-thumb-wrapper {
+    flex: 0 0 34px;
   }
 
   .rack-dots {
-    display: none;
+    display: none; /* Hide dots in landscape to save space */
   }
 }
 
@@ -306,16 +302,6 @@
    TOUCH DEVICE OPTIMIZATIONS
    ============================================ */
 @media (hover: none) {
-  .rack-thumb:hover {
-    transform: none;
-    opacity: 0.5;
-  }
-
-  .rack-thumb.active:hover {
-    opacity: 1;
-    transform: scale(1.1);
-  }
-
   .rack-arrow:hover:not(:disabled) {
     transform: none;
     background: rgba(255, 255, 255, 0.08);
@@ -324,5 +310,35 @@
   .rack-arrow:active:not(:disabled) {
     transform: scale(0.9);
     background: rgba(52, 152, 219, 0.3);
+  }
+
+  .rack-thumb:hover {
+    transform: none;
+  }
+
+  .rack-thumb.active:hover {
+    transform: scale(1.05);
+  }
+}
+
+/* ============================================
+   ONLY 1 SHOE - Hide arrows and show single thumbnail
+   ============================================ */
+.thumbnail-rack:has(.rack-arrow:disabled.rack-arrow-prev):has(.rack-arrow:disabled.rack-arrow-next) {
+  max-width: 80px;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.thumbnail-rack:has(.rack-arrow:disabled.rack-arrow-prev):has(.rack-arrow:disabled.rack-arrow-next) .rack-arrow {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .thumbnail-rack:has(.rack-arrow:disabled.rack-arrow-prev):has(.rack-arrow:disabled.rack-arrow-next) {
+    max-width: 56px;
+    padding: 3px 6px;
+    border-radius: 16px;
+    bottom: 135px;
   }
 }
