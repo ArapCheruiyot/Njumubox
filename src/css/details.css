@@ -1,73 +1,126 @@
 /* ============================================
-   SHOE DETAILS - Name, Brand, Price, Sizes
+   SHOE DETAILS - Enhanced with better visibility
    ============================================ */
 .shoe-details-overlay {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.3) 55%, transparent 100%);
-  padding: 18px 20px 20px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 55%, rgba(0, 0, 0, 0.2) 100%);
+  padding: 20px 22px 22px;
   z-index: 10;
   color: white;
+  backdrop-filter: blur(2px); /* Extra insurance against low contrast */
 }
 
+/* --- Each detail gets its own distinctive background pill --- */
+.shoe-details-overlay .detail-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 4px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Name - High contrast white on dark blue background */
 .shoe-details-overlay .shoe-name {
-  font-size: 1.8rem;
+  display: inline-block;
+  font-size: 1.9rem;
   font-weight: 800;
-  color: white;
-  margin-bottom: 2px;
-  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.6);
-  letter-spacing: -0.5px;
+  color: #ffffff;
+  background: rgba(25, 50, 75, 0.85);
+  padding: 4px 16px;
+  border-radius: 12px;
+  margin-bottom: 4px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  border-left: 4px solid #3498db;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
 }
 
+/* Brand - Distinctive gold/amber background */
 .shoe-details-overlay .shoe-brand {
-  color: rgba(255, 255, 255, 0.6);
+  display: inline-block;
+  color: #fff8e1;
+  background: rgba(180, 120, 30, 0.75);
+  padding: 3px 14px;
+  border-radius: 20px;
   font-size: 1rem;
-  margin-bottom: 2px;
-  font-weight: 400;
-  letter-spacing: 0.5px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
+/* Price - Vibrant green with unique icon background */
 .shoe-details-overlay .shoe-price {
-  font-size: 1.8rem;
+  display: inline-block;
+  font-size: 2rem;
   font-weight: 800;
-  color: #2ecc71;
+  color: #00e676;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 2px 18px 2px 14px;
+  border-radius: 30px;
   margin-bottom: 6px;
-  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 0 20px rgba(0, 230, 118, 0.3);
+  border: 1px solid rgba(0, 230, 118, 0.3);
+  box-shadow: 0 0 30px rgba(0, 230, 118, 0.1);
 }
 
 .shoe-details-overlay .shoe-price::before {
   content: '💰 ';
   font-size: 1rem;
+  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.5));
 }
 
+/* Size buttons - Improved visibility */
 .shoe-details-overlay .size-buttons {
   display: flex;
-  gap: 5px;
+  gap: 6px;
   flex-wrap: wrap;
-  margin: 2px 0 0;
+  margin: 4px 0 0;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 6px 10px;
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
 }
 
 .shoe-details-overlay .size-btn {
-  width: 30px;
-  height: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 5px;
-  font-size: 0.7rem;
+  width: 34px;
+  height: 34px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 8px;
+  font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.2s ease;
+  backdrop-filter: blur(2px);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
 .shoe-details-overlay .size-btn:hover {
-  border-color: #3498db;
+  border-color: #4fc3f7;
   color: white;
+  background: rgba(52, 152, 219, 0.3);
+  transform: scale(1.05);
 }
 
 .shoe-details-overlay .size-btn.active {
-  background: #3498db;
+  background: linear-gradient(135deg, #2196F3, #1976D2);
   color: white;
-  border-color: #3498db;
+  border-color: #64B5F6;
+  box-shadow: 0 0 20px rgba(33, 150, 243, 0.4);
+}
+
+/* Optional: Add a subtle glow around all text when contrast is low */
+.shoe-details-overlay .text-glow {
+  text-shadow: 
+    0 0 10px rgba(0,0,0,0.9),
+    0 0 20px rgba(0,0,0,0.7),
+    0 0 30px rgba(0,0,0,0.5);
 }
