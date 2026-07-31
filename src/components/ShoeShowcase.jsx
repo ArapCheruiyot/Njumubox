@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { shoes as defaultShoes } from '../data/shoes';
+import ThumbnailRack from './ThumbnailRack';
 
 function ShoeShowcase() {
   const [activeCategory, setActiveCategory] = useState('All');
@@ -14,9 +15,6 @@ function ShoeShowcase() {
   const [startX, setStartX] = useState(0);
   const [startAngle, setStartAngle] = useState(0);
   const [isAutoRotating, setIsAutoRotating] = useState(false);
-  
-  // Thumbnail navigation states
-  const [visibleThumbs, setVisibleThumbs] = useState([]);
   
   const autoRotateTimerRef = useRef(null);
   const advanceTimerRef = useRef(null);
@@ -52,32 +50,6 @@ function ShoeShowcase() {
   // Get unique categories
   const categories = ['All', ...new Set(shoes.map(shoe => shoe.category))];
 
-  // Update visible thumbnails when filtered shoes or current index changes
-  useEffect(() => {
-    if (filteredShoes.length === 0 || !selectedShoe) return;
-    
-    const visibleCount = 3;
-    const total = filteredShoes.length;
-    
-    // Find the index of the selected shoe
-    const selectedIndex = filteredShoes.findIndex(s => s.id === selectedShoe?.id);
-    if (selectedIndex === -1) return;
-    
-    // Calculate visible range (center on selected)
-    let start = Math.max(0, selectedIndex - 1);
-    let end = Math.min(total, start + visibleCount);
-    
-    // Adjust if at the end
-    if (end - start < visibleCount && start > 0) {
-      start = Math.max(0, total - visibleCount);
-      end = total;
-    }
-    
-    const visible = filteredShoes.slice(start, end);
-    setVisibleThumbs(visible);
-    
-  }, [filteredShoes, selectedShoe]);
-
   // Handle category change
   const handleCategoryChange = (category) => {
     setActiveCategory(category);
@@ -90,35 +62,12 @@ function ShoeShowcase() {
     }
   };
 
-  // Handle thumbnail click - selects the shoe
-  const handleThumbnailClick = (shoe) => {
+  // Handle thumbnail selection - used by ThumbnailRack
+  const handleThumbnailSelect = (shoe) => {
     setSelectedShoe(shoe);
     setCurrentImageIndex(0);
     currentIndexRef.current = 0;
     stopAutoRotate();
-  };
-
-  // Navigation functions
-  const goToPrevShoe = () => {
-    const currentIndex = filteredShoes.findIndex(s => s.id === selectedShoe?.id);
-    if (currentIndex > 0) {
-      const prevShoe = filteredShoes[currentIndex - 1];
-      setSelectedShoe(prevShoe);
-      setCurrentImageIndex(0);
-      currentIndexRef.current = 0;
-      stopAutoRotate();
-    }
-  };
-
-  const goToNextShoe = () => {
-    const currentIndex = filteredShoes.findIndex(s => s.id === selectedShoe?.id);
-    if (currentIndex < filteredShoes.length - 1) {
-      const nextShoe = filteredShoes[currentIndex + 1];
-      setSelectedShoe(nextShoe);
-      setCurrentImageIndex(0);
-      currentIndexRef.current = 0;
-      stopAutoRotate();
-    }
   };
 
   // Auto-select first shoe when filtered shoes change
@@ -301,7 +250,6 @@ function ShoeShowcase() {
   }
 
   const totalImages = selectedShoe.images ? selectedShoe.images.length : 0;
-  const currentIndex = filteredShoes.findIndex(s => s.id === selectedShoe.id);
 
   return (
     <div className="showcase-container">
@@ -419,66 +367,13 @@ function ShoeShowcase() {
           )}
 
           {/* ============================================
-              SUSPENDED THUMBNAILS - NEW ARROW-BASED NAVIGATION
+              THUMBNAIL RACK - NEW STANDALONE COMPONENT
               ============================================ */}
-          <div className="suspended-thumbnails">
-            {/* Previous Arrow */}
-            <button 
-              className="nav-arrow" 
-              onClick={goToPrevShoe}
-              disabled={currentIndex === 0}
-              aria-label="Previous shoe"
-            >
-              ‹
-            </button>
-
-            {/* Thumbnail Container */}
-            <div className="thumbnail-container">
-              {visibleThumbs.map((shoe) => (
-                <div key={shoe.id} className="thumbnail-wrapper">
-                  {shoe.images && shoe.images.length > 0 && (
-                    <img
-                      src={shoe.images[0]}
-                      alt={shoe.name}
-                      className={`thumbnail ${selectedShoe.id === shoe.id ? 'active' : ''}`}
-                      onClick={() => handleThumbnailClick(shoe)}
-                      loading="lazy"
-                      title={shoe.name}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {/* Next Arrow */}
-            <button 
-              className="nav-arrow" 
-              onClick={goToNextShoe}
-              disabled={currentIndex === filteredShoes.length - 1}
-              aria-label="Next shoe"
-            >
-              ›
-            </button>
-
-            {/* Position Indicator Dots */}
-            <div className="position-indicator">
-              {filteredShoes.map((_, index) => (
-                <span 
-                  key={index}
-                  className={`dot ${currentIndex === index ? 'active' : ''}`}
-                  onClick={() => {
-                    const shoe = filteredShoes[index];
-                    if (shoe) {
-                      setSelectedShoe(shoe);
-                      setCurrentImageIndex(0);
-                      currentIndexRef.current = 0;
-                      stopAutoRotate();
-                    }
-                  }}
-                />
-              ))}
-            </div>
-          </div>
+          <ThumbnailRack 
+            shoes={filteredShoes}
+            selectedShoe={selectedShoe}
+            onSelectShoe={handleThumbnailSelect}
+          />
 
           {/* ============================================
               SHOE DETAILS OVERLAY (BOTTOM) - NO BUTTONS
