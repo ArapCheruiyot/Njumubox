@@ -1,0 +1,144 @@
+/* ============================================
+   SUSPENDED THUMBNAILS - Arrow-based Navigation
+   ============================================ */
+.suspended-thumbnails {
+  position: absolute;
+  bottom: 170px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  max-width: 400px;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 50px;
+  padding: 6px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Navigation Arrows */
+.suspended-thumbnails .nav-arrow {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: white;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+  padding: 0;
+  user-select: none;
+}
+
+.suspended-thumbnails .nav-arrow:hover:not(:disabled) {
+  background: rgba(52, 152, 219, 0.4);
+  border-color: #3498db;
+  transform: scale(1.1);
+}
+
+.suspended-thumbnails .nav-arrow:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Thumbnail Container - Shows 2-3 at a time */
+.suspended-thumbnails .thumbnail-container {
+  display: flex;
+  gap: 6px;
+  overflow: hidden;
+  padding: 2px 0;
+  flex: 1;
+  justify-content: center;
+}
+
+.suspended-thumbnails .thumbnail-wrapper {
+  flex: 0 0 50px;
+  transition: all 0.3s ease;
+}
+
+.suspended-thumbnails .thumbnail {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.05);
+  display: block;
+}
+
+.suspended-thumbnails .thumbnail:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+
+.suspended-thumbnails .thumbnail.active {
+  opacity: 1;
+  border-color: #3498db;
+  box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);
+  transform: scale(1.1);
+}
+
+/* Position indicator dots */
+.suspended-thumbnails .position-indicator {
+  display: flex;
+  gap: 4px;
+  padding: 0 4px;
+  min-width: 20px;
+  justify-content: center;
+}
+
+.suspended-thumbnails .dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.suspended-thumbnails .dot.active {
+  background: #3498db;
+  width: 8px;
+  border-radius: 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .suspended-thumbnails {
+    bottom: 140px;
+    padding: 4px 8px;
+    gap: 4px;
+    max-width: 300px;
+  }
+  
+  .suspended-thumbnails .thumbnail {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .suspended-thumbnails .thumbnail-wrapper {
+    flex: 0 0 40px;
+  }
+  
+  .suspended-thumbnails .nav-arrow {
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    font-size: 14px;
+  }
+}
