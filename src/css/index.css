@@ -111,24 +111,6 @@ body {
     padding: 0px 6px;
   }
 
-  /* ===== THUMBNAILS - MOVED UP (CENTER) ===== */
-  .suspended-thumbnails {
-    bottom: 140px;
-    padding: 4px 8px;
-    width: 80%;
-    max-width: 320px;
-  }
-
-  .suspended-thumbnails .thumbnail {
-    width: 34px;
-    height: 34px;
-    padding: 3px;
-  }
-
-  .suspended-thumbnails .thumbnails-scroll {
-    gap: 5px;
-  }
-
   /* ===== DETAILS ===== */
   .shoe-details-overlay {
     padding: 14px 16px 16px;
@@ -226,28 +208,6 @@ body {
     font-size: 0.6rem;
     min-width: 16px;
     padding: 0px 5px;
-  }
-
-  /* ===== THUMBNAILS - MOVED UP (CENTER) ===== */
-  .suspended-thumbnails {
-    bottom: 120px;
-    padding: 3px 6px;
-    width: 85%;
-    max-width: 260px;
-  }
-
-  .suspended-thumbnails .thumbnail {
-    width: 28px;
-    height: 28px;
-    padding: 2px;
-  }
-
-  .suspended-thumbnails .thumbnails-scroll {
-    gap: 4px;
-  }
-
-  .scroll-hint {
-    font-size: 0.3rem;
   }
 
   /* ===== DETAILS ===== */
