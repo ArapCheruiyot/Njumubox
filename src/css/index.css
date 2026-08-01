@@ -11,7 +11,211 @@
 @import './rotation.css';
 @import './admin.css';
 
-/* ===== BASE STYLES ===== */
+/* ============================================
+   HOME PAGE - FULL SCREEN OVERRIDES
+   ============================================ */
+/* These apply specifically to the home page to make it full screen */
+
+/* Ensure body has no overflow on home page */
+body.home-page {
+  overflow: hidden;
+}
+
+/* Home page app container - no scroll */
+.home-page .app {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Home page header - fixed at top */
+.home-page .header {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 20;
+}
+
+/* Hide footer on home page */
+.home-page .footer {
+  display: none;
+}
+
+/* Home page main content - fills remaining space */
+.home-page .home-main {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  height: calc(100vh - 64px);
+}
+
+/* Home page image - full screen */
+.home-page .home-image-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Home page image itself */
+.home-page .home-shoe-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Home page overlay at bottom */
+.home-page .home-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 60%, transparent 100%);
+  padding: 30px 20px 20px;
+  z-index: 5;
+}
+
+/* Home page shoe details in overlay */
+.home-page .home-shoe-name {
+  color: white;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+
+.home-page .home-shoe-brand {
+  color: rgba(255,255,255,0.6);
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+
+.home-page .home-shoe-price {
+  color: #2ecc71;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+
+/* Home page navigation buttons */
+.home-page .home-nav-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.home-page .home-nav-btn {
+  padding: 8px 20px;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.home-page .home-nav-btn:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.home-page .home-nav-btn-next {
+  padding: 8px 20px;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.home-page .home-nav-btn-next:hover {
+  background: #2980b9;
+}
+
+/* Home page view store button */
+.home-page .home-view-store-btn {
+  padding: 10px 28px;
+  background: linear-gradient(135deg, #27ae60, #1e8449);
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  display: inline-block;
+  box-shadow: 0 4px 20px rgba(39,174,96,0.3);
+}
+
+.home-page .home-view-store-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 30px rgba(39,174,96,0.5);
+}
+
+/* Home page store dots */
+.home-page .home-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.home-page .home-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.home-page .home-dot.active {
+  background: #3498db;
+  border-color: #3498db;
+}
+
+.home-page .home-dot:hover {
+  transform: scale(1.2);
+}
+
+/* Home page 360 badge */
+.home-page .home-360-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+/* Divider between nav and view store */
+.home-page .home-divider {
+  width: 2px;
+  height: 30px;
+  background: rgba(255,255,255,0.2);
+  display: inline-block;
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
 * {
   margin: 0;
   padding: 0;
@@ -111,6 +315,23 @@ body {
     padding: 0px 6px;
   }
 
+  /* Home page tablet adjustments */
+  .home-page .home-main {
+    height: calc(100vh - 64px);
+  }
+
+  .home-page .home-shoe-name {
+    font-size: 1.5rem;
+  }
+
+  .home-page .home-shoe-price {
+    font-size: 1.5rem;
+  }
+
+  .home-page .home-overlay {
+    padding: 20px 16px 16px;
+  }
+
   /* ===== DETAILS ===== */
   .shoe-details-overlay {
     padding: 14px 16px 16px;
@@ -208,6 +429,38 @@ body {
     font-size: 0.6rem;
     min-width: 16px;
     padding: 0px 5px;
+  }
+
+  /* Home page phone adjustments */
+  .home-page .home-main {
+    height: calc(100vh - 56px);
+  }
+
+  .home-page .home-shoe-name {
+    font-size: 1.2rem;
+  }
+
+  .home-page .home-shoe-brand {
+    font-size: 0.8rem;
+  }
+
+  .home-page .home-shoe-price {
+    font-size: 1.2rem;
+  }
+
+  .home-page .home-overlay {
+    padding: 16px 12px 12px;
+  }
+
+  .home-page .home-nav-btn,
+  .home-page .home-nav-btn-next {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+  }
+
+  .home-page .home-view-store-btn {
+    padding: 8px 20px;
+    font-size: 0.85rem;
   }
 
   /* ===== DETAILS ===== */

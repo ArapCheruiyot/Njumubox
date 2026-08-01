@@ -1,0 +1,49 @@
+/* ============================================
+   HOME PAGE - FULL SCREEN STYLES
+   ============================================ */
+
+/* Full screen container */
+.home-fullscreen {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Remove scrolling on home page */
+body.home-page {
+  overflow: hidden;
+}
+
+/* Home page header override */
+.home-page .header {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 20;
+}
+
+/* Hide footer on home page */
+.home-page .footer {
+  display: none;
+}
+
+/* Home page image container */
+.home-page .home-image-container {
+  position: relative;
+  height: calc(100vh - 64px);
+  width: 100%;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Home page overlay at bottom */
+.home-page .home-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 60%, transparent 100%);
+  padding: 30px 20px 20px;
+  z-index: 5;
+}

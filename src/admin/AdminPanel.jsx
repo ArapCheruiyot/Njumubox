@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { shoesCollection, addDoc, getDocs, query, where, deleteDoc, doc } from '../firebase';
 import '../css/admin.css';
 
-function AdminPanel() {
+function AdminPanel({ user, userProfile }) {
   const [shoeData, setShoeData] = useState({
     name: '',
     brand: '',
@@ -13,36 +14,43 @@ function AdminPanel() {
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [message, setMessage] = useState('');
+  const [userShoes, setUserShoes] = useState([]);
 
-  // Your Cloudinary config
-  const CLOUD_NAME = 'decckqobb';
-  const UPLOAD_PRESET = 'ndulabox_uploads';
+  const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
-  // Check if shoe name already exists
-  const checkDuplicateShoe = (name) => {
-    const existingShoes = JSON.parse(localStorage.getItem('ndulabox_shoes') || '[]');
-    const normalizedName = name.toLowerCase().trim();
-    return existingShoes.some(shoe => shoe.name.toLowerCase().trim() === normalizedName);
+  // Load user's shoes
+  useEffect(() => {
+    if (user) {
+      loadUserShoes();
+    }
+  }, [user]);
+
+  const loadUserShoes = async () => {
+    try {
+      const q = query(shoesCollection, where("userId", "==", user.uid));
+      const querySnapshot = await getDocs(q);
+      const loadedShoes = [];
+      querySnapshot.forEach((doc) => {
+        loadedShoes.push({ id: doc.id, ...doc.data() });
+      });
+      setUserShoes(loadedShoes);
+      console.log('📦 Loaded user shoes:', loadedShoes.length);
+    } catch (error) {
+      console.error('Error loading user shoes:', error);
+    }
   };
 
-  // Handle image upload to Cloudinary - WITH DYNAMIC FOLDERS
+  // ✅ HANDLE IMAGE UPLOAD TO CLOUDINARY
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
-
-    // Check for duplicates BEFORE uploading
-    if (checkDuplicateShoe(shoeData.name)) {
-      setMessage(`❌ A shoe named "${shoeData.name}" already exists! Please use a different name.`);
-      return;
-    }
 
     setUploading(true);
     setUploadProgress(0);
     setMessage('📤 Uploading images...');
 
     const uploadedUrls = [];
-    
-    // Create a unique folder name based on shoe name
     const shoeFolder = shoeData.name 
       ? `ndulabox/shoes/${shoeData.name.toLowerCase().replace(/ /g, '-')}`
       : 'ndulabox/shoes/temp';
@@ -58,20 +66,14 @@ function AdminPanel() {
       try {
         const response = await fetch(
           `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
-          {
-            method: 'POST',
-            body: formData
-          }
+          { method: 'POST', body: formData }
         );
-
         const data = await response.json();
-        
         if (data.secure_url) {
           uploadedUrls.push(data.secure_url);
           setUploadProgress(((i + 1) / files.length) * 100);
           setMessage(`📤 Uploaded ${i + 1} of ${files.length} images`);
         }
-        
       } catch (error) {
         console.error('❌ Upload error:', error);
         setMessage('❌ Upload failed! Please try again.');
@@ -80,74 +82,80 @@ function AdminPanel() {
       }
     }
 
-    setShoeData(prev => ({
-      ...prev,
-      images: uploadedUrls
-    }));
-
+    setShoeData(prev => ({ ...prev, images: uploadedUrls }));
     setUploading(false);
-    setMessage(`✅ ${uploadedUrls.length} images uploaded successfully to ${shoeFolder}!`);
+    setMessage(`✅ ${uploadedUrls.length} images uploaded successfully!`);
   };
 
-  // Handle form submission - Save shoe with ALL images
-  const handleSubmit = (e) => {
+  // ✅ SAVE SHOE WITH USER ID AND STORE NAME
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Validate
     if (!shoeData.name || !shoeData.price || shoeData.images.length === 0) {
       setMessage('❌ Please fill all fields and upload images!');
       return;
     }
 
-    // Check for duplicates BEFORE saving
-    if (checkDuplicateShoe(shoeData.name)) {
-      setMessage(`❌ A shoe named "${shoeData.name}" already exists! Please use a different name.`);
-      return;
-    }
-
-    // Format sizes
     const sizesArray = shoeData.sizes.split(',').map(s => s.trim());
     
-    // Create shoe object
     const newShoe = {
-      id: Date.now(),
       name: shoeData.name,
       brand: shoeData.brand,
       price: parseInt(shoeData.price),
       category: shoeData.category,
       sizes: sizesArray.map(Number),
       images: shoeData.images,
-      thumbnail: shoeData.images[0]
+      thumbnail: shoeData.images[0],
+      userId: user.uid,
+      userEmail: user.email,
+      storeName: userProfile?.storeName || 'Unnamed Store',
+      createdAt: new Date().toISOString()
     };
 
-    console.log('📦 New Shoe Added:', newShoe);
-    
-    // Save to localStorage
-    const existingShoes = JSON.parse(localStorage.getItem('ndulabox_shoes') || '[]');
-    existingShoes.push(newShoe);
-    localStorage.setItem('ndulabox_shoes', JSON.stringify(existingShoes));
-    
-    const folderName = shoeData.name.toLowerCase().replace(/ /g, '-');
-    setMessage(`✅ Shoe "${shoeData.name}" added successfully! Images saved in: ndulabox/shoes/${folderName}/`);
-    
-    // Reset form
-    setShoeData({
-      name: '',
-      brand: '',
-      price: '',
-      category: 'Gents',
-      sizes: '',
-      images: []
-    });
-    setUploadProgress(0);
+    try {
+      await addDoc(shoesCollection, newShoe);
+      setMessage(`✅ Shoe "${shoeData.name}" added to ${userProfile?.storeName}!`);
+      
+      setShoeData({
+        name: '',
+        brand: '',
+        price: '',
+        category: 'Gents',
+        sizes: '',
+        images: []
+      });
+      setUploadProgress(0);
+      loadUserShoes();
+    } catch (error) {
+      console.error('❌ Save error:', error);
+      setMessage('❌ Failed to save. Please try again.');
+    }
+  };
+
+  // ✅ DELETE SHOE
+  const handleDeleteShoe = async (shoeId) => {
+    if (window.confirm('Are you sure you want to delete this shoe?')) {
+      try {
+        await deleteDoc(doc(shoesCollection, shoeId));
+        setMessage('✅ Shoe deleted successfully!');
+        loadUserShoes();
+      } catch (error) {
+        console.error('Delete error:', error);
+        setMessage('❌ Failed to delete.');
+      }
+    }
   };
 
   return (
     <div className="admin-panel">
-      <h1>👟 NdulaBox - Admin Panel</h1>
-      <p className="admin-subtitle">Add new shoes to your catalogue</p>
+      <h1>👟 {userProfile?.storeName || 'NdulaBox'}</h1>
+      <p className="admin-subtitle">
+        Welcome, {userProfile?.displayName || user?.email}
+      </p>
+      <p style={{ color: '#888', fontSize: '0.9rem' }}>
+        📦 {userShoes.length} shoes in your catalogue
+      </p>
 
-      {/* Upload Status */}
       {message && (
         <div className={`admin-message ${message.includes('❌') ? 'error' : 'success'}`}>
           {message}
@@ -161,28 +169,10 @@ function AdminPanel() {
           <input
             type="text"
             value={shoeData.name}
-            onChange={(e) => {
-              const newName = e.target.value;
-              setShoeData({...shoeData, name: newName});
-              
-              // Check duplicate in real-time
-              if (newName && checkDuplicateShoe(newName)) {
-                setMessage(`⚠️ A shoe named "${newName}" already exists!`);
-              } else if (message.includes('already exists')) {
-                setMessage('');
-              }
-            }}
+            onChange={(e) => setShoeData({...shoeData, name: e.target.value})}
             placeholder="e.g., Air Zoom Pulse"
             required
           />
-          <small style={{ color: '#888', fontSize: '0.8rem', marginTop: '4px' }}>
-            📁 Folder will be: ndulabox/shoes/{shoeData.name ? shoeData.name.toLowerCase().replace(/ /g, '-') : 'shoe-name'}/
-          </small>
-          {shoeData.name && checkDuplicateShoe(shoeData.name) && (
-            <small style={{ color: '#e74c3c', fontSize: '0.8rem', marginTop: '4px' }}>
-              ⚠️ This shoe name already exists! Please use a different name.
-            </small>
-          )}
         </div>
 
         {/* Brand */}
@@ -247,22 +237,19 @@ function AdminPanel() {
               multiple
               accept="image/*"
               onChange={handleImageUpload}
-              disabled={uploading || checkDuplicateShoe(shoeData.name)}
+              disabled={uploading}
               className="file-input"
             />
             <div className="upload-hint">
               <span>📁 Click to select multiple images</span>
-              <span className="hint-text">Select 8-12 images for 360° rotation (Hold Ctrl/Cmd to select multiple)</span>
+              <span className="hint-text">Select 8-12 images for 360° rotation</span>
             </div>
           </div>
           
           {uploading && (
             <div className="progress-container">
               <div className="progress-bar">
-                <div 
-                  className="progress-fill" 
-                  style={{ width: `${uploadProgress}%` }}
-                />
+                <div className="progress-fill" style={{ width: `${uploadProgress}%` }} />
               </div>
               <span className="progress-text">{Math.round(uploadProgress)}%</span>
             </div>
@@ -273,63 +260,53 @@ function AdminPanel() {
               <p className="upload-success">✅ {shoeData.images.length} images uploaded</p>
               <div className="image-previews">
                 {shoeData.images.map((url, i) => (
-                  <img 
-                    key={i} 
-                    src={url} 
-                    alt={`Angle ${i+1}`} 
-                    className="preview-thumb"
-                  />
+                  <img key={i} src={url} alt={`Angle ${i+1}`} className="preview-thumb" />
                 ))}
               </div>
             </div>
           )}
         </div>
 
-        {/* Submit Button */}
-        <button 
-          type="submit" 
-          className="submit-btn" 
-          disabled={uploading || checkDuplicateShoe(shoeData.name) || shoeData.images.length === 0}
-        >
+        <button type="submit" className="submit-btn" disabled={uploading}>
           {uploading ? '⏳ Uploading...' : '➕ Add Shoe to Catalogue'}
         </button>
-
-        {/* Show warning if duplicate exists */}
-        {shoeData.name && checkDuplicateShoe(shoeData.name) && (
-          <p style={{ color: '#e74c3c', textAlign: 'center', marginTop: '10px', fontWeight: '600' }}>
-            ⚠️ Cannot add - a shoe with this name already exists!
-          </p>
-        )}
       </form>
 
-      {/* View All Shoes */}
+      {/* Display User's Shoes */}
       <div className="view-shoes">
-        <h3>📚 All Shoes in Catalogue</h3>
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-          <button 
-            className="view-btn"
-            onClick={() => {
-              const shoes = JSON.parse(localStorage.getItem('ndulabox_shoes') || '[]');
-              console.log('📚 All Shoes:', shoes);
-              alert(`Total shoes: ${shoes.length}\nCheck console for details!`);
-            }}
-          >
-            View All Shoes ({JSON.parse(localStorage.getItem('ndulabox_shoes') || '[]').length})
-          </button>
-          
-          {/* Delete All Button */}
-          <button 
-            className="delete-all-btn"
-            onClick={() => {
-              if (confirm('⚠️ Are you sure you want to delete ALL shoes? This cannot be undone!')) {
-                localStorage.removeItem('ndulabox_shoes');
-                setMessage('✅ All shoes have been deleted!');
-                setTimeout(() => window.location.reload(), 1000);
-              }
-            }}
-          >
-            🗑️ Delete All
-          </button>
+        <h3>📚 Your Shoes ({userShoes.length})</h3>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '10px' }}>
+          {userShoes.map((shoe) => (
+            <div key={shoe.id} style={{ 
+              background: '#f8f9fa', 
+              padding: '10px', 
+              borderRadius: '8px',
+              border: '1px solid #e0e0e0',
+              minWidth: '150px'
+            }}>
+              <strong>{shoe.name}</strong>
+              <br />
+              <small>{shoe.brand} - Ksh {shoe.price}</small>
+              <br />
+              <button 
+                onClick={() => handleDeleteShoe(shoe.id)}
+                style={{ 
+                  background: '#e74c3c', 
+                  color: 'white', 
+                  border: 'none', 
+                  padding: '3px 10px',
+                  borderRadius: '4px',
+                  marginTop: '5px',
+                  cursor: 'pointer'
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+          {userShoes.length === 0 && (
+            <p style={{ color: '#888' }}>No shoes added yet. Add your first shoe above!</p>
+          )}
         </div>
       </div>
     </div>
