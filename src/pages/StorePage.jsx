@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { shoesCollection, usersCollection, getDocs, query, where, getDoc, doc } from '../firebase';
 import logo from '../assets/logo.png';
+import '../css/store.css';  // ← IMPORT CSS
 
 function StorePage() {
   const { vendorId } = useParams();
@@ -20,7 +21,6 @@ function StorePage() {
   useEffect(() => {
     const loadStoreData = async () => {
       try {
-        // 1. Get store info
         const userDocRef = doc(usersCollection, vendorId);
         const userDoc = await getDoc(userDocRef);
         
@@ -34,9 +34,9 @@ function StorePage() {
           uid: vendorId,
           storeName: userData.storeName || 'Unnamed Store',
           email: userData.email,
+          phone: userData.phone || '254700000000',
         });
 
-        // 2. Get this store's shoes
         const q = query(shoesCollection, where("userId", "==", vendorId));
         const shoesSnapshot = await getDocs(q);
         const vendorShoes = [];
@@ -62,7 +62,6 @@ function StorePage() {
     loadStoreData();
   }, [vendorId]);
 
-  // Start auto-rotation when shoe changes
   useEffect(() => {
     if (currentShoe && currentShoe.images && currentShoe.images.length > 1) {
       startAutoRotate();
@@ -70,7 +69,6 @@ function StorePage() {
     return () => stopAutoRotate();
   }, [currentShoe]);
 
-  // ===== ROTATION FUNCTIONS =====
   const goToNextImage = () => {
     if (!currentShoe || currentShoe.images.length <= 1) return;
     
@@ -80,7 +78,6 @@ function StorePage() {
     setCurrentImageIndex(nextIndex);
     currentIndexRef.current = nextIndex;
     
-    // When we complete all images, move to next shoe in this store
     if (nextIndex === 0 && storeShoes.length > 1) {
       setTimeout(() => {
         goToNextShoe();
@@ -105,7 +102,6 @@ function StorePage() {
     }
   };
 
-  // ===== SHOE NAVIGATION =====
   const goToNextShoe = () => {
     if (storeShoes.length === 0) return;
     stopAutoRotate();
@@ -210,6 +206,31 @@ function StorePage() {
           <h2 className="home-shoe-name">{currentShoe?.name}</h2>
           <p className="home-shoe-brand">{currentShoe?.brand}</p>
           <p className="home-shoe-price">Ksh {currentShoe?.price?.toLocaleString()}</p>
+        </div>
+
+        {/* ===== CTA BUTTONS - USING CSS CLASSES ===== */}
+        <div className="store-cta-container">
+          {/* WhatsApp Button */}
+          <a 
+            href={`https://wa.me/${storeInfo.phone || '254700000000'}?text=Hi%20${encodeURIComponent(storeInfo.storeName)}%2C%20I%20saw%20your%20${encodeURIComponent(currentShoe?.name || 'shoes')}%20on%20NdulaBox!`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="store-cta-btn store-whatsapp"
+            title="Chat on WhatsApp"
+          >
+            <span className="store-cta-icon">💬</span>
+            WhatsApp
+          </a>
+
+          {/* Call Button */}
+          <a 
+            href={`tel:${storeInfo.phone || '254700000000'}`}
+            className="store-cta-btn store-call"
+            title="Call Store"
+          >
+            <span className="store-cta-icon">📞</span>
+            Call
+          </a>
         </div>
 
         {/* Navigation - Bottom Right */}

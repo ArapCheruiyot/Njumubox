@@ -1,5 +1,15 @@
 import { useState, useEffect } from 'react';
-import { shoesCollection, addDoc, getDocs, query, where, deleteDoc, doc } from '../firebase';
+import { 
+  shoesCollection, 
+  usersCollection,  // ← Moved up
+  addDoc, 
+  getDocs, 
+  query, 
+  where, 
+  deleteDoc, 
+  doc, 
+  updateDoc  // ← Make sure this is here
+} from '../firebase';
 import '../css/admin.css';
 
 function AdminPanel({ user, userProfile }) {
@@ -15,9 +25,13 @@ function AdminPanel({ user, userProfile }) {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [message, setMessage] = useState('');
   const [userShoes, setUserShoes] = useState([]);
+  
+  // NEW: Phone state
+  const [storePhone, setStorePhone] = useState(userProfile?.phone || '');
+  const [isEditingPhone, setIsEditingPhone] = useState(false);
 
   const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+  const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
   // Load user's shoes
   useEffect(() => {
@@ -38,6 +52,34 @@ const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
       console.log('📦 Loaded user shoes:', loadedShoes.length);
     } catch (error) {
       console.error('Error loading user shoes:', error);
+    }
+  };
+
+  // NEW: Update phone number
+  const handleUpdatePhone = async () => {
+    if (!storePhone.trim()) {
+      setMessage('❌ Please enter a phone number');
+      return;
+    }
+
+    // Validate format
+    const cleanPhone = storePhone.replace(/[\s+]/g, '');
+    if (!/^254\d{9}$/.test(cleanPhone)) {
+      setMessage('❌ Invalid format. Use: 254712345678');
+      return;
+    }
+
+    try {
+      await updateDoc(doc(usersCollection, user.uid), {
+        phone: cleanPhone
+      });
+      setMessage('✅ Phone number updated successfully!');
+      setIsEditingPhone(false);
+      // Refresh userProfile
+      userProfile.phone = cleanPhone;
+    } catch (error) {
+      console.error('Error updating phone:', error);
+      setMessage('❌ Failed to update phone number');
     }
   };
 
@@ -152,6 +194,82 @@ const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
       <p className="admin-subtitle">
         Welcome, {userProfile?.displayName || user?.email}
       </p>
+      
+      {/* NEW: Phone Number Section */}
+      <div style={{
+        background: 'rgba(255,255,255,0.05)',
+        padding: '15px 20px',
+        borderRadius: '10px',
+        marginBottom: '20px',
+        border: '1px solid rgba(255,255,255,0.08)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
+          <div>
+            <strong style={{ color: 'white' }}>📞 Store Phone:</strong>
+            {userProfile?.phone ? (
+              <span style={{ color: '#2ecc71', marginLeft: '10px' }}>
+                {userProfile.phone}
+              </span>
+            ) : (
+              <span style={{ color: 'rgba(255,255,255,0.4)', marginLeft: '10px' }}>
+                Not set
+              </span>
+            )}
+          </div>
+          <button
+            onClick={() => setIsEditingPhone(!isEditingPhone)}
+            style={{
+              padding: '6px 16px',
+              background: isEditingPhone ? '#e74c3c' : '#3498db',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '0.85rem'
+            }}
+          >
+            {isEditingPhone ? 'Cancel' : '✏️ Edit'}
+          </button>
+        </div>
+
+        {/* Edit Phone Form */}
+        {isEditingPhone && (
+          <div style={{ marginTop: '12px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+            <input
+              type="tel"
+              value={storePhone}
+              onChange={(e) => setStorePhone(e.target.value)}
+              placeholder="e.g., 254712345678"
+              style={{
+                flex: 1,
+                padding: '8px 14px',
+                borderRadius: '6px',
+                border: '1px solid rgba(255,255,255,0.1)',
+                background: 'rgba(255,255,255,0.05)',
+                color: 'white',
+                minWidth: '200px'
+              }}
+            />
+            <button
+              onClick={handleUpdatePhone}
+              style={{
+                padding: '8px 20px',
+                background: '#27ae60',
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: 'pointer'
+              }}
+            >
+              💾 Save
+            </button>
+          </div>
+        )}
+        <small style={{ color: 'rgba(255,255,255,0.3)', display: 'block', marginTop: '5px' }}>
+          Used for WhatsApp and Call buttons on your store page
+        </small>
+      </div>
+
       <p style={{ color: '#888', fontSize: '0.9rem' }}>
         📦 {userShoes.length} shoes in your catalogue
       </p>

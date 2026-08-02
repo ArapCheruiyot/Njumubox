@@ -90,35 +90,7 @@
 }
 
 /* ============================================
-   STORE NAME - BOTTOM RIGHT (ABOVE VIEW STORE)
-   ============================================ */
-.home-store-info {
-  position: absolute;
-  bottom: 140px;
-  right: 24px;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-}
-
-.home-store-name {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: clamp(0.85rem, 1.5vw, 1.2rem);
-  font-weight: 600;
-  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.8);
-  background: rgba(0, 0, 0, 0.3);
-  padding: 4px 14px;
-  border-radius: 20px;
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  letter-spacing: 0.3px;
-}
-
-/* ============================================
-   VIEW STORE BUTTON - BOTTOM RIGHT
+   VIEW STORE BUTTON - BOTTOM RIGHT (ABOVE NAV)
    ============================================ */
 .home-view-store-btn {
   position: absolute;
@@ -138,7 +110,6 @@
   align-items: center;
   gap: 8px;
   backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
 }
 
 .home-view-store-btn:hover {
@@ -336,14 +307,9 @@
     left: 30px;
   }
   
-  .home-store-info {
-    bottom: 155px;
+  .home-nav-overlay {
+    bottom: 40px;
     right: 30px;
-  }
-  
-  .home-store-name {
-    font-size: clamp(1rem, 1.5vw, 1.3rem);
-    padding: 6px 18px;
   }
   
   .home-view-store-btn {
@@ -351,11 +317,6 @@
     right: 30px;
     padding: 12px 28px;
     font-size: 1rem;
-  }
-  
-  .home-nav-overlay {
-    bottom: 40px;
-    right: 30px;
   }
 }
 
@@ -397,14 +358,9 @@
     left: 18px;
   }
   
-  .home-store-info {
-    bottom: 130px;
+  .home-nav-overlay {
+    bottom: 24px;
     right: 18px;
-  }
-  
-  .home-store-name {
-    font-size: clamp(0.75rem, 1.5vw, 0.9rem);
-    padding: 4px 12px;
   }
   
   .home-view-store-btn {
@@ -412,11 +368,6 @@
     right: 18px;
     padding: 8px 18px;
     font-size: 0.8rem;
-  }
-
-  .home-nav-overlay {
-    bottom: 24px;
-    right: 18px;
   }
 
   .home-nav-btn {
@@ -471,14 +422,10 @@
     left: 14px;
   }
   
-  .home-store-info {
-    bottom: 110px;
+  .home-nav-overlay {
+    bottom: 16px;
     right: 14px;
-  }
-  
-  .home-store-name {
-    font-size: clamp(0.65rem, 1.5vw, 0.75rem);
-    padding: 3px 10px;
+    gap: 6px;
   }
   
   .home-view-store-btn {
@@ -487,12 +434,6 @@
     padding: 6px 14px;
     font-size: 0.7rem;
     border-radius: 20px;
-  }
-
-  .home-nav-overlay {
-    bottom: 16px;
-    right: 14px;
-    gap: 6px;
   }
 
   .home-nav-buttons {
@@ -553,14 +494,9 @@
     left: 12px;
   }
   
-  .home-store-info {
-    bottom: 95px;
+  .home-nav-overlay {
+    bottom: 12px;
     right: 12px;
-  }
-  
-  .home-store-name {
-    font-size: clamp(0.55rem, 1.5vw, 0.65rem);
-    padding: 2px 8px;
   }
   
   .home-view-store-btn {
@@ -568,11 +504,6 @@
     right: 12px;
     padding: 5px 12px;
     font-size: 0.6rem;
-  }
-
-  .home-nav-overlay {
-    bottom: 12px;
-    right: 12px;
   }
 
   .home-nav-btn {

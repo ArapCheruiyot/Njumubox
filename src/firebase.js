@@ -81,6 +81,12 @@ const setDoc = async (docRef, data) => {
   return docRef;
 };
 
+// ✅ NEW: Add updateDoc function
+const updateDoc = async (docRef, data) => {
+  await docRef.update(data);
+  return docRef;
+};
+
 const query = (collection, conditions) => {
   let q = collection;
   if (conditions && conditions.field && conditions.operator && conditions.value) {
@@ -109,6 +115,7 @@ export {
   doc,
   getDoc,
   setDoc,
+  updateDoc,  // ← ADD THIS
   query,
   where
 };

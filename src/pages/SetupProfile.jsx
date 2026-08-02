@@ -4,9 +4,18 @@ import { auth, usersCollection, setDoc, doc } from '../firebase';
 
 function SetupProfile({ user }) {
   const [storeName, setStoreName] = useState('');
+  const [phone, setPhone] = useState('');  // ← NEW: Phone state
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  // Validate phone number (Kenyan format)
+  const validatePhone = (number) => {
+    if (!number) return true; // Optional field
+    const cleaned = number.replace(/\s/g, '');
+    // Kenyan format: 254XXXXXXXXX (12 digits total)
+    return /^254\d{9}$/.test(cleaned);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,16 +25,26 @@ function SetupProfile({ user }) {
       return;
     }
 
+    // Validate phone if provided
+    if (phone && !validatePhone(phone)) {
+      setError('Please enter a valid phone number (e.g., 254712345678)');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
     try {
+      // Clean phone number (remove spaces, +, 0)
+      const cleanPhone = phone ? phone.replace(/[\s+]/g, '') : '';
+      
       // Save user profile to Firestore
       await setDoc(doc(usersCollection, user.uid), {
         uid: user.uid,
         email: user.email,
         displayName: user.displayName || user.email.split('@')[0],
         storeName: storeName.trim(),
+        phone: cleanPhone,  // ← NEW: Save phone
         storeDescription: '',
         createdAt: new Date().toISOString(),
         logo: ''
@@ -63,7 +82,7 @@ function SetupProfile({ user }) {
           🏪 Welcome, {user?.displayName || 'Vendor'}!
         </h1>
         <p style={{ color: 'rgba(255,255,255,0.6)', marginBottom: '30px' }}>
-          Please set up your store name to get started.
+          Please set up your store details to get started.
         </p>
 
         {error && (
@@ -100,6 +119,31 @@ function SetupProfile({ user }) {
               }}
               required
             />
+          </div>
+
+          {/* NEW: Phone Field */}
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ color: 'white', display: 'block', marginBottom: '8px' }}>
+              📞 Store Phone Number <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem' }}>(Optional)</span>
+            </label>
+            <input
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="e.g., 254712345678"
+              style={{
+                width: '100%',
+                padding: '12px 16px',
+                borderRadius: '10px',
+                border: '1px solid rgba(255,255,255,0.1)',
+                background: 'rgba(255,255,255,0.05)',
+                color: 'white',
+                fontSize: '1rem'
+              }}
+            />
+            <small style={{ color: 'rgba(255,255,255,0.4)', display: 'block', marginTop: '5px' }}>
+              Format: 254XXXXXXXXX (Used for WhatsApp & Call buttons)
+            </small>
           </div>
 
           <button
