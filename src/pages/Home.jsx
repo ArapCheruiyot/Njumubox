@@ -212,18 +212,62 @@ function Home() {
           />
         )}
         
-        {/* 360° Badge */}
+        {/* 360° Badge - Top Right */}
         {totalImages > 1 && (
           <div className="home-360-badge">
             🔄 {currentImageIndex + 1}/{totalImages}
           </div>
         )}
 
-        {/* ===== SHOE DETAILS OVERLAY - BOTTOM LEFT ===== */}
+        {/* ===== SHOE DETAILS - BOTTOM LEFT ===== */}
         <div className="home-details-overlay">
           <h2 className="home-shoe-name">{currentShoe?.name}</h2>
           <p className="home-shoe-brand">{currentShoe?.brand}</p>
           <p className="home-shoe-price">Ksh {currentShoe?.price?.toLocaleString()}</p>
+        </div>
+
+        {/* ===== NAVIGATION BUTTONS - BOTTOM RIGHT ===== */}
+        <div className="home-nav-overlay">
+          <div className="home-nav-buttons">
+            <button 
+              onClick={goToPreviousStore}
+              className="home-nav-btn"
+              aria-label="Previous store"
+            >
+              ◀
+            </button>
+            
+            <span className="home-nav-counter">
+              {currentStoreIndex + 1} / {stores.length}
+            </span>
+            
+            <button 
+              onClick={goToNextStore}
+              className="home-nav-btn home-nav-btn-next"
+              aria-label="Next store"
+            >
+              ▶
+            </button>
+          </div>
+          
+          {/* Store Dots */}
+          <div className="home-dots">
+            {stores.map((store, index) => (
+              <div
+                key={store.uid}
+                className={`home-dot ${index === currentStoreIndex ? 'active' : ''}`}
+                onClick={() => {
+                  stopAutoRotate();
+                  setCurrentStoreIndex(index);
+                  const randomShoe = getRandomShoe(store.shoes);
+                  setCurrentShoe(randomShoe);
+                  setCurrentImageIndex(0);
+                  currentIndexRef.current = 0;
+                  setTimeout(() => startAutoRotate(), 1500);
+                }}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
