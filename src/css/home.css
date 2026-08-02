@@ -8,55 +8,47 @@
   overflow: hidden !important;
 }
 
-/* Home page image container - FULL SCREEN */
+/* Home page image container - FULL SCREEN with gradient */
 .home-image-container {
   position: relative;
   flex: 1;
   width: 100%;
   height: calc(100vh - 70px);
-  background: #0f0f1a;
+  background: radial-gradient(ellipse at center, #1a1a2e 0%, #0f0f1a 100%);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Option A: object-fit: cover - Fills screen, may crop */
+/* Home page shoe image - FULL SHOE VISIBLE */
 .home-shoe-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;  /* ← Shows full shoe */
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  /* Add a subtle shadow for depth */
+  filter: drop-shadow(0 10px 40px rgba(0, 0, 0, 0.5));
 }
 
-/* Option B: object-fit: contain - Shows whole shoe, may have blanks */
-/* Uncomment this and comment the above to switch */
-/* .home-shoe-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+/* Optional: Add a subtle glow behind the shoe */
+.home-image-container::before {
+  content: '';
   position: absolute;
   top: 50%;
   left: 50%;
+  width: 60%;
+  height: 60%;
   transform: translate(-50%, -50%);
-} */
-
-/* Option C: Hybrid - Fills screen but keeps shoe centered */
-.home-shoe-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center, rgba(52, 152, 219, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
 }
 
-/* 360° Badge */
+/* 360° Badge - Top Right */
 .home-360-badge {
   position: absolute;
   top: 20px;
@@ -88,7 +80,7 @@
   flex-shrink: 0;
 }
 
-/* Loading & Empty states */
+/* Loading state */
 .home-loading {
   display: flex;
   justify-content: center;
@@ -98,6 +90,7 @@
   color: white;
 }
 
+/* Empty state */
 .home-empty {
   display: flex;
   flex-direction: column;
