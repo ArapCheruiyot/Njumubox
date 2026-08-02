@@ -53,7 +53,7 @@
   bottom: 40px;
   left: 30px;
   z-index: 10;
-  pointer-events: none; /* Allows clicks to pass through to image */
+  pointer-events: none;
 }
 
 .home-shoe-name {
@@ -148,7 +148,7 @@
 }
 
 /* ============================================
-   RESPONSIVE
+   RESPONSIVE - TABLET
    ============================================ */
 @media (max-width: 768px) {
   .home-image-container {
@@ -181,37 +181,70 @@
   }
 }
 
+/* ============================================
+   RESPONSIVE - SMALL PHONE (FIXED)
+   ============================================ */
 @media (max-width: 480px) {
+  /* Make header smaller on phone */
+  .header {
+    height: 50px !important;
+    padding: 4px 10px !important;
+  }
+
+  .logo-image {
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  .logo-text {
+    font-size: 0.9rem !important;
+  }
+
+  .admin-link {
+    font-size: 0.5rem !important;
+    padding: 3px 8px !important;
+  }
+
+  /* Make image container shorter so details fit */
   .home-image-container {
-    height: calc(100vh - 56px);
+    height: calc(100vh - 110px) !important;  /* Reduced height */
   }
   
   .home-loading,
   .home-empty {
-    height: calc(100vh - 56px);
+    height: calc(100vh - 110px);
   }
   
   .home-360-badge {
-    top: 12px;
-    right: 12px;
-    font-size: 0.6rem;
+    top: 10px;
+    right: 10px;
+    font-size: 0.5rem;
     padding: 3px 8px;
   }
   
+  /* Move details up slightly */
   .home-details-overlay {
-    bottom: 20px;
-    left: 16px;
+    bottom: 15px;
+    left: 14px;
   }
   
   .home-shoe-name {
-    font-size: clamp(1.2rem, 4vw, 1.5rem);
+    font-size: clamp(1rem, 4vw, 1.3rem);
+    margin-bottom: 1px;
   }
   
   .home-shoe-brand {
-    font-size: clamp(0.8rem, 2vw, 1rem);
+    font-size: clamp(0.7rem, 2vw, 0.85rem);
+    margin-bottom: 1px;
   }
   
   .home-shoe-price {
-    font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+    font-size: clamp(1rem, 3.5vw, 1.3rem);
+  }
+
+  /* Make footer smaller */
+  .home-footer {
+    padding: 4px 10px;
+    font-size: 0.5rem;
   }
 }
