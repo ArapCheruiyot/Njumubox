@@ -18,18 +18,27 @@ function Home() {
   useEffect(() => {
     const loadStores = async () => {
       try {
+        // 1. Get all users (vendors)
         const usersSnapshot = await getDocs(usersCollection);
         const storesData = [];
         
+        // 2. For each user, get their shoes
         for (const userDoc of usersSnapshot.docs) {
           const userData = userDoc.data();
+          
+          // Query shoes for this specific user
           const q = query(shoesCollection, where("userId", "==", userDoc.id));
           const shoesSnapshot = await getDocs(q);
           const vendorShoes = [];
+          
           shoesSnapshot.forEach((doc) => {
-            vendorShoes.push({ id: doc.id, ...doc.data() });
+            vendorShoes.push({ 
+              id: doc.id, 
+              ...doc.data() 
+            });
           });
           
+          // Only add stores that have shoes
           if (vendorShoes.length > 0) {
             storesData.push({
               uid: userDoc.id,
@@ -40,14 +49,21 @@ function Home() {
           }
         }
         
+        // 3. Shuffle stores for random display
         const shuffled = shuffleArray(storesData);
         setStores(shuffled);
         
+        // 4. Select first store and a random shoe from it
         if (shuffled.length > 0) {
-          const randomShoe = getRandomShoe(shuffled[0].shoes);
+          const firstStore = shuffled[0];
+          const randomShoe = getRandomShoe(firstStore.shoes);
           setCurrentShoe(randomShoe);
           setCurrentImageIndex(0);
           currentIndexRef.current = 0;
+          
+          console.log('📦 Loaded stores:', shuffled.length);
+          console.log('👟 First store:', firstStore.storeName, 'with', firstStore.shoes.length, 'shoes');
+          console.log('👟 Random shoe:', randomShoe?.name);
         }
         
         setLoading(false);
@@ -78,6 +94,7 @@ function Home() {
   };
 
   const getRandomShoe = (shoes) => {
+    if (!shoes || shoes.length === 0) return null;
     return shoes[Math.floor(Math.random() * shoes.length)];
   };
 
@@ -123,10 +140,13 @@ function Home() {
     
     const nextIndex = (currentStoreIndex + 1) % stores.length;
     setCurrentStoreIndex(nextIndex);
-    const randomShoe = getRandomShoe(stores[nextIndex].shoes);
+    const nextStore = stores[nextIndex];
+    const randomShoe = getRandomShoe(nextStore.shoes);
     setCurrentShoe(randomShoe);
     setCurrentImageIndex(0);
     currentIndexRef.current = 0;
+    
+    console.log('➡️ Next store:', nextStore.storeName, 'shoe:', randomShoe?.name);
     
     setTimeout(() => startAutoRotate(), 1500);
   };
@@ -137,10 +157,13 @@ function Home() {
     
     const prevIndex = (currentStoreIndex - 1 + stores.length) % stores.length;
     setCurrentStoreIndex(prevIndex);
-    const randomShoe = getRandomShoe(stores[prevIndex].shoes);
+    const prevStore = stores[prevIndex];
+    const randomShoe = getRandomShoe(prevStore.shoes);
     setCurrentShoe(randomShoe);
     setCurrentImageIndex(0);
     currentIndexRef.current = 0;
+    
+    console.log('⬅️ Previous store:', prevStore.storeName, 'shoe:', randomShoe?.name);
     
     setTimeout(() => startAutoRotate(), 1500);
   };
@@ -209,24 +232,25 @@ function Home() {
             src={currentShoe.images[currentImageIndex]} 
             alt={currentShoe.name}
             className="home-shoe-image"
+            key={`${currentShoe.id}-${currentImageIndex}`}
           />
         )}
         
-        {/* 360° Badge - Top Right */}
+        {/* 360° Badge */}
         {totalImages > 1 && (
           <div className="home-360-badge">
             🔄 {currentImageIndex + 1}/{totalImages}
           </div>
         )}
 
-        {/* ===== SHOE DETAILS - BOTTOM LEFT ===== */}
+        {/* Shoe Details - Bottom Left */}
         <div className="home-details-overlay">
           <h2 className="home-shoe-name">{currentShoe?.name}</h2>
           <p className="home-shoe-brand">{currentShoe?.brand}</p>
           <p className="home-shoe-price">Ksh {currentShoe?.price?.toLocaleString()}</p>
         </div>
 
-        {/* ===== NAVIGATION BUTTONS - BOTTOM RIGHT ===== */}
+        {/* Navigation - Bottom Right */}
         <div className="home-nav-overlay">
           <div className="home-nav-buttons">
             <button 
@@ -259,7 +283,8 @@ function Home() {
                 onClick={() => {
                   stopAutoRotate();
                   setCurrentStoreIndex(index);
-                  const randomShoe = getRandomShoe(store.shoes);
+                  const selectedStore = stores[index];
+                  const randomShoe = getRandomShoe(selectedStore.shoes);
                   setCurrentShoe(randomShoe);
                   setCurrentImageIndex(0);
                   currentIndexRef.current = 0;
