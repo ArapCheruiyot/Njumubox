@@ -161,7 +161,7 @@ function Home() {
           display: 'flex', 
           justifyContent: 'center', 
           alignItems: 'center', 
-          height: 'calc(100vh - 100px)',
+          height: 'calc(100vh - 70px)',
           color: 'white'
         }}>
           <p>Loading stores...</p>
@@ -187,7 +187,7 @@ function Home() {
           flexDirection: 'column',
           justifyContent: 'center', 
           alignItems: 'center', 
-          height: 'calc(100vh - 100px)',
+          height: 'calc(100vh - 70px)',
           color: 'white',
           textAlign: 'center',
           padding: '20px'
@@ -206,7 +206,7 @@ function Home() {
 
   return (
     <div className="app" style={{ height: '100vh', overflow: 'hidden' }}>
-      <header className="header">
+      <header className="header" style={{ flexShrink: 0 }}>
         <div className="logo-container">
           <img src={logo} alt="NdulaBox Logo" className="logo-image" />
           <h1 className="logo-text">NdulaBox</h1>
@@ -222,15 +222,15 @@ function Home() {
       {/* FULL SCREEN IMAGE CONTAINER */}
       <div style={{
         position: 'relative',
-        height: 'calc(100vh - 64px)',
+        height: 'calc(100vh - 70px)',
         width: '100%',
-        background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
+        background: '#0f0f1a',
         overflow: 'hidden',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
       }}>
-        {/* Main Image */}
+        {/* Main Image - Full screen */}
         {currentShoe && (
           <img 
             src={currentShoe.images[currentImageIndex]} 
@@ -239,7 +239,6 @@ function Home() {
               width: '100%',
               height: '100%',
               objectFit: 'contain',
-              padding: '20px',
               position: 'absolute',
               top: '50%',
               left: '50%',
@@ -248,7 +247,7 @@ function Home() {
           />
         )}
         
-        {/* 360° Badge */}
+        {/* 360° Badge - Top Right */}
         {totalImages > 1 && (
           <div style={{
             position: 'absolute',
@@ -266,36 +265,70 @@ function Home() {
           </div>
         )}
 
-        {/* ===== OVERLAY AT BOTTOM ===== */}
+        {/* ===== VIEW STORE BUTTON - TOP RIGHT ===== */}
+        <Link 
+          to={`/store/${currentStore?.uid}`}
+          style={{
+            position: 'absolute',
+            top: '20px',
+            right: '100px',
+            padding: '10px 24px',
+            background: 'linear-gradient(135deg, #27ae60, #1e8449)',
+            color: 'white',
+            textDecoration: 'none',
+            borderRadius: '10px',
+            fontSize: '0.95rem',
+            fontWeight: 'bold',
+            zIndex: 10,
+            boxShadow: '0 4px 20px rgba(39,174,96,0.3)',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.05)';
+            e.currentTarget.style.boxShadow = '0 8px 30px rgba(39,174,96,0.5)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.boxShadow = '0 4px 20px rgba(39,174,96,0.3)';
+          }}
+        >
+          👁️ View Store
+        </Link>
+
+        {/* ===== OVERLAY AT BOTTOM - Shoe Details + Navigation ===== */}
         <div style={{
           position: 'absolute',
           bottom: 0,
           left: 0,
           right: 0,
-          background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)',
-          padding: '30px 20px 20px',
+          background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, transparent 100%)',
+          padding: '30px 24px 20px',
           zIndex: 5
         }}>
-          {/* Shoe Details */}
-          <div style={{ textAlign: 'center', marginBottom: '15px' }}>
+          {/* Shoe Details - Bottom Left */}
+          <div style={{ 
+            textAlign: 'left',
+            marginBottom: '15px'
+          }}>
             <h2 style={{ 
               color: 'white', 
-              fontSize: '1.8rem',
-              marginBottom: '4px',
+              fontSize: 'clamp(1.5rem, 4vw, 2.2rem)',
+              fontWeight: 700,
+              marginBottom: '2px',
               textShadow: '0 2px 20px rgba(0,0,0,0.5)'
             }}>
               {currentShoe?.name}
             </h2>
             <p style={{ 
               color: 'rgba(255,255,255,0.6)', 
-              fontSize: '1.1rem',
+              fontSize: 'clamp(1rem, 2vw, 1.2rem)',
               marginBottom: '4px'
             }}>
               {currentShoe?.brand}
             </p>
             <p style={{ 
               color: '#2ecc71', 
-              fontSize: '1.8rem',
+              fontSize: 'clamp(1.5rem, 3.5vw, 2rem)',
               fontWeight: 'bold',
               textShadow: '0 2px 20px rgba(0,0,0,0.5)'
             }}>
@@ -303,130 +336,105 @@ function Home() {
             </p>
           </div>
 
-          {/* Navigation + View Store */}
+          {/* Navigation Arrows + Store Dots */}
           <div style={{
             display: 'flex',
-            justifyContent: 'center',
+            justifyContent: 'space-between',
             alignItems: 'center',
-            gap: '15px',
-            flexWrap: 'wrap'
+            flexWrap: 'wrap',
+            gap: '10px'
           }}>
-            <button 
-              onClick={goToPreviousStore}
-              style={{
-                padding: '8px 20px',
-                background: 'rgba(255,255,255,0.1)',
-                color: 'white',
-                border: '1px solid rgba(255,255,255,0.2)',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontSize: '0.9rem',
-                backdropFilter: 'blur(10px)',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255,255,255,0.2)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
-              }}
-            >
-              ◀
-            </button>
-            
-            <span style={{ 
-              color: 'rgba(255,255,255,0.5)', 
-              fontSize: '0.8rem'
+            {/* Left: Previous/Next Arrows */}
+            <div style={{
+              display: 'flex',
+              gap: '10px',
+              alignItems: 'center'
             }}>
-              {currentStoreIndex + 1} / {stores.length}
-            </span>
-            
-            <button 
-              onClick={goToNextStore}
-              style={{
-                padding: '8px 20px',
-                background: '#3498db',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontSize: '0.9rem',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#2980b9';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#3498db';
-              }}
-            >
-              ▶
-            </button>
-
-            <span style={{ 
-              width: '2px', 
-              height: '30px', 
-              background: 'rgba(255,255,255,0.2)',
-              display: 'inline-block'
-            }} />
-
-            <Link 
-              to={`/store/${currentStore?.uid}`}
-              style={{
-                padding: '10px 28px',
-                background: 'linear-gradient(135deg, #27ae60, #1e8449)',
-                color: 'white',
-                textDecoration: 'none',
-                borderRadius: '10px',
-                fontSize: '1rem',
-                fontWeight: 'bold',
-                transition: 'all 0.3s ease',
-                display: 'inline-block',
-                boxShadow: '0 4px 20px rgba(39,174,96,0.3)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.05)';
-                e.currentTarget.style.boxShadow = '0 8px 30px rgba(39,174,96,0.5)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.boxShadow = '0 4px 20px rgba(39,174,96,0.3)';
-              }}
-            >
-              👁️ View Store
-            </Link>
-          </div>
-
-          {/* Store Dots */}
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '6px',
-            marginTop: '12px'
-          }}>
-            {stores.map((store, index) => (
-              <div
-                key={store.uid}
-                onClick={() => {
-                  stopAutoRotate();
-                  setCurrentStoreIndex(index);
-                  const randomShoe = getRandomShoe(store.shoes);
-                  setCurrentShoe(randomShoe);
-                  setCurrentImageIndex(0);
-                  currentIndexRef.current = 0;
-                  setTimeout(() => startAutoRotate(), 1500);
-                }}
+              <button 
+                onClick={goToPreviousStore}
                 style={{
-                  width: '8px',
-                  height: '8px',
-                  borderRadius: '50%',
-                  background: index === currentStoreIndex ? '#3498db' : 'rgba(255,255,255,0.2)',
+                  padding: '8px 16px',
+                  background: 'rgba(255,255,255,0.1)',
+                  color: 'white',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  borderRadius: '8px',
                   cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  border: index === currentStoreIndex ? '2px solid #3498db' : 'none'
+                  fontSize: '1rem',
+                  backdropFilter: 'blur(10px)',
+                  transition: 'all 0.3s ease'
                 }}
-              />
-            ))}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.2)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+                }}
+              >
+                ◀
+              </button>
+              
+              <button 
+                onClick={goToNextStore}
+                style={{
+                  padding: '8px 16px',
+                  background: 'rgba(255,255,255,0.15)',
+                  color: 'white',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '1rem',
+                  backdropFilter: 'blur(10px)',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.25)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
+                }}
+              >
+                ▶
+              </button>
+              
+              <span style={{ 
+                color: 'rgba(255,255,255,0.4)', 
+                fontSize: '0.8rem',
+                marginLeft: '5px'
+              }}>
+                {currentStoreIndex + 1} / {stores.length}
+              </span>
+            </div>
+
+            {/* Right: Store Dots */}
+            <div style={{
+              display: 'flex',
+              gap: '6px',
+              alignItems: 'center'
+            }}>
+              {stores.map((store, index) => (
+                <div
+                  key={store.uid}
+                  onClick={() => {
+                    stopAutoRotate();
+                    setCurrentStoreIndex(index);
+                    const randomShoe = getRandomShoe(store.shoes);
+                    setCurrentShoe(randomShoe);
+                    setCurrentImageIndex(0);
+                    currentIndexRef.current = 0;
+                    setTimeout(() => startAutoRotate(), 1500);
+                  }}
+                  style={{
+                    width: '8px',
+                    height: '8px',
+                    borderRadius: '50%',
+                    background: index === currentStoreIndex ? '#3498db' : 'rgba(255,255,255,0.2)',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    border: index === currentStoreIndex ? '2px solid #3498db' : 'none'
+                  }}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -434,13 +442,14 @@ function Home() {
       {/* Minimal Footer */}
       <footer style={{
         textAlign: 'center',
-        padding: '8px 20px',
-        background: 'rgba(15,15,26,0.9)',
-        color: 'rgba(255,255,255,0.2)',
-        fontSize: '0.7rem',
+        padding: '6px 20px',
+        background: 'rgba(15,15,26,0.95)',
+        color: 'rgba(255,255,255,0.15)',
+        fontSize: '0.6rem',
         borderTop: '1px solid rgba(255,255,255,0.03)',
         position: 'relative',
-        zIndex: 10
+        zIndex: 10,
+        flexShrink: 0
       }}>
         <p>© 2026 NdulaBox. All rights reserved.</p>
       </footer>
