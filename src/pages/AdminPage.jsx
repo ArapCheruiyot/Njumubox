@@ -30,10 +30,12 @@ function AdminPage() {
           const docRef = doc(usersCollection, currentUser.uid);
           const docSnap = await getDoc(docRef);
           
-          if (docSnap.exists()) {
-            setUserProfile(docSnap.data());
+          // ✅ FIXED: Use .exists (property, not function)
+          if (docSnap.exists) {
+            const data = docSnap.data();
+            setUserProfile(data);
             setHasProfile(true);
-            console.log('👤 User profile found:', docSnap.data().storeName);
+            console.log('👤 User profile found:', data.storeName);
           } else {
             setHasProfile(false);
             console.log('👤 New user - needs profile setup');
