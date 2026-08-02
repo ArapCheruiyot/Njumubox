@@ -218,6 +218,13 @@ function Home() {
             🔄 {currentImageIndex + 1}/{totalImages}
           </div>
         )}
+
+        {/* ===== SHOE DETAILS OVERLAY - BOTTOM LEFT ===== */}
+        <div className="home-details-overlay">
+          <h2 className="home-shoe-name">{currentShoe?.name}</h2>
+          <p className="home-shoe-brand">{currentShoe?.brand}</p>
+          <p className="home-shoe-price">Ksh {currentShoe?.price?.toLocaleString()}</p>
+        </div>
       </div>
 
       {/* Minimal Footer */}
