@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { usersCollection, shoesCollection, getDocs, query, where } from '../firebase';
+import { usersCollection, shoesCollection, getDocs, query, where, doc, getDoc } from '../firebase';
 import logo from '../assets/logo.png';
 
 function Home() {
@@ -18,42 +18,71 @@ function Home() {
   useEffect(() => {
     const loadStores = async () => {
       try {
-        // 1. Get all users (vendors)
-        const usersSnapshot = await getDocs(usersCollection);
-        const storesData = [];
-        
-        // 2. For each user, get their shoes
-        for (const userDoc of usersSnapshot.docs) {
-          const userData = userDoc.data();
-          
-          // Query shoes for this specific user
-          const q = query(shoesCollection, where("userId", "==", userDoc.id));
-          const shoesSnapshot = await getDocs(q);
-          const vendorShoes = [];
-          
-          shoesSnapshot.forEach((doc) => {
-            vendorShoes.push({ 
-              id: doc.id, 
-              ...doc.data() 
-            });
-          });
-          
-          // Only add stores that have shoes
-          if (vendorShoes.length > 0) {
-            storesData.push({
-              uid: userDoc.id,
-              storeName: userData.storeName || 'Unnamed Store',
-              email: userData.email,
-              shoes: vendorShoes
-            });
-          }
+        // 1. Get ALL shoes first
+        const shoesSnapshot = await getDocs(shoesCollection);
+        const allShoes = [];
+        shoesSnapshot.forEach((doc) => {
+          allShoes.push({ id: doc.id, ...doc.data() });
+        });
+
+        console.log('📦 Total shoes found:', allShoes.length);
+
+        if (allShoes.length === 0) {
+          setLoading(false);
+          setStores([]);
+          return;
         }
-        
-        // 3. Shuffle stores for random display
+
+        // 2. Group shoes by userId
+        const shoesByUser = {};
+        allShoes.forEach((shoe) => {
+          const userId = shoe.userId;
+          if (!userId) {
+            console.warn('⚠️ Shoe has no userId:', shoe);
+            return;
+          }
+          if (!shoesByUser[userId]) {
+            shoesByUser[userId] = [];
+          }
+          shoesByUser[userId].push(shoe);
+        });
+
+        console.log('👥 Users with shoes:', Object.keys(shoesByUser).length);
+
+        // 3. Get user info for each userId
+        const storesData = [];
+        for (const userId of Object.keys(shoesByUser)) {
+          let storeName = 'Unnamed Store';
+          let userEmail = '';
+          
+          // Try to get user info from users collection
+          try {
+            const userDocRef = doc(usersCollection, userId);
+            const userDoc = await getDoc(userDocRef);
+            if (userDoc.exists) {
+              const userData = userDoc.data();
+              storeName = userData.storeName || 'Unnamed Store';
+              userEmail = userData.email || '';
+            }
+          } catch (error) {
+            console.warn('Could not fetch user info for:', userId);
+          }
+          
+          storesData.push({
+            uid: userId,
+            storeName: storeName,
+            email: userEmail,
+            shoes: shoesByUser[userId]
+          });
+        }
+
+        console.log('🏪 Stores created:', storesData.length);
+
+        // 4. Shuffle stores for random display
         const shuffled = shuffleArray(storesData);
         setStores(shuffled);
         
-        // 4. Select first store and a random shoe from it
+        // 5. Select first store and a random shoe from it
         if (shuffled.length > 0) {
           const firstStore = shuffled[0];
           const randomShoe = getRandomShoe(firstStore.shoes);
@@ -61,7 +90,6 @@ function Home() {
           setCurrentImageIndex(0);
           currentIndexRef.current = 0;
           
-          console.log('📦 Loaded stores:', shuffled.length);
           console.log('👟 First store:', firstStore.storeName, 'with', firstStore.shoes.length, 'shoes');
           console.log('👟 Random shoe:', randomShoe?.name);
         }
@@ -250,7 +278,20 @@ function Home() {
           <p className="home-shoe-price">Ksh {currentShoe?.price?.toLocaleString()}</p>
         </div>
 
-        {/* Navigation - Bottom Right */}
+        {/* ===== STORE INFO - BOTTOM RIGHT (ABOVE VIEW STORE) ===== */}
+        <div className="home-store-info">
+          <span className="home-store-name">📍 {currentStore?.storeName}</span>
+        </div>
+
+        {/* ===== VIEW STORE BUTTON - BOTTOM RIGHT ===== */}
+        <Link 
+          to={`/store/${currentStore?.uid}`} 
+          className="home-view-store-btn"
+        >
+          👁️ View Store
+        </Link>
+
+        {/* Navigation - Bottom Right (BELOW View Store) */}
         <div className="home-nav-overlay">
           <div className="home-nav-buttons">
             <button 
