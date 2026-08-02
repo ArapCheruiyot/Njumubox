@@ -16,7 +16,7 @@
   position: relative;
   flex: 1 1 auto;
   width: 100%;
-  min-height: 0; /* Allows flex container to shrink */
+  min-height: 0;
   background: radial-gradient(ellipse at center, #1a1a2e 0%, #0f0f1a 100%);
   overflow: hidden;
   display: flex;
@@ -60,27 +60,32 @@
   pointer-events: none;
 }
 
+/* ===== BIGGER TEXT ON ALL DEVICES ===== */
 .home-shoe-name {
   color: white;
-  font-size: clamp(1.5rem, 4vw, 2.8rem);
-  font-weight: 700;
-  margin-bottom: 2px;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
+  font-size: clamp(2rem, 5vw, 3.5rem) !important;  /* BIGGER */
+  font-weight: 800;
+  margin-bottom: 4px;
+  text-shadow: 0 2px 25px rgba(0, 0, 0, 0.9);
   line-height: 1.2;
+  letter-spacing: -0.5px;
 }
 
 .home-shoe-brand {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: clamp(0.9rem, 1.5vw, 1.3rem);
-  margin-bottom: 2px;
-  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.8);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: clamp(1.1rem, 1.8vw, 1.5rem) !important;  /* BIGGER */
+  margin-bottom: 4px;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9);
+  font-weight: 400;
+  letter-spacing: 0.5px;
 }
 
 .home-shoe-price {
   color: #2ecc71;
-  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
-  font-weight: bold;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
+  font-size: clamp(2rem, 4.5vw, 3.2rem) !important;  /* BIGGER */
+  font-weight: 800;
+  text-shadow: 0 2px 25px rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.5px;
 }
 
 /* 360° Badge */
@@ -166,6 +171,14 @@
     bottom: 40px;
     left: 30px;
   }
+  
+  .home-shoe-name {
+    font-size: clamp(2.5rem, 5vw, 3.5rem) !important;
+  }
+  
+  .home-shoe-price {
+    font-size: clamp(2.5rem, 4.5vw, 3.2rem) !important;
+  }
 }
 
 /* ============================================
@@ -209,11 +222,15 @@
   }
   
   .home-shoe-name {
-    font-size: clamp(1.3rem, 4vw, 1.8rem);
+    font-size: clamp(1.8rem, 4.5vw, 2.2rem) !important;
+  }
+  
+  .home-shoe-brand {
+    font-size: clamp(1rem, 1.8vw, 1.2rem) !important;
   }
   
   .home-shoe-price {
-    font-size: clamp(1.3rem, 3.5vw, 1.8rem);
+    font-size: clamp(1.8rem, 4vw, 2.2rem) !important;
   }
 
   .home-footer {
@@ -223,10 +240,10 @@
 }
 
 /* ============================================
-   SMALL PHONE - FIXED (NO SCROLLING)
+   SMALL PHONE - BIGGER TEXT
    ============================================ */
 @media (max-width: 480px) {
-  /* Make header much smaller */
+  /* Make header smaller */
   .header {
     height: 48px !important;
     padding: 3px 10px !important;
@@ -265,24 +282,25 @@
     padding: 2px 8px;
   }
   
-  /* Move details up */
+  /* Move details up slightly */
   .home-details-overlay {
-    bottom: 14px;
+    bottom: 16px;
     left: 14px;
   }
   
+  /* ===== BIGGER TEXT ON PHONE ===== */
   .home-shoe-name {
-    font-size: clamp(1rem, 3.5vw, 1.2rem);
-    margin-bottom: 1px;
+    font-size: clamp(1.4rem, 4.5vw, 1.7rem) !important;
+    margin-bottom: 2px;
   }
   
   .home-shoe-brand {
-    font-size: clamp(0.65rem, 1.8vw, 0.8rem);
-    margin-bottom: 1px;
+    font-size: clamp(0.9rem, 2.2vw, 1.1rem) !important;
+    margin-bottom: 2px;
   }
   
   .home-shoe-price {
-    font-size: clamp(1rem, 3vw, 1.2rem);
+    font-size: clamp(1.4rem, 4vw, 1.7rem) !important;
   }
 
   /* Make footer smaller */
@@ -320,20 +338,20 @@
   }
 
   .home-details-overlay {
-    bottom: 10px;
+    bottom: 12px;
     left: 12px;
   }
 
   .home-shoe-name {
-    font-size: clamp(0.85rem, 3vw, 1rem);
+    font-size: clamp(1.2rem, 4vw, 1.4rem) !important;
   }
 
   .home-shoe-brand {
-    font-size: clamp(0.55rem, 1.5vw, 0.7rem);
+    font-size: clamp(0.8rem, 2vw, 0.9rem) !important;
   }
 
   .home-shoe-price {
-    font-size: clamp(0.85rem, 2.8vw, 1rem);
+    font-size: clamp(1.2rem, 3.5vw, 1.4rem) !important;
   }
 
   .home-360-badge {
