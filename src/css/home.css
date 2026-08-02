@@ -2,7 +2,7 @@
    HOME PAGE - FULL SCREEN SHOE
    ============================================ */
 
-/* Full screen container - OVERRIDE app height */
+/* Full screen container */
 .home-fullscreen {
   height: 100vh !important;
   overflow: hidden !important;
@@ -13,7 +13,7 @@
   position: relative;
   flex: 1;
   width: 100%;
-  height: calc(100vh - 70px); /* Subtract header height */
+  height: calc(100vh - 70px);
   background: #0f0f1a;
   overflow: hidden;
   display: flex;
@@ -21,8 +21,20 @@
   justify-content: center;
 }
 
-/* Home page shoe image - FULL SCREEN */
+/* Option A: object-fit: cover - Fills screen, may crop */
 .home-shoe-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Option B: object-fit: contain - Shows whole shoe, may have blanks */
+/* Uncomment this and comment the above to switch */
+/* .home-shoe-image {
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -30,9 +42,21 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+} */
+
+/* Option C: Hybrid - Fills screen but keeps shoe centered */
+.home-shoe-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-/* 360° Badge - Top Right */
+/* 360° Badge */
 .home-360-badge {
   position: absolute;
   top: 20px;
@@ -46,12 +70,12 @@
   z-index: 10;
 }
 
-/* Explore link in header */
+/* Explore link */
 .explore-link {
   border-color: #27ae60 !important;
 }
 
-/* Home page footer */
+/* Home footer */
 .home-footer {
   text-align: center;
   padding: 6px 20px;
@@ -64,7 +88,7 @@
   flex-shrink: 0;
 }
 
-/* Loading state */
+/* Loading & Empty states */
 .home-loading {
   display: flex;
   justify-content: center;
@@ -74,7 +98,6 @@
   color: white;
 }
 
-/* Empty state */
 .home-empty {
   display: flex;
   flex-direction: column;
@@ -101,12 +124,8 @@
   text-decoration: none;
 }
 
-.home-empty-link:hover {
-  text-decoration: underline;
-}
-
 /* ============================================
-   RESPONSIVE - TABLET
+   RESPONSIVE
    ============================================ */
 @media (max-width: 768px) {
   .home-image-container {
@@ -124,15 +143,8 @@
     font-size: 0.7rem;
     padding: 4px 10px;
   }
-  
-  .home-empty h2 {
-    font-size: 1.6rem;
-  }
 }
 
-/* ============================================
-   RESPONSIVE - SMALL PHONE
-   ============================================ */
 @media (max-width: 480px) {
   .home-image-container {
     height: calc(100vh - 56px);
@@ -141,10 +153,6 @@
   .home-loading,
   .home-empty {
     height: calc(100vh - 56px);
-  }
-  
-  .home-empty h2 {
-    font-size: 1.3rem;
   }
   
   .home-360-badge {
