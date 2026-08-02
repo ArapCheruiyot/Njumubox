@@ -5,222 +5,11 @@
 /* ===== IMPORT ALL MODULES ===== */
 @import './header.css';
 @import './details.css';
-/* @import './thumbnails.css'; */ /* ← REMOVED - Now using ThumbnailRack.css */
 @import './categories.css';
 @import './buttons.css';
 @import './rotation.css';
 @import './admin.css';
-
-/* ============================================
-   HOME PAGE - FULL SCREEN OVERRIDES
-   ============================================ */
-
-/* Ensure body has no overflow on home page */
-body.home-page {
-  overflow: hidden;
-}
-
-/* Home page app container - no scroll */
-.home-page .app {
-  height: 100vh;
-  overflow: hidden;
-}
-
-/* Home page header - fixed at top */
-.home-page .header {
-  flex-shrink: 0;
-  position: relative;
-  z-index: 20;
-}
-
-/* Hide footer on home page */
-.home-page .footer {
-  display: none;
-}
-
-/* Home page main content - fills remaining space */
-.home-page .home-main {
-  flex: 1;
-  position: relative;
-  overflow: hidden;
-  height: calc(100vh - 64px);
-}
-
-/* Home page image - full screen */
-.home-page .home-image-container {
-  position: relative;
-  height: 100%;
-  width: 100%;
-  background: #0f0f1a;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Home page image itself */
-.home-page .home-shoe-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-/* Home page overlay at bottom */
-.home-page .home-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
-  padding: 30px 24px 20px;
-  z-index: 5;
-}
-
-/* Home page shoe details in overlay - LEFT ALIGNED */
-.home-page .home-shoe-name {
-  color: white;
-  font-size: clamp(1.5rem, 4vw, 2.2rem);
-  font-weight: 700;
-  margin-bottom: 2px;
-  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
-  text-align: left;
-}
-
-.home-page .home-shoe-brand {
-  color: rgba(255,255,255,0.6);
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  margin-bottom: 4px;
-  text-align: left;
-}
-
-.home-page .home-shoe-price {
-  color: #2ecc71;
-  font-size: clamp(1.5rem, 3.5vw, 2rem);
-  font-weight: bold;
-  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
-  text-align: left;
-  margin-bottom: 15px;
-}
-
-/* Home page navigation wrapper */
-.home-page .home-nav-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-/* Home page navigation buttons */
-.home-page .home-nav-buttons {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.home-page .home-nav-btn {
-  padding: 8px 16px;
-  background: rgba(255,255,255,0.1);
-  color: white;
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-}
-
-.home-page .home-nav-btn:hover {
-  background: rgba(255,255,255,0.2);
-}
-
-.home-page .home-nav-btn-next {
-  padding: 8px 16px;
-  background: rgba(255,255,255,0.15);
-  color: white;
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-}
-
-.home-page .home-nav-btn-next:hover {
-  background: rgba(255,255,255,0.25);
-}
-
-.home-page .home-store-counter {
-  color: rgba(255,255,255,0.4);
-  font-size: 0.8rem;
-  margin-left: 5px;
-}
-
-/* Home page store dots */
-.home-page .home-dots {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-}
-
-.home-page .home-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.2);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
-}
-
-.home-page .home-dot.active {
-  background: #3498db;
-  border-color: #3498db;
-}
-
-.home-page .home-dot:hover {
-  transform: scale(1.2);
-}
-
-/* Home page 360 badge */
-.home-page .home-360-badge {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: rgba(0,0,0,0.6);
-  color: white;
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  backdrop-filter: blur(10px);
-  z-index: 10;
-}
-
-/* Home page view store button - TOP RIGHT */
-.home-page .home-view-store-btn {
-  position: absolute;
-  top: 20px;
-  right: 100px;
-  padding: 10px 24px;
-  background: linear-gradient(135deg, #27ae60, #1e8449);
-  color: white;
-  text-decoration: none;
-  border-radius: 10px;
-  font-size: 0.95rem;
-  font-weight: bold;
-  z-index: 10;
-  box-shadow: 0 4px 20px rgba(39,174,96,0.3);
-  transition: all 0.3s ease;
-}
-
-.home-page .home-view-store-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 30px rgba(39,174,96,0.5);
-}
+@import './home.css';  /* ← ADD THIS */
 
 /* ============================================
    BASE STYLES
@@ -324,36 +113,6 @@ body {
     padding: 0px 6px;
   }
 
-  /* Home page tablet adjustments */
-  .home-page .home-main {
-    height: calc(100vh - 64px);
-  }
-
-  .home-page .home-shoe-name {
-    font-size: 1.5rem;
-  }
-
-  .home-page .home-shoe-price {
-    font-size: 1.5rem;
-  }
-
-  .home-page .home-overlay {
-    padding: 20px 16px 16px;
-  }
-
-  .home-page .home-view-store-btn {
-    right: 70px;
-    padding: 8px 16px;
-    font-size: 0.85rem;
-  }
-
-  .home-page .home-360-badge {
-    top: 15px;
-    right: 15px;
-    font-size: 0.7rem;
-    padding: 4px 10px;
-  }
-
   /* ===== DETAILS ===== */
   .shoe-details-overlay {
     padding: 14px 16px 16px;
@@ -377,7 +136,7 @@ body {
     font-size: 0.65rem;
   }
 
-  /* ===== ROTATION CONTROLS - ADJUSTED ===== */
+  /* ===== ROTATION CONTROLS ===== */
   .rotation-badge {
     bottom: 190px;
     font-size: 0.5rem;
@@ -396,7 +155,7 @@ body {
     font-size: 0.55rem;
   }
 
-  /* ===== FLOATING BUTTONS - BIGGER ON TABLET ===== */
+  /* ===== FLOATING BUTTONS ===== */
   .floating-buttons {
     bottom: 18px;
     right: 18px;
@@ -453,53 +212,6 @@ body {
     padding: 0px 5px;
   }
 
-  /* Home page phone adjustments */
-  .home-page .home-main {
-    height: calc(100vh - 56px);
-  }
-
-  .home-page .home-shoe-name {
-    font-size: 1.2rem;
-  }
-
-  .home-page .home-shoe-brand {
-    font-size: 0.8rem;
-  }
-
-  .home-page .home-shoe-price {
-    font-size: 1.2rem;
-  }
-
-  .home-page .home-overlay {
-    padding: 16px 12px 12px;
-  }
-
-  .home-page .home-nav-btn,
-  .home-page .home-nav-btn-next {
-    padding: 6px 14px;
-    font-size: 0.8rem;
-  }
-
-  .home-page .home-view-store-btn {
-    top: 12px;
-    right: 60px;
-    padding: 6px 14px;
-    font-size: 0.75rem;
-    border-radius: 8px;
-  }
-
-  .home-page .home-360-badge {
-    top: 12px;
-    right: 12px;
-    font-size: 0.6rem;
-    padding: 3px 8px;
-  }
-
-  .home-page .home-dot {
-    width: 6px;
-    height: 6px;
-  }
-
   /* ===== DETAILS ===== */
   .shoe-details-overlay {
     padding: 12px 14px 14px;
@@ -523,7 +235,7 @@ body {
     font-size: 0.55rem;
   }
 
-  /* ===== ROTATION CONTROLS - ADJUSTED ===== */
+  /* ===== ROTATION CONTROLS ===== */
   .rotation-badge {
     bottom: 175px;
     font-size: 0.45rem;
@@ -542,7 +254,7 @@ body {
     font-size: 0.45rem;
   }
 
-  /* ===== FLOATING BUTTONS - BIGGER ON PHONE ===== */
+  /* ===== FLOATING BUTTONS ===== */
   .floating-buttons {
     bottom: 16px;
     right: 16px;

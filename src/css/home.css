@@ -1,49 +1,156 @@
 /* ============================================
-   HOME PAGE - FULL SCREEN STYLES
+   HOME PAGE - FULL SCREEN SHOE
    ============================================ */
 
-/* Full screen container */
+/* Full screen container - OVERRIDE app height */
 .home-fullscreen {
-  height: 100vh;
-  overflow: hidden;
+  height: 100vh !important;
+  overflow: hidden !important;
 }
 
-/* Remove scrolling on home page */
-body.home-page {
-  overflow: hidden;
-}
-
-/* Home page header override */
-.home-page .header {
-  flex-shrink: 0;
+/* Home page image container - FULL SCREEN */
+.home-image-container {
   position: relative;
-  z-index: 20;
-}
-
-/* Hide footer on home page */
-.home-page .footer {
-  display: none;
-}
-
-/* Home page image container */
-.home-page .home-image-container {
-  position: relative;
-  height: calc(100vh - 64px);
+  flex: 1;
   width: 100%;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  height: calc(100vh - 70px); /* Subtract header height */
+  background: #0f0f1a;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Home page overlay at bottom */
-.home-page .home-overlay {
+/* Home page shoe image - FULL SCREEN */
+.home-shoe-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 60%, transparent 100%);
-  padding: 30px 20px 20px;
-  z-index: 5;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* 360° Badge - Top Right */
+.home-360-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+/* Explore link in header */
+.explore-link {
+  border-color: #27ae60 !important;
+}
+
+/* Home page footer */
+.home-footer {
+  text-align: center;
+  padding: 6px 20px;
+  background: rgba(15,15,26,0.95);
+  color: rgba(255,255,255,0.15);
+  font-size: 0.6rem;
+  border-top: 1px solid rgba(255,255,255,0.03);
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+/* Loading state */
+.home-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  height: calc(100vh - 70px);
+  color: white;
+}
+
+/* Empty state */
+.home-empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  height: calc(100vh - 70px);
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.home-empty h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.home-empty p {
+  color: rgba(255,255,255,0.6);
+}
+
+.home-empty-link {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.home-empty-link:hover {
+  text-decoration: underline;
+}
+
+/* ============================================
+   RESPONSIVE - TABLET
+   ============================================ */
+@media (max-width: 768px) {
+  .home-image-container {
+    height: calc(100vh - 64px);
+  }
+  
+  .home-loading,
+  .home-empty {
+    height: calc(100vh - 64px);
+  }
+  
+  .home-360-badge {
+    top: 15px;
+    right: 15px;
+    font-size: 0.7rem;
+    padding: 4px 10px;
+  }
+  
+  .home-empty h2 {
+    font-size: 1.6rem;
+  }
+}
+
+/* ============================================
+   RESPONSIVE - SMALL PHONE
+   ============================================ */
+@media (max-width: 480px) {
+  .home-image-container {
+    height: calc(100vh - 56px);
+  }
+  
+  .home-loading,
+  .home-empty {
+    height: calc(100vh - 56px);
+  }
+  
+  .home-empty h2 {
+    font-size: 1.3rem;
+  }
+  
+  .home-360-badge {
+    top: 12px;
+    right: 12px;
+    font-size: 0.6rem;
+    padding: 3px 8px;
+  }
 }
