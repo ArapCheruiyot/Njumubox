@@ -84,33 +84,33 @@ body {
    ============================================ */
 @media (max-width: 768px) {
   .header {
-    height: 64px;
-    padding: 6px 16px;
+    height: 68px !important;
+    padding: 10px 18px !important;
   }
 
   .logo-image {
-    width: 42px;
-    height: 42px;
+    width: 44px !important;
+    height: 44px !important;
   }
 
   .logo-text {
-    font-size: 1.4rem;
+    font-size: 1.5rem !important;
   }
 
   .admin-link {
-    font-size: 0.7rem;
-    padding: 5px 14px;
+    font-size: 0.75rem !important;
+    padding: 5px 14px !important;
   }
 
   .cart-icon {
-    font-size: 0.9rem;
-    padding: 5px 14px;
+    font-size: 0.95rem !important;
+    padding: 5px 12px !important;
   }
 
   .cart-count {
-    font-size: 0.65rem;
-    min-width: 18px;
-    padding: 0px 6px;
+    font-size: 0.7rem !important;
+    min-width: 18px !important;
+    padding: 0px 6px !important;
   }
 
   /* ===== DETAILS ===== */
@@ -183,33 +183,35 @@ body {
    ============================================ */
 @media (max-width: 480px) {
   .header {
-    height: 56px;
-    padding: 4px 12px;
+    height: 62px !important;
+    padding: 8px 14px !important;
   }
 
   .logo-image {
-    width: 36px;
-    height: 36px;
+    width: 38px !important;
+    height: 38px !important;
   }
 
   .logo-text {
-    font-size: 1.1rem;
+    font-size: 1.25rem !important;
   }
 
   .admin-link {
-    font-size: 0.6rem;
-    padding: 4px 12px;
+    font-size: 0.7rem !important;
+    padding: 4px 12px !important;
+    border-width: 1.2px !important;
   }
 
   .cart-icon {
-    font-size: 0.8rem;
-    padding: 4px 12px;
+    font-size: 0.85rem !important;
+    padding: 4px 10px !important;
+    border-radius: 16px !important;
   }
 
   .cart-count {
-    font-size: 0.6rem;
-    min-width: 16px;
-    padding: 0px 5px;
+    font-size: 0.65rem !important;
+    min-width: 16px !important;
+    padding: 0px 5px !important;
   }
 
   /* ===== DETAILS ===== */
@@ -275,6 +277,108 @@ body {
 
   .float-label {
     font-size: 0.7rem;
+  }
+}
+
+/* ============================================
+   RESPONSIVE - VERY SMALL PHONE
+   ============================================ */
+@media (max-width: 375px) {
+  .header {
+    height: 56px !important;
+    padding: 6px 10px !important;
+  }
+
+  .logo-image {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .logo-text {
+    font-size: 1rem !important;
+  }
+
+  .admin-link {
+    font-size: 0.6rem !important;
+    padding: 3px 10px !important;
+    border-width: 1px !important;
+  }
+
+  .cart-icon {
+    font-size: 0.75rem !important;
+    padding: 3px 8px !important;
+    border-radius: 14px !important;
+  }
+
+  .cart-count {
+    font-size: 0.55rem !important;
+    min-width: 14px !important;
+    padding: 0px 4px !important;
+  }
+
+  /* ===== DETAILS ===== */
+  .shoe-details-overlay {
+    padding: 10px 12px 12px;
+  }
+
+  .shoe-details-overlay .shoe-name {
+    font-size: 1rem;
+  }
+
+  .shoe-details-overlay .shoe-brand {
+    font-size: 0.65rem;
+  }
+
+  .shoe-details-overlay .shoe-price {
+    font-size: 1rem;
+  }
+
+  .shoe-details-overlay .size-btn {
+    width: 20px;
+    height: 20px;
+    font-size: 0.45rem;
+  }
+
+  /* ===== ROTATION CONTROLS ===== */
+  .rotation-badge {
+    bottom: 165px;
+    font-size: 0.4rem;
+    padding: 2px 6px;
+  }
+
+  .angle-dots {
+    bottom: 150px;
+  }
+
+  .rotation-toggle-btn {
+    bottom: 165px;
+    right: 4px;
+    width: 18px;
+    height: 18px;
+    font-size: 0.4rem;
+  }
+
+  /* ===== FLOATING BUTTONS ===== */
+  .floating-buttons {
+    bottom: 14px;
+    right: 14px;
+    gap: 6px;
+  }
+
+  .float-btn {
+    padding: 10px 14px;
+    font-size: 0.7rem;
+    gap: 6px;
+    min-width: 48px;
+    border-radius: 32px;
+  }
+
+  .float-icon {
+    font-size: 1rem;
+  }
+
+  .float-label {
+    font-size: 0.65rem;
   }
 }
 
