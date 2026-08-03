@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { shoesCollection, usersCollection, getDocs, query, where, getDoc, doc } from '../firebase';
 import logo from '../assets/logo.png';
-import '../css/store.css';  // ← IMPORT CSS
+import '../css/store.css';
 
 function StorePage() {
   const { vendorId } = useParams();
@@ -13,9 +13,29 @@ function StorePage() {
   const [currentShoeIndex, setCurrentShoeIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isAutoRotating, setIsAutoRotating] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [showDragHint, setShowDragHint] = useState(false);
+  
+  // Drag states
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStartX, setDragStartX] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
   
   const autoRotateTimerRef = useRef(null);
   const currentIndexRef = useRef(0);
+  const containerRef = useRef(null);
+
+  // Helper: Optimize Cloudinary images
+  const getOptimizedImage = (url) => {
+    if (!url) return '';
+    if (url.includes('cloudinary.com')) {
+      const parts = url.split('/upload/');
+      if (parts.length === 2) {
+        return `${parts[0]}/upload/q_auto:eco,f_auto,fl_lossy,w_800/${parts[1]}`;
+      }
+    }
+    return url;
+  };
 
   // Load store info and their shoes
   useEffect(() => {
@@ -35,7 +55,6 @@ function StorePage() {
           storeName: userData.storeName || 'Unnamed Store',
           email: userData.email,
           phone: userData.phone || '',
-          // NEW: Get location data
           location: userData.location || {
             city: '',
             area: '',
@@ -57,6 +76,14 @@ function StorePage() {
           setCurrentShoe(vendorShoes[0]);
           setCurrentImageIndex(0);
           currentIndexRef.current = 0;
+          
+          // Preload first image
+          if (vendorShoes[0] && vendorShoes[0].images && vendorShoes[0].images.length > 0) {
+            const img = new Image();
+            img.src = getOptimizedImage(vendorShoes[0].images[0]);
+            img.onload = () => setImageLoaded(true);
+            img.onerror = () => setImageLoaded(false);
+          }
         }
         
         setLoading(false);
@@ -69,12 +96,35 @@ function StorePage() {
     loadStoreData();
   }, [vendorId]);
 
+  // Start auto-rotation when shoe changes
   useEffect(() => {
     if (currentShoe && currentShoe.images && currentShoe.images.length > 1) {
       startAutoRotate();
     }
     return () => stopAutoRotate();
   }, [currentShoe]);
+
+  // Reset image loaded when image changes
+  useEffect(() => {
+    setImageLoaded(false);
+    if (currentShoe && currentShoe.images && currentShoe.images.length > 0) {
+      const img = new Image();
+      img.src = getOptimizedImage(currentShoe.images[currentImageIndex]);
+      img.onload = () => setImageLoaded(true);
+      img.onerror = () => setImageLoaded(false);
+    }
+  }, [currentShoe, currentImageIndex]);
+
+  // Show drag hint when image loads
+  useEffect(() => {
+    if (imageLoaded && currentShoe && currentShoe.images && currentShoe.images.length > 1) {
+      setShowDragHint(true);
+      const timer = setTimeout(() => {
+        setShowDragHint(false);
+      }, 3500);
+      return () => clearTimeout(timer);
+    }
+  }, [imageLoaded, currentShoe]);
 
   const goToNextImage = () => {
     if (!currentShoe || currentShoe.images.length <= 1) return;
@@ -84,6 +134,7 @@ function StorePage() {
     
     setCurrentImageIndex(nextIndex);
     currentIndexRef.current = nextIndex;
+    setImageLoaded(false);
     
     if (nextIndex === 0 && storeShoes.length > 1) {
       setTimeout(() => {
@@ -93,11 +144,13 @@ function StorePage() {
   };
 
   const startAutoRotate = () => {
-    if (!currentShoe || currentShoe.images.length <= 1) return;
+    if (!currentShoe || currentShoe.images.length <= 1 || isDragging) return;
     stopAutoRotate();
     setIsAutoRotating(true);
     autoRotateTimerRef.current = setInterval(() => {
-      goToNextImage();
+      if (!isDragging) {
+        goToNextImage();
+      }
     }, 3000);
   };
 
@@ -109,6 +162,46 @@ function StorePage() {
     }
   };
 
+  // ===== DRAG HANDLERS =====
+  const handleDragStart = (e) => {
+    if (!currentShoe || currentShoe.images.length <= 1) return;
+    const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+    setIsDragging(true);
+    setDragStartX(clientX);
+    setDragOffset(0);
+    setShowDragHint(false);
+    stopAutoRotate();
+  };
+
+  const handleDragMove = (e) => {
+    if (!isDragging || !currentShoe) return;
+    const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+    const delta = clientX - dragStartX;
+    setDragOffset(delta);
+    
+    if (Math.abs(delta) > 50) {
+      const direction = delta > 0 ? -1 : 1;
+      const totalImages = currentShoe?.images?.length || 0;
+      if (totalImages > 1) {
+        const newIndex = (currentImageIndex + direction + totalImages) % totalImages;
+        setCurrentImageIndex(newIndex);
+        setDragStartX(clientX);
+        setDragOffset(0);
+        setImageLoaded(false);
+      }
+    }
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+    setDragOffset(0);
+    setTimeout(() => {
+      if (!isDragging && currentShoe && currentShoe.images && currentShoe.images.length > 1) {
+        startAutoRotate();
+      }
+    }, 5000);
+  };
+
   const goToNextShoe = () => {
     if (storeShoes.length === 0) return;
     stopAutoRotate();
@@ -118,6 +211,8 @@ function StorePage() {
     setCurrentShoe(storeShoes[nextIndex]);
     setCurrentImageIndex(0);
     currentIndexRef.current = 0;
+    setImageLoaded(false);
+    setShowDragHint(true);
     
     setTimeout(() => startAutoRotate(), 1500);
   };
@@ -131,13 +226,13 @@ function StorePage() {
     setCurrentShoe(storeShoes[prevIndex]);
     setCurrentImageIndex(0);
     currentIndexRef.current = 0;
+    setImageLoaded(false);
+    setShowDragHint(true);
     
     setTimeout(() => startAutoRotate(), 1500);
   };
 
-  // Check if store has phone
   const hasPhone = storeInfo?.phone && storeInfo.phone.length > 0;
-  // Check if store has location
   const hasLocation = storeInfo?.location?.fullAddress && storeInfo.location.fullAddress.length > 0;
 
   if (loading) {
@@ -181,6 +276,7 @@ function StorePage() {
   }
 
   const totalImages = currentShoe?.images?.length || 0;
+  const has360View = totalImages > 1;
 
   return (
     <div className="app home-fullscreen">
@@ -190,7 +286,6 @@ function StorePage() {
             <h1 className="logo-text" style={{ marginBottom: '2px' }}>
               👟 {storeInfo.storeName}
             </h1>
-            {/* NEW: Display location below store name */}
             {hasLocation && (
               <span style={{ 
                 fontSize: '0.7rem', 
@@ -213,106 +308,159 @@ function StorePage() {
       </header>
 
       <div className="home-image-container">
-        {/* Main Image */}
-        {currentShoe && (
-          <img 
-            src={currentShoe.images[currentImageIndex]} 
-            alt={currentShoe.name}
-            className="home-shoe-image"
-            key={`${currentShoe.id}-${currentImageIndex}`}
-          />
-        )}
-        
-        {/* 360° Badge */}
-        {totalImages > 1 && (
-          <div className="home-360-badge">
-            🔄 {currentImageIndex + 1}/{totalImages}
-          </div>
-        )}
-
-        {/* Shoe Details - Bottom Left */}
-        <div className="home-details-overlay">
-          <h2 className="home-shoe-name">{currentShoe?.name}</h2>
-          <p className="home-shoe-brand">{currentShoe?.brand}</p>
-          <p className="home-shoe-price">Ksh {currentShoe?.price?.toLocaleString()}</p>
-        </div>
-
-        {/* ===== CTA BUTTONS - CONDITIONAL ===== */}
-        {hasPhone ? (
-          // ✅ Show buttons if phone exists
-          <div className="store-cta-container">
-            {/* WhatsApp Button */}
-            <a 
-              href={`https://wa.me/${storeInfo.phone}?text=Hi%20${encodeURIComponent(storeInfo.storeName)}%2C%20I%20saw%20your%20${encodeURIComponent(currentShoe?.name || 'shoes')}%20on%20NdulaBox!`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="store-cta-btn store-whatsapp"
-              title="Chat on WhatsApp"
+        {/* ===== MAIN IMAGE WITH DRAG ===== */}
+        {currentShoe && currentShoe.images && currentShoe.images.length > 0 ? (
+          <>
+            <div
+              ref={containerRef}
+              className="home-image-wrapper"
+              onMouseDown={handleDragStart}
+              onMouseMove={handleDragMove}
+              onMouseUp={handleDragEnd}
+              onMouseLeave={handleDragEnd}
+              onTouchStart={handleDragStart}
+              onTouchMove={handleDragMove}
+              onTouchEnd={handleDragEnd}
+              style={{
+                width: '100%',
+                height: '100%',
+                position: 'relative',
+                cursor: has360View ? 'grab' : 'default',
+                touchAction: 'none',
+                userSelect: 'none',
+                WebkitUserSelect: 'none',
+                overflow: 'hidden'
+              }}
             >
-              <span className="store-cta-icon">💬</span>
-              WhatsApp
-            </a>
-
-            {/* Call Button */}
-            <a 
-              href={`tel:${storeInfo.phone}`}
-              className="store-cta-btn store-call"
-              title="Call Store"
-            >
-              <span className="store-cta-icon">📞</span>
-              Call
-            </a>
-          </div>
-        ) : (
-          // ❌ Show message if no phone
-          <div className="store-no-phone">
-            <span className="store-no-phone-icon">📱</span>
-            <span className="store-no-phone-text">No contact number</span>
-          </div>
-        )}
-
-        {/* Navigation - Bottom Right */}
-        <div className="home-nav-overlay">
-          <div className="home-nav-buttons">
-            <button 
-              onClick={goToPreviousShoe}
-              className="home-nav-btn"
-              aria-label="Previous shoe"
-            >
-              ◀
-            </button>
-            
-            <span className="home-nav-counter">
-              {currentShoeIndex + 1} / {storeShoes.length}
-            </span>
-            
-            <button 
-              onClick={goToNextShoe}
-              className="home-nav-btn home-nav-btn-next"
-              aria-label="Next shoe"
-            >
-              ▶
-            </button>
-          </div>
-          
-          {/* Store Shoe Dots */}
-          <div className="home-dots">
-            {storeShoes.map((shoe, index) => (
-              <div
-                key={shoe.id}
-                className={`home-dot ${index === currentShoeIndex ? 'active' : ''}`}
-                onClick={() => {
-                  stopAutoRotate();
-                  setCurrentShoeIndex(index);
-                  setCurrentShoe(storeShoes[index]);
-                  setCurrentImageIndex(0);
-                  currentIndexRef.current = 0;
-                  setTimeout(() => startAutoRotate(), 1500);
+              <img 
+                src={getOptimizedImage(currentShoe.images[currentImageIndex])}
+                alt={currentShoe.name}
+                className="home-shoe-image"
+                onLoad={() => setImageLoaded(true)}
+                onError={() => setImageLoaded(false)}
+                style={{ 
+                  opacity: imageLoaded ? 1 : 0,
+                  transition: 'opacity 0.3s ease'
                 }}
+                draggable={false}
+                key={`${currentShoe.id}-${currentImageIndex}`}
               />
-            ))}
+              
+              {!imageLoaded && (
+                <div className="image-loading">
+                  <div className="spinner">🔄</div>
+                </div>
+              )}
+              
+              {/* 360° Badge - Top Right */}
+              {has360View && (
+                <div className="home-360-badge">
+                  🔄 {currentImageIndex + 1}/{totalImages}
+                </div>
+              )}
+              
+              {/* Drag hint */}
+              {has360View && !isDragging && imageLoaded && showDragHint && (
+                <div className="drag-hint">
+                  <span>
+                    <span className="drag-arrow">↔</span> Drag to rotate
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* ===== BOTTOM OVERLAY - DETAILS LEFT, CONTROLS RIGHT ===== */}
+            <div className="home-bottom-overlay">
+              {/* Left side - Shoe Details */}
+              <div className="home-details-overlay">
+                <h2 className="home-shoe-name">{currentShoe?.name}</h2>
+                <p className="home-shoe-brand">{currentShoe?.brand}</p>
+                <p className="home-shoe-price">Ksh {currentShoe?.price?.toLocaleString()}</p>
+              </div>
+
+              {/* Right side - Controls (Stacked Vertically) */}
+              <div className="home-right-controls">
+                {/* WhatsApp & Call Buttons */}
+                {hasPhone ? (
+                  <div className="store-cta-container">
+                    <a 
+                      href={`https://wa.me/${storeInfo.phone}?text=Hi%20${encodeURIComponent(storeInfo.storeName)}%2C%20I%20saw%20your%20${encodeURIComponent(currentShoe?.name || 'shoes')}%20on%20NdulaBox!`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="store-cta-btn store-whatsapp"
+                      title="Chat on WhatsApp"
+                    >
+                      <span className="store-cta-icon">💬</span>
+                      WhatsApp
+                    </a>
+                    <a 
+                      href={`tel:${storeInfo.phone}`}
+                      className="store-cta-btn store-call"
+                      title="Call Store"
+                    >
+                      <span className="store-cta-icon">📞</span>
+                      Call
+                    </a>
+                  </div>
+                ) : (
+                  <div className="store-no-phone">
+                    <span className="store-no-phone-icon">📱</span>
+                    <span className="store-no-phone-text">No contact</span>
+                  </div>
+                )}
+
+                {/* Navigation */}
+                <div className="home-nav-overlay">
+                  <div className="home-nav-buttons">
+                    <button 
+                      onClick={goToPreviousShoe}
+                      className="home-nav-btn"
+                      aria-label="Previous shoe"
+                    >
+                      ◀
+                    </button>
+                    
+                    <span className="home-nav-counter">
+                      {currentShoeIndex + 1} / {storeShoes.length}
+                    </span>
+                    
+                    <button 
+                      onClick={goToNextShoe}
+                      className="home-nav-btn home-nav-btn-next"
+                      aria-label="Next shoe"
+                    >
+                      ▶
+                    </button>
+                  </div>
+                  
+                  {/* Store Shoe Dots */}
+                  <div className="home-dots">
+                    {storeShoes.map((shoe, index) => (
+                      <div
+                        key={shoe.id}
+                        className={`home-dot ${index === currentShoeIndex ? 'active' : ''}`}
+                        onClick={() => {
+                          stopAutoRotate();
+                          setCurrentShoeIndex(index);
+                          setCurrentShoe(storeShoes[index]);
+                          setCurrentImageIndex(0);
+                          currentIndexRef.current = 0;
+                          setImageLoaded(false);
+                          setShowDragHint(true);
+                          setTimeout(() => startAutoRotate(), 1500);
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="home-no-image">
+            <span>📷 No Image</span>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Minimal Footer */}
