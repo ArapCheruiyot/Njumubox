@@ -1,0 +1,158 @@
+/* ============================================
+   MODE TOGGLE - BUYER/SELLER SWITCH
+   ============================================ */
+
+.mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px 8px 4px 6px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mode-label {
+  padding: 4px 10px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.4);
+  border-radius: 16px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.mode-label.active {
+  color: white;
+  background: rgba(52, 152, 219, 0.2);
+}
+
+.mode-label:hover:not(.active) {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.toggle-switch {
+  width: 36px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.toggle-slider {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: all 0.3s ease;
+  background: #3498db;
+}
+
+.toggle-slider.buyer {
+  left: 2px;
+  background: #3498db;
+}
+
+.toggle-slider.seller {
+  left: 18px;
+  background: #2ecc71;
+}
+
+/* ============================================
+   RESPONSIVE - MODE TOGGLE
+   ============================================ */
+
+/* Tablet */
+@media (max-width: 768px) {
+  .mode-toggle {
+    padding: 3px 6px 3px 5px;
+    gap: 4px;
+  }
+
+  .mode-label {
+    font-size: 0.55rem;
+    padding: 3px 8px;
+  }
+
+  .toggle-switch {
+    width: 30px;
+    height: 18px;
+  }
+
+  .toggle-slider {
+    width: 14px;
+    height: 14px;
+    top: 2px;
+  }
+
+  .toggle-slider.seller {
+    left: 14px;
+  }
+}
+
+/* Small Phone */
+@media (max-width: 480px) {
+  .mode-toggle {
+    padding: 2px 4px 2px 4px;
+    gap: 3px;
+  }
+
+  .mode-label {
+    font-size: 0.45rem;
+    padding: 2px 6px;
+  }
+
+  .toggle-switch {
+    width: 26px;
+    height: 16px;
+    border-radius: 10px;
+  }
+
+  .toggle-slider {
+    width: 12px;
+    height: 12px;
+    top: 2px;
+  }
+
+  .toggle-slider.seller {
+    left: 12px;
+  }
+}
+
+/* Very Small Phone */
+@media (max-width: 375px) {
+  .mode-toggle {
+    padding: 2px 3px;
+    gap: 2px;
+  }
+
+  .mode-label {
+    font-size: 0.4rem;
+    padding: 2px 5px;
+  }
+
+  .toggle-switch {
+    width: 22px;
+    height: 14px;
+    border-radius: 8px;
+  }
+
+  .toggle-slider {
+    width: 10px;
+    height: 10px;
+    top: 2px;
+    left: 2px;
+  }
+
+  .toggle-slider.seller {
+    left: 10px;
+  }
+}

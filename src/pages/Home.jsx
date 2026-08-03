@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { usersCollection, shoesCollection, getDocs, query, where, doc, getDoc } from '../firebase';
 import logo from '../assets/logo.png';
+import '../css/mode.css';  // Import mode styles
 
 function Home() {
+  const navigate = useNavigate();
   const [stores, setStores] = useState([]);
   const [currentStoreIndex, setCurrentStoreIndex] = useState(0);
   const [currentShoe, setCurrentShoe] = useState(null);
@@ -11,6 +13,7 @@ function Home() {
   const [loading, setLoading] = useState(true);
   const [isAutoRotating, setIsAutoRotating] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [isSellerMode, setIsSellerMode] = useState(false);
   
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartX, setDragStartX] = useState(0);
@@ -29,6 +32,26 @@ function Home() {
     }
     return url;
   };
+
+  // Toggle between Buyer and Seller mode
+  const toggleMode = () => {
+    const newMode = !isSellerMode;
+    setIsSellerMode(newMode);
+    if (newMode) {
+      navigate('/admin');
+    } else {
+      navigate('/');
+    }
+  };
+
+  // Set initial mode based on current path
+  useEffect(() => {
+    if (window.location.pathname === '/admin') {
+      setIsSellerMode(true);
+    } else {
+      setIsSellerMode(false);
+    }
+  }, []);
 
   useEffect(() => {
     const loadStores = async () => {
@@ -251,7 +274,14 @@ function Home() {
             <h1 className="logo-text">NdulaBox</h1>
           </div>
           <div className="header-right">
-            <Link to="/admin" className="admin-link">🔧 Admin</Link>
+            {/* Buyer/Seller Toggle - Loading State */}
+            <div className="mode-toggle">
+              <span className="mode-label mode-buyer active">👤 Buyer</span>
+              <div className="toggle-switch">
+                <div className="toggle-slider buyer" />
+              </div>
+              <span className="mode-label mode-seller">🛒 Seller</span>
+            </div>
           </div>
         </header>
         <div className="home-loading">
@@ -270,7 +300,14 @@ function Home() {
             <h1 className="logo-text">NdulaBox</h1>
           </div>
           <div className="header-right">
-            <Link to="/admin" className="admin-link">🔧 Admin</Link>
+            {/* Buyer/Seller Toggle - Empty State */}
+            <div className="mode-toggle">
+              <span className="mode-label mode-buyer active">👤 Buyer</span>
+              <div className="toggle-switch" onClick={toggleMode}>
+                <div className="toggle-slider buyer" />
+              </div>
+              <span className="mode-label mode-seller">🛒 Seller</span>
+            </div>
           </div>
         </header>
         <div className="home-empty">
@@ -294,7 +331,36 @@ function Home() {
           <h1 className="logo-text">NdulaBox</h1>
         </div>
         <div className="header-right">
-          <Link to="/admin" className="admin-link">🔧 Admin</Link>
+          {/* ===== BUYER/SELLER TOGGLE ===== */}
+          <div className="mode-toggle">
+            <button 
+              className={`mode-label mode-buyer ${!isSellerMode ? 'active' : ''}`}
+              onClick={() => {
+                if (isSellerMode) {
+                  setIsSellerMode(false);
+                  navigate('/');
+                }
+              }}
+            >
+              👤 Buyer
+            </button>
+            <div className="toggle-switch" onClick={toggleMode}>
+              <div className={`toggle-slider ${isSellerMode ? 'seller' : 'buyer'}`} />
+            </div>
+            <button 
+              className={`mode-label mode-seller ${isSellerMode ? 'active' : ''}`}
+              onClick={() => {
+                if (!isSellerMode) {
+                  setIsSellerMode(true);
+                  navigate('/admin');
+                }
+              }}
+            >
+              🛒 Seller
+            </button>
+          </div>
+          
+          {/* Explore Link */}
           <Link to="/explore" className="admin-link explore-link">
             🌐 Explore All
           </Link>

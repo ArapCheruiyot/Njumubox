@@ -1,457 +1,564 @@
-import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { usersCollection, shoesCollection, getDocs, query, where, doc, getDoc } from '../firebase';
-import logo from '../assets/logo.png';
+import { useState, useEffect } from 'react';
+import { 
+  shoesCollection, 
+  usersCollection,
+  addDoc, 
+  getDocs, 
+  query, 
+  where, 
+  deleteDoc, 
+  doc, 
+  updateDoc,
+  setDoc
+} from '../firebase';
+import '../css/admin.css';
 
-function Home() {
-  const [stores, setStores] = useState([]);
-  const [currentStoreIndex, setCurrentStoreIndex] = useState(0);
-  const [currentShoe, setCurrentShoe] = useState(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [isAutoRotating, setIsAutoRotating] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
+function AdminPanel({ user, userProfile }) {
+  const [shoeData, setShoeData] = useState({
+    name: '',
+    brand: '',
+    price: '',
+    category: 'Gents',
+    sizes: '',
+    images: []
+  });
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [message, setMessage] = useState('');
+  const [userShoes, setUserShoes] = useState([]);
   
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStartX, setDragStartX] = useState(0);
-  const [dragOffset, setDragOffset] = useState(0);
-  
-  const autoRotateTimerRef = useRef(null);
-  const containerRef = useRef(null);
+  const [storePhone, setStorePhone] = useState(userProfile?.phone || '');
+  const [isEditingPhone, setIsEditingPhone] = useState(false);
 
-  const getOptimizedImage = (url) => {
-    if (!url) return '';
-    if (url.includes('cloudinary.com')) {
-      const parts = url.split('/upload/');
-      if (parts.length === 2) {
-        return `${parts[0]}/upload/q_auto:eco,f_auto,fl_lossy,w_800/${parts[1]}`;
-      }
-    }
-    return url;
-  };
+  const [locationCity, setLocationCity] = useState(userProfile?.location?.city || '');
+  const [locationArea, setLocationArea] = useState(userProfile?.location?.area || '');
+  const [locationStreet, setLocationStreet] = useState(userProfile?.location?.street || '');
+  const [isEditingLocation, setIsEditingLocation] = useState(false);
+
+  const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+  const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
   useEffect(() => {
-    const loadStores = async () => {
+    if (user) {
+      loadUserShoes();
+    }
+  }, [user]);
+
+  const loadUserShoes = async () => {
+    try {
+      const q = query(shoesCollection, where("userId", "==", user.uid));
+      const querySnapshot = await getDocs(q);
+      const loadedShoes = [];
+      querySnapshot.forEach((doc) => {
+        loadedShoes.push({ id: doc.id, ...doc.data() });
+      });
+      setUserShoes(loadedShoes);
+    } catch (error) {
+      console.error('Error loading user shoes:', error);
+    }
+  };
+
+  const handleUpdatePhone = async () => {
+    if (!storePhone.trim()) {
+      setMessage('❌ Please enter a phone number');
+      return;
+    }
+
+    const cleanPhone = storePhone.replace(/[\s+]/g, '');
+    if (!/^254\d{9}$/.test(cleanPhone)) {
+      setMessage('❌ Invalid format. Use: 254712345678');
+      return;
+    }
+
+    try {
+      await updateDoc(doc(usersCollection, user.uid), {
+        phone: cleanPhone
+      });
+      setMessage('✅ Phone number updated successfully!');
+      setIsEditingPhone(false);
+      userProfile.phone = cleanPhone;
+    } catch (error) {
+      console.error('Error updating phone:', error);
+      setMessage('❌ Failed to update phone number');
+    }
+  };
+
+  const handleUpdateLocation = async () => {
+    if (!locationCity.trim()) {
+      setMessage('❌ Please enter a city/town');
+      return;
+    }
+
+    try {
+      const fullAddress = `${locationCity.trim()}${locationArea ? `, ${locationArea.trim()}` : ''}${locationStreet ? `, ${locationStreet.trim()}` : ''}`;
+      
+      await updateDoc(doc(usersCollection, user.uid), {
+        location: {
+          city: locationCity.trim(),
+          area: locationArea.trim() || '',
+          street: locationStreet.trim() || '',
+          fullAddress: fullAddress
+        }
+      });
+      setMessage('✅ Location updated successfully!');
+      setIsEditingLocation(false);
+      userProfile.location = {
+        city: locationCity.trim(),
+        area: locationArea.trim() || '',
+        street: locationStreet.trim() || '',
+        fullAddress: fullAddress
+      };
+    } catch (error) {
+      console.error('Error updating location:', error);
+      setMessage('❌ Failed to update location');
+    }
+  };
+
+  const handleImageUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    setUploading(true);
+    setUploadProgress(0);
+    setMessage('📤 Uploading images...');
+
+    const uploadedUrls = [];
+    const shoeFolder = shoeData.name 
+      ? `ndulabox/shoes/${shoeData.name.toLowerCase().replace(/ /g, '-')}`
+      : 'ndulabox/shoes/temp';
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', UPLOAD_PRESET);
+      formData.append('folder', shoeFolder);
+      formData.append('public_id', `angle-${i + 1}`);
+
       try {
-        const shoesSnapshot = await getDocs(shoesCollection);
-        const allShoes = [];
-        shoesSnapshot.forEach((doc) => {
-          allShoes.push({ id: doc.id, ...doc.data() });
-        });
-
-        if (allShoes.length === 0) {
-          setLoading(false);
-          setStores([]);
-          return;
+        const response = await fetch(
+          `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+          { method: 'POST', body: formData }
+        );
+        const data = await response.json();
+        if (data.secure_url) {
+          uploadedUrls.push(data.secure_url);
+          setUploadProgress(((i + 1) / files.length) * 100);
+          setMessage(`📤 Uploaded ${i + 1} of ${files.length} images`);
         }
-
-        const shoesByUser = {};
-        allShoes.forEach((shoe) => {
-          const userId = shoe.userId;
-          if (!userId) return;
-          if (!shoesByUser[userId]) {
-            shoesByUser[userId] = [];
-          }
-          shoesByUser[userId].push(shoe);
-        });
-
-        const storesData = [];
-        for (const userId of Object.keys(shoesByUser)) {
-          let storeName = 'Unnamed Store';
-          let userEmail = '';
-          let location = { city: '', area: '', street: '', fullAddress: '' };
-          
-          try {
-            const userDocRef = doc(usersCollection, userId);
-            const userDoc = await getDoc(userDocRef);
-            if (userDoc.exists) {
-              const userData = userDoc.data();
-              storeName = userData.storeName || 'Unnamed Store';
-              userEmail = userData.email || '';
-              location = userData.location || { city: '', area: '', street: '', fullAddress: '' };
-            } else {
-              console.warn('⚠️ User document missing for:', userId);
-            }
-          } catch (error) {
-            console.warn('Could not fetch user info for:', userId);
-          }
-          
-          storesData.push({
-            uid: userId,
-            storeName: storeName,
-            email: userEmail,
-            location: location,
-            shoes: shoesByUser[userId]
-          });
-        }
-
-        const shuffled = shuffleArray(storesData);
-        setStores(shuffled);
-        
-        if (shuffled.length > 0) {
-          const firstStore = shuffled[0];
-          const randomShoe = getRandomShoe(firstStore.shoes);
-          setCurrentShoe(randomShoe);
-          setCurrentImageIndex(0);
-          
-          if (randomShoe && randomShoe.images && randomShoe.images.length > 0) {
-            const img = new Image();
-            img.src = getOptimizedImage(randomShoe.images[0]);
-            img.onload = () => setImageLoaded(true);
-            img.onerror = () => setImageLoaded(false);
-          }
-        }
-        
-        setLoading(false);
       } catch (error) {
-        console.error('Error loading stores:', error);
-        setLoading(false);
+        console.error('❌ Upload error:', error);
+        setMessage('❌ Upload failed! Please try again.');
+        setUploading(false);
+        return;
       }
+    }
+
+    setShoeData(prev => ({ ...prev, images: uploadedUrls }));
+    setUploading(false);
+    setMessage(`✅ ${uploadedUrls.length} images uploaded successfully!`);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!shoeData.name || !shoeData.price || shoeData.images.length === 0) {
+      setMessage('❌ Please fill all fields and upload images!');
+      return;
+    }
+
+    const sizesArray = shoeData.sizes.split(',').map(s => s.trim());
+    
+    const newShoe = {
+      name: shoeData.name,
+      brand: shoeData.brand,
+      price: parseInt(shoeData.price),
+      category: shoeData.category,
+      sizes: sizesArray.map(Number),
+      images: shoeData.images,
+      thumbnail: shoeData.images[0],
+      userId: user.uid,
+      userEmail: user.email,
+      storeName: userProfile?.storeName || 'Unnamed Store',
+      createdAt: new Date().toISOString()
     };
-    
-    loadStores();
-  }, []);
 
-  useEffect(() => {
-    if (currentShoe && currentShoe.images && currentShoe.images.length > 1) {
-      startAutoRotate();
-    }
-    return () => stopAutoRotate();
-  }, [currentShoe]);
-
-  useEffect(() => {
-    setImageLoaded(false);
-    if (currentShoe && currentShoe.images && currentShoe.images.length > 0) {
-      const img = new Image();
-      img.src = getOptimizedImage(currentShoe.images[currentImageIndex]);
-      img.onload = () => setImageLoaded(true);
-      img.onerror = () => setImageLoaded(false);
-    }
-  }, [currentShoe, currentImageIndex]);
-
-  const shuffleArray = (array) => {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  };
-
-  const getRandomShoe = (shoes) => {
-    if (!shoes || shoes.length === 0) return null;
-    return shoes[Math.floor(Math.random() * shoes.length)];
-  };
-
-  const goToNextImage = () => {
-    if (!currentShoe || currentShoe.images.length <= 1) return;
-    const totalImages = currentShoe.images.length;
-    const nextIndex = (currentImageIndex + 1) % totalImages;
-    setCurrentImageIndex(nextIndex);
-  };
-
-  const goToPreviousImage = () => {
-    if (!currentShoe || currentShoe.images.length <= 1) return;
-    const totalImages = currentShoe.images.length;
-    const prevIndex = (currentImageIndex - 1 + totalImages) % totalImages;
-    setCurrentImageIndex(prevIndex);
-  };
-
-  const startAutoRotate = () => {
-    if (!currentShoe || currentShoe.images.length <= 1 || isDragging) return;
-    stopAutoRotate();
-    setIsAutoRotating(true);
-    autoRotateTimerRef.current = setInterval(() => {
-      if (!isDragging) {
-        goToNextImage();
-      }
-    }, 3000);
-  };
-
-  const stopAutoRotate = () => {
-    setIsAutoRotating(false);
-    if (autoRotateTimerRef.current) {
-      clearInterval(autoRotateTimerRef.current);
-      autoRotateTimerRef.current = null;
+    try {
+      await addDoc(shoesCollection, newShoe);
+      setMessage(`✅ Shoe "${shoeData.name}" added to ${userProfile?.storeName}!`);
+      
+      setShoeData({
+        name: '',
+        brand: '',
+        price: '',
+        category: 'Gents',
+        sizes: '',
+        images: []
+      });
+      setUploadProgress(0);
+      loadUserShoes();
+    } catch (error) {
+      console.error('❌ Save error:', error);
+      setMessage('❌ Failed to save. Please try again.');
     }
   };
 
-  const handleDragStart = (e) => {
-    const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
-    setIsDragging(true);
-    setDragStartX(clientX);
-    setDragOffset(0);
-    stopAutoRotate();
-  };
-
-  const handleDragMove = (e) => {
-    if (!isDragging) return;
-    const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
-    const delta = clientX - dragStartX;
-    setDragOffset(delta);
-    
-    if (Math.abs(delta) > 50) {
-      const direction = delta > 0 ? -1 : 1;
-      const totalImages = currentShoe?.images?.length || 0;
-      if (totalImages > 1) {
-        const newIndex = (currentImageIndex + direction + totalImages) % totalImages;
-        setCurrentImageIndex(newIndex);
-        setDragStartX(clientX);
-        setDragOffset(0);
+  const handleDeleteShoe = async (shoeId) => {
+    if (window.confirm('Are you sure you want to delete this shoe?')) {
+      try {
+        await deleteDoc(doc(shoesCollection, shoeId));
+        setMessage('✅ Shoe deleted successfully!');
+        loadUserShoes();
+      } catch (error) {
+        console.error('Delete error:', error);
+        setMessage('❌ Failed to delete.');
       }
     }
   };
-
-  const handleDragEnd = () => {
-    setIsDragging(false);
-    setDragOffset(0);
-    setTimeout(() => {
-      if (!isDragging && currentShoe && currentShoe.images && currentShoe.images.length > 1) {
-        startAutoRotate();
-      }
-    }, 5000);
-  };
-
-  const goToNextStore = () => {
-    if (stores.length === 0) return;
-    stopAutoRotate();
-    
-    const nextIndex = (currentStoreIndex + 1) % stores.length;
-    setCurrentStoreIndex(nextIndex);
-    const nextStore = stores[nextIndex];
-    const randomShoe = getRandomShoe(nextStore.shoes);
-    setCurrentShoe(randomShoe);
-    setCurrentImageIndex(0);
-    setImageLoaded(false);
-    
-    setTimeout(() => startAutoRotate(), 1500);
-  };
-
-  const goToPreviousStore = () => {
-    if (stores.length === 0) return;
-    stopAutoRotate();
-    
-    const prevIndex = (currentStoreIndex - 1 + stores.length) % stores.length;
-    setCurrentStoreIndex(prevIndex);
-    const prevStore = stores[prevIndex];
-    const randomShoe = getRandomShoe(prevStore.shoes);
-    setCurrentShoe(randomShoe);
-    setCurrentImageIndex(0);
-    setImageLoaded(false);
-    
-    setTimeout(() => startAutoRotate(), 1500);
-  };
-
-  if (loading) {
-    return (
-      <div className="app">
-        <header className="header">
-          <div className="logo-container">
-            <img src={logo} alt="NdulaBox Logo" className="logo-image" />
-            <h1 className="logo-text">NdulaBox</h1>
-          </div>
-          <div className="header-right">
-            <Link to="/admin" className="admin-link">🔧 Admin</Link>
-          </div>
-        </header>
-        <div className="home-loading">
-          <p>Loading shoes...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (stores.length === 0) {
-    return (
-      <div className="app">
-        <header className="header">
-          <div className="logo-container">
-            <img src={logo} alt="NdulaBox Logo" className="logo-image" />
-            <h1 className="logo-text">NdulaBox</h1>
-          </div>
-          <div className="header-right">
-            <Link to="/admin" className="admin-link">🔧 Admin</Link>
-          </div>
-        </header>
-        <div className="home-empty">
-          <h2>👟 No Shoes Yet</h2>
-          <p>Be the first to <Link to="/admin" className="home-empty-link">add a shoe</Link>!</p>
-        </div>
-      </div>
-    );
-  }
-
-  const currentStore = stores[currentStoreIndex];
-  const totalImages = currentShoe?.images?.length || 0;
-  const hasLocation = currentStore?.location?.fullAddress && currentStore.location.fullAddress.length > 0;
-  const has360View = totalImages > 1;
 
   return (
-    <div className="app home-fullscreen">
-      <header className="header">
-        <div className="logo-container">
-          <img src={logo} alt="NdulaBox Logo" className="logo-image" />
-          <h1 className="logo-text">NdulaBox</h1>
+    <div className="admin-panel">
+      <h1>👟 {userProfile?.storeName || 'NdulaBox'}</h1>
+      <p className="admin-subtitle">
+        Welcome, {userProfile?.displayName || user?.email}
+      </p>
+      
+      {/* Phone Section */}
+      <div style={{
+        background: 'rgba(255,255,255,0.05)',
+        padding: '15px 20px',
+        borderRadius: '10px',
+        marginBottom: '20px',
+        border: '1px solid rgba(255,255,255,0.08)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
+          <div>
+            <strong style={{ color: 'white' }}>📞 Store Phone:</strong>
+            {userProfile?.phone ? (
+              <span style={{ color: '#2ecc71', marginLeft: '10px' }}>
+                {userProfile.phone}
+              </span>
+            ) : (
+              <span style={{ color: 'rgba(255,255,255,0.4)', marginLeft: '10px' }}>
+                Not set
+              </span>
+            )}
+          </div>
+          <button
+            onClick={() => setIsEditingPhone(!isEditingPhone)}
+            style={{
+              padding: '6px 16px',
+              background: isEditingPhone ? '#e74c3c' : '#3498db',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '0.85rem'
+            }}
+          >
+            {isEditingPhone ? 'Cancel' : '✏️ Edit'}
+          </button>
         </div>
-        <div className="header-right">
-          <Link to="/admin" className="admin-link">🔧 Admin</Link>
-          <Link to="/explore" className="admin-link explore-link">
-            🌐 Explore All
-          </Link>
-        </div>
-      </header>
 
-      <div className="home-image-container">
-        {/* ===== MAIN IMAGE WITH DRAG ===== */}
-        {currentShoe && currentShoe.images && currentShoe.images.length > 0 ? (
-          <>
-            <div
-              ref={containerRef}
-              className="home-image-wrapper"
-              onMouseDown={handleDragStart}
-              onMouseMove={handleDragMove}
-              onMouseUp={handleDragEnd}
-              onMouseLeave={handleDragEnd}
-              onTouchStart={handleDragStart}
-              onTouchMove={handleDragMove}
-              onTouchEnd={handleDragEnd}
+        {isEditingPhone && (
+          <div style={{ marginTop: '12px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+            <input
+              type="tel"
+              value={storePhone}
+              onChange={(e) => setStorePhone(e.target.value)}
+              placeholder="e.g., 254712345678"
               style={{
-                width: '100%',
-                height: '100%',
-                position: 'relative',
-                cursor: has360View ? 'grab' : 'default',
-                touchAction: 'none',
-                userSelect: 'none',
-                WebkitUserSelect: 'none',
-                overflow: 'hidden'
+                flex: 1,
+                padding: '10px 16px',
+                borderRadius: '8px',
+                border: '1px solid rgba(255,255,255,0.2)',
+                background: '#1a1a2e',
+                color: '#ffffff',
+                fontSize: '1rem',
+                minWidth: '200px',
+                outline: 'none'
+              }}
+              autoFocus
+            />
+            <button
+              onClick={handleUpdatePhone}
+              style={{
+                padding: '10px 24px',
+                background: '#27ae60',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontWeight: '600'
               }}
             >
-              <img 
-                src={getOptimizedImage(currentShoe.images[currentImageIndex])}
-                alt={currentShoe.name}
-                className="home-shoe-image"
-                onLoad={() => setImageLoaded(true)}
-                onError={() => setImageLoaded(false)}
-                style={{ 
-                  opacity: imageLoaded ? 1 : 0,
-                  transition: 'opacity 0.3s ease'
-                }}
-                draggable={false}
-                key={`${currentShoe.id}-${currentImageIndex}`}
-              />
-              
-              {!imageLoaded && (
-                <div className="image-loading">
-                  <div className="spinner">🔄</div>
-                </div>
-              )}
-              
-              {/* 360° Badge - Top Right */}
-              {has360View && (
-                <div className="home-360-badge">
-                  🔄 {currentImageIndex + 1}/{totalImages}
-                </div>
-              )}
-              
-              {/* ===== STORE INFO - TOP LEFT ===== */}
-              <div className="home-store-top-left">
-                <span className="home-store-name-top">📍 {currentStore?.storeName}</span>
-                {hasLocation && (
-                  <span className="home-store-location-top">
-                    {currentStore.location.city}
-                  </span>
-                )}
-              </div>
-              
-              {/* Drag hint */}
-              {has360View && !isDragging && imageLoaded && (
-                <div className="drag-hint">
-                  <span>
-                    <span className="drag-arrow">↔</span> Drag to rotate
-                  </span>
-                </div>
-              )}
-            </div>
-
-            {/* ===== ALL OVERLAYS AT BOTTOM - ALL ON LEFT ===== */}
-            <div className="home-bottom-overlay">
-              {/* Shoe Details */}
-              <div className="home-details-overlay">
-                <h2 className="home-shoe-name">{currentShoe?.name}</h2>
-                <p className="home-shoe-brand">{currentShoe?.brand}</p>
-                <p className="home-shoe-price">Ksh {currentShoe?.price?.toLocaleString()}</p>
-              </div>
-
-              {/* Bottom Controls Row - View Store + Navigation */}
-              <div className="home-bottom-controls">
-                {/* View Store Button */}
-                <Link 
-                  to={`/store/${currentStore?.uid}`} 
-                  className="home-view-store-btn"
-                >
-                  👁️ View Store
-                </Link>
-
-                {/* Navigation */}
-                <div className="home-nav-overlay">
-                  <div className="home-nav-buttons">
-                    <button 
-                      onClick={goToPreviousStore}
-                      className="home-nav-btn"
-                      aria-label="Previous store"
-                    >
-                      ◀
-                    </button>
-                    
-                    <span className="home-nav-counter">
-                      {currentStoreIndex + 1} / {stores.length}
-                    </span>
-                    
-                    <button 
-                      onClick={goToNextStore}
-                      className="home-nav-btn home-nav-btn-next"
-                      aria-label="Next store"
-                    >
-                      ▶
-                    </button>
-                  </div>
-                  
-                  {/* Store Dots */}
-                  <div className="home-dots">
-                    {stores.map((store, index) => (
-                      <div
-                        key={store.uid}
-                        className={`home-dot ${index === currentStoreIndex ? 'active' : ''}`}
-                        onClick={() => {
-                          stopAutoRotate();
-                          setCurrentStoreIndex(index);
-                          const selectedStore = stores[index];
-                          const randomShoe = getRandomShoe(selectedStore.shoes);
-                          setCurrentShoe(randomShoe);
-                          setCurrentImageIndex(0);
-                          setImageLoaded(false);
-                          setTimeout(() => startAutoRotate(), 1500);
-                        }}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </>
-        ) : (
-          <div className="home-no-image">
-            <span>📷 No Image</span>
+              💾 Save
+            </button>
           </div>
         )}
+        <small style={{ color: 'rgba(255,255,255,0.3)', display: 'block', marginTop: '5px' }}>
+          Used for WhatsApp and Call buttons on your store page
+        </small>
       </div>
 
-      {/* Minimal Footer */}
-      <footer className="home-footer">
-        <p>© 2026 NdulaBox. All rights reserved.</p>
-      </footer>
+      {/* Location Section */}
+      <div style={{
+        background: 'rgba(255,255,255,0.05)',
+        padding: '15px 20px',
+        borderRadius: '10px',
+        marginBottom: '20px',
+        border: '1px solid rgba(255,255,255,0.08)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
+          <div>
+            <strong style={{ color: 'white' }}>📍 Store Location:</strong>
+            {userProfile?.location?.fullAddress ? (
+              <span style={{ color: '#3498db', marginLeft: '10px' }}>
+                {userProfile.location.fullAddress}
+              </span>
+            ) : (
+              <span style={{ color: 'rgba(255,255,255,0.4)', marginLeft: '10px' }}>
+                Not set
+              </span>
+            )}
+          </div>
+          <button
+            onClick={() => setIsEditingLocation(!isEditingLocation)}
+            style={{
+              padding: '6px 16px',
+              background: isEditingLocation ? '#e74c3c' : '#3498db',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '0.85rem'
+            }}
+          >
+            {isEditingLocation ? 'Cancel' : '✏️ Edit'}
+          </button>
+        </div>
+
+        {isEditingLocation && (
+          <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <input
+              type="text"
+              value={locationCity}
+              onChange={(e) => setLocationCity(e.target.value)}
+              placeholder="City/Town * (e.g., Nairobi)"
+              style={{
+                padding: '10px 16px',
+                borderRadius: '8px',
+                border: '1px solid rgba(255,255,255,0.2)',
+                background: '#1a1a2e',
+                color: '#ffffff',
+                fontSize: '1rem',
+                outline: 'none'
+              }}
+            />
+            <input
+              type="text"
+              value={locationArea}
+              onChange={(e) => setLocationArea(e.target.value)}
+              placeholder="Estate/Area (e.g., Langata)"
+              style={{
+                padding: '10px 16px',
+                borderRadius: '8px',
+                border: '1px solid rgba(255,255,255,0.2)',
+                background: '#1a1a2e',
+                color: '#ffffff',
+                fontSize: '1rem',
+                outline: 'none'
+              }}
+            />
+            <input
+              type="text"
+              value={locationStreet}
+              onChange={(e) => setLocationStreet(e.target.value)}
+              placeholder="Street/Shop (e.g., Moi Avenue)"
+              style={{
+                padding: '10px 16px',
+                borderRadius: '8px',
+                border: '1px solid rgba(255,255,255,0.2)',
+                background: '#1a1a2e',
+                color: '#ffffff',
+                fontSize: '1rem',
+                outline: 'none'
+              }}
+            />
+            <button
+              onClick={handleUpdateLocation}
+              style={{
+                padding: '10px 24px',
+                background: '#27ae60',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontWeight: '600',
+                alignSelf: 'flex-start'
+              }}
+            >
+              💾 Save Location
+            </button>
+          </div>
+        )}
+        <small style={{ color: 'rgba(255,255,255,0.3)', display: 'block', marginTop: '5px' }}>
+          Location builds trust - customers know where you're based
+        </small>
+      </div>
+
+      <p style={{ color: '#888', fontSize: '0.9rem' }}>
+        📦 {userShoes.length} shoes in your catalogue
+      </p>
+
+      {message && (
+        <div className={`admin-message ${message.includes('❌') ? 'error' : 'success'}`}>
+          {message}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="admin-form">
+        <div className="form-group">
+          <label>Shoe Name *</label>
+          <input
+            type="text"
+            value={shoeData.name}
+            onChange={(e) => setShoeData({...shoeData, name: e.target.value})}
+            placeholder="e.g., Air Zoom Pulse"
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Brand *</label>
+          <input
+            type="text"
+            value={shoeData.brand}
+            onChange={(e) => setShoeData({...shoeData, brand: e.target.value})}
+            placeholder="e.g., Nike, Adidas"
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Price (Ksh) *</label>
+          <input
+            type="number"
+            value={shoeData.price}
+            onChange={(e) => setShoeData({...shoeData, price: e.target.value})}
+            placeholder="e.g., 15000"
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Category *</label>
+          <select
+            value={shoeData.category}
+            onChange={(e) => setShoeData({...shoeData, category: e.target.value})}
+            required
+          >
+            <option value="Gents">Gents</option>
+            <option value="Ladies">Ladies</option>
+            <option value="Kids">Kids</option>
+            <option value="Running">Running</option>
+            <option value="Casual">Casual</option>
+            <option value="Skate">Skate</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label>Sizes (comma separated) *</label>
+          <input
+            type="text"
+            value={shoeData.sizes}
+            onChange={(e) => setShoeData({...shoeData, sizes: e.target.value})}
+            placeholder="e.g., 6,7,8,9,10"
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Upload Shoe Images *</label>
+          <div className="upload-area">
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleImageUpload}
+              disabled={uploading}
+              className="file-input"
+            />
+            <div className="upload-hint">
+              <span>📁 Click to select multiple images</span>
+              <span className="hint-text">Select 8-12 images for 360° rotation</span>
+            </div>
+          </div>
+          
+          {uploading && (
+            <div className="progress-container">
+              <div className="progress-bar">
+                <div className="progress-fill" style={{ width: `${uploadProgress}%` }} />
+              </div>
+              <span className="progress-text">{Math.round(uploadProgress)}%</span>
+            </div>
+          )}
+
+          {shoeData.images.length > 0 && (
+            <div className="uploaded-images">
+              <p className="upload-success">✅ {shoeData.images.length} images uploaded</p>
+              <div className="image-previews">
+                {shoeData.images.map((url, i) => (
+                  <img key={i} src={url} alt={`Angle ${i+1}`} className="preview-thumb" />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <button type="submit" className="submit-btn" disabled={uploading}>
+          {uploading ? '⏳ Uploading...' : '➕ Add Shoe to Catalogue'}
+        </button>
+      </form>
+
+      <div className="view-shoes">
+        <h3>📚 Your Shoes ({userShoes.length})</h3>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '10px' }}>
+          {userShoes.map((shoe) => (
+            <div key={shoe.id} style={{ 
+              background: '#f8f9fa', 
+              padding: '10px', 
+              borderRadius: '8px',
+              border: '1px solid #e0e0e0',
+              minWidth: '150px'
+            }}>
+              <strong>{shoe.name}</strong>
+              <br />
+              <small>{shoe.brand} - Ksh {shoe.price}</small>
+              <br />
+              <button 
+                onClick={() => handleDeleteShoe(shoe.id)}
+                style={{ 
+                  background: '#e74c3c', 
+                  color: 'white', 
+                  border: 'none', 
+                  padding: '3px 10px',
+                  borderRadius: '4px',
+                  marginTop: '5px',
+                  cursor: 'pointer'
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+          {userShoes.length === 0 && (
+            <p style={{ color: '#888' }}>No shoes added yet. Add your first shoe above!</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
 
-export default Home;
+export default AdminPanel;

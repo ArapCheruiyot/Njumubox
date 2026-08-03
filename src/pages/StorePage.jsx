@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { shoesCollection, usersCollection, getDocs, query, where, getDoc, doc } from '../firebase';
 import logo from '../assets/logo.png';
 import '../css/store.css';
+import '../css/mode.css';
 
 function StorePage() {
   const { vendorId } = useParams();
+  const navigate = useNavigate();
   const [storeShoes, setStoreShoes] = useState([]);
   const [storeInfo, setStoreInfo] = useState(null);
   const [currentShoe, setCurrentShoe] = useState(null);
@@ -15,6 +17,7 @@ function StorePage() {
   const [isAutoRotating, setIsAutoRotating] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [showDragHint, setShowDragHint] = useState(false);
+  const [isSellerMode, setIsSellerMode] = useState(false);
   
   // Drag states
   const [isDragging, setIsDragging] = useState(false);
@@ -36,6 +39,26 @@ function StorePage() {
     }
     return url;
   };
+
+  // Toggle between Buyer and Seller mode
+  const toggleMode = () => {
+    const newMode = !isSellerMode;
+    setIsSellerMode(newMode);
+    if (newMode) {
+      navigate('/admin');
+    } else {
+      navigate('/');
+    }
+  };
+
+  // Set initial mode based on current path
+  useEffect(() => {
+    if (window.location.pathname === '/admin') {
+      setIsSellerMode(true);
+    } else {
+      setIsSellerMode(false);
+    }
+  }, []);
 
   // Load store info and their shoes
   useEffect(() => {
@@ -303,7 +326,35 @@ function StorePage() {
         <div className="header-right">
           <span className="tagline">{storeShoes.length} shoes</span>
           <Link to="/" className="admin-link">← Back</Link>
-          <Link to="/admin" className="admin-link">🔧 Admin</Link>
+          
+          {/* ===== BUYER/SELLER TOGGLE ===== */}
+          <div className="mode-toggle">
+            <button 
+              className={`mode-label mode-buyer ${!isSellerMode ? 'active' : ''}`}
+              onClick={() => {
+                if (isSellerMode) {
+                  setIsSellerMode(false);
+                  navigate('/');
+                }
+              }}
+            >
+              👤 Buyer
+            </button>
+            <div className="toggle-switch" onClick={toggleMode}>
+              <div className={`toggle-slider ${isSellerMode ? 'seller' : 'buyer'}`} />
+            </div>
+            <button 
+              className={`mode-label mode-seller ${isSellerMode ? 'active' : ''}`}
+              onClick={() => {
+                if (!isSellerMode) {
+                  setIsSellerMode(true);
+                  navigate('/admin');
+                }
+              }}
+            >
+              🛒 Seller
+            </button>
+          </div>
         </div>
       </header>
 
