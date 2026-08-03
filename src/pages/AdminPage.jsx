@@ -10,8 +10,8 @@ import {
   getDoc,
   doc
 } from '../firebase';
-import AdminPanel from '../admin/AdminPanel';
-import SetupProfile from './SetupProfile';
+import AdminPanel from '../admin/AdminPanel.jsx';  // ← Added .jsx
+import SetupProfile from './SetupProfile.jsx';      // ← Added .jsx
 
 function AdminPage() {
   const [user, setUser] = useState(null);
@@ -25,12 +25,10 @@ function AdminPage() {
       setUser(currentUser);
       
       if (currentUser) {
-        // Check if user has a profile
         try {
           const docRef = doc(usersCollection, currentUser.uid);
           const docSnap = await getDoc(docRef);
           
-          // ✅ FIXED: Use .exists (property, not function)
           if (docSnap.exists) {
             const data = docSnap.data();
             setUserProfile(data);
@@ -54,7 +52,6 @@ function AdminPage() {
     return () => unsubscribe();
   }, []);
 
-  // Handle Google Login
   const handleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
@@ -65,7 +62,6 @@ function AdminPage() {
     }
   };
 
-  // Handle Logout
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -86,7 +82,6 @@ function AdminPage() {
     );
   }
 
-  // If not logged in, show login screen
   if (!user) {
     return (
       <div style={{ 
@@ -120,12 +115,10 @@ function AdminPage() {
     );
   }
 
-  // If logged in but no profile, show setup page
   if (!hasProfile) {
     return <SetupProfile user={user} />;
   }
 
-  // Show admin panel with user profile
   return (
     <div>
       <div style={{ 

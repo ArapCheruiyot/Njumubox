@@ -24,17 +24,35 @@
   justify-content: center;
 }
 
-/* Home page shoe image */
-.home-shoe-image {
+/* Image wrapper for drag */
+.home-image-wrapper {
   width: 100%;
   height: 100%;
+  position: relative;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.home-image-wrapper:active {
+  cursor: grabbing;
+}
+
+/* Home page shoe image */
+.home-shoe-image {
+  width: 90%;
+  height: 90%;
   object-fit: contain;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   filter: drop-shadow(0 10px 40px rgba(0, 0, 0, 0.5));
-  max-height: 100%;
+  max-height: 85vh;
+  max-width: 90vw;
+  z-index: 2;
+  transition: opacity 0.3s ease;
 }
 
 /* Gradient overlay behind shoe */
@@ -52,69 +70,198 @@
 }
 
 /* ============================================
-   SHOE DETAILS - BOTTOM LEFT
+   IMAGE LOADING STATE
+   ============================================ */
+.image-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.spinner {
+  font-size: 3rem;
+  animation: spin 1.2s ease-in-out infinite;
+  opacity: 0.6;
+  filter: drop-shadow(0 0 20px rgba(52, 152, 219, 0.2));
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+/* ============================================
+   DRAG-TO-ROTATE HINT - CENTERED
+   ============================================ */
+.drag-hint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: rgba(255, 255, 255, 0.95);
+  padding: 16px 36px;
+  border-radius: 50px;
+  font-size: clamp(1rem, 1.6vw, 1.4rem);
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.drag-hint span {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.drag-hint .drag-arrow {
+  display: inline-block;
+  font-size: 1.5em;
+  animation: arrowSway 1.2s ease-in-out infinite;
+}
+
+@keyframes arrowSway {
+  0% { transform: translateX(-8px); }
+  50% { transform: translateX(8px); }
+  100% { transform: translateX(-8px); }
+}
+
+.drag-hint {
+  animation: hintPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes hintPulse {
+  0% { 
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  }
+  50% { 
+    transform: translate(-50%, -50%) scale(1.02);
+    box-shadow: 0 8px 50px rgba(0, 0, 0, 0.6);
+  }
+  100% { 
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.drag-hint.hidden {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.9);
+  pointer-events: none;
+}
+
+/* ============================================
+   BOTTOM OVERLAY - DETAILS LEFT, CONTROLS RIGHT
+   ============================================ */
+.home-bottom-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 8px 16px 12px 16px;
+  background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%);
+}
+
+/* ============================================
+   SHOE DETAILS - BOTTOM LEFT WITH GLASS BACKGROUND
    ============================================ */
 .home-details-overlay {
-  position: absolute;
-  bottom: 30px;
-  left: 24px;
-  z-index: 10;
   pointer-events: none;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 12px 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  min-width: 120px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  display: inline-block;
 }
 
 .home-shoe-name {
   color: white;
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-size: clamp(1rem, 2.5vw, 1.8rem);
   font-weight: 800;
-  margin-bottom: 4px;
-  text-shadow: 0 2px 25px rgba(0, 0, 0, 0.9);
-  line-height: 1.2;
-  letter-spacing: -0.5px;
+  margin-bottom: 1px;
+  text-shadow: none;
+  line-height: 1.1;
+  letter-spacing: -0.3px;
 }
 
 .home-shoe-brand {
   color: rgba(255, 255, 255, 0.8);
-  font-size: clamp(1.1rem, 1.8vw, 1.5rem);
-  margin-bottom: 4px;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9);
+  font-size: clamp(0.7rem, 1vw, 0.9rem);
+  margin-bottom: 1px;
+  text-shadow: none;
   font-weight: 400;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
 }
 
 .home-shoe-price {
   color: #2ecc71;
-  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-size: clamp(1.1rem, 2.5vw, 1.8rem);
   font-weight: 800;
-  text-shadow: 0 2px 25px rgba(0, 0, 0, 0.9);
-  letter-spacing: -0.5px;
+  text-shadow: none;
+  letter-spacing: -0.3px;
 }
 
 /* ============================================
-   VIEW STORE BUTTON - BOTTOM RIGHT (ABOVE NAV)
+   RIGHT CONTROLS - BOTTOM RIGHT (STACKED VERTICALLY)
+   ============================================ */
+.home-right-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   VIEW STORE BUTTON - BOTTOM RIGHT
    ============================================ */
 .home-view-store-btn {
-  position: absolute;
-  bottom: 95px;
-  right: 24px;
-  z-index: 10;
-  padding: 10px 24px;
+  padding: 6px 16px;
   background: linear-gradient(135deg, #27ae60, #1e8449);
   color: white;
   text-decoration: none;
-  border-radius: 30px;
-  font-size: 0.9rem;
+  border-radius: 20px;
+  font-size: clamp(0.65rem, 1vw, 0.8rem);
   font-weight: 700;
-  box-shadow: 0 4px 20px rgba(39, 174, 96, 0.3);
+  box-shadow: 0 2px 15px rgba(39, 174, 96, 0.25);
   transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
   backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .home-view-store-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 30px rgba(39, 174, 96, 0.5);
+  box-shadow: 0 4px 20px rgba(39, 174, 96, 0.4);
 }
 
 .home-view-store-btn:active {
@@ -122,103 +269,105 @@
 }
 
 /* ============================================
-   NAVIGATION - BOTTOM RIGHT (BELOW VIEW STORE)
+   NAVIGATION - BOTTOM RIGHT
    ============================================ */
 .home-nav-overlay {
-  position: absolute;
-  bottom: 30px;
-  right: 24px;
-  z-index: 10;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 8px;
+  gap: 4px;
 }
 
 .home-nav-buttons {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  padding: 6px 12px;
-  border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 3px 8px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .home-nav-btn {
-  padding: 8px 14px;
-  background: rgba(255, 255, 255, 0.08);
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.06);
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.75rem;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .home-nav-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.3);
-  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: scale(1.08);
 }
 
 .home-nav-btn:active {
-  transform: scale(0.95);
+  transform: scale(0.92);
 }
 
 .home-nav-btn-next {
-  background: rgba(52, 152, 219, 0.3);
-  border-color: rgba(52, 152, 219, 0.3);
+  background: rgba(52, 152, 219, 0.25);
+  border-color: rgba(52, 152, 219, 0.25);
 }
 
 .home-nav-btn-next:hover {
-  background: rgba(52, 152, 219, 0.5);
-  border-color: rgba(52, 152, 219, 0.5);
+  background: rgba(52, 152, 219, 0.4);
+  border-color: rgba(52, 152, 219, 0.4);
 }
 
 .home-nav-counter {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.6rem;
   font-weight: 600;
-  min-width: 40px;
+  min-width: 30px;
   text-align: center;
 }
 
 /* Store Dots */
 .home-dots {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   align-items: center;
   justify-content: flex-end;
 }
 
 .home-dot {
-  width: 8px;
-  height: 8px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
 }
 
 .home-dot:hover {
   transform: scale(1.3);
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .home-dot.active {
   background: #3498db;
   border-color: #3498db;
   transform: scale(1.2);
+}
+
+/* Hide bottom controls - not used anymore */
+.home-bottom-controls {
+  display: none !important;
 }
 
 /* 360° Badge */
@@ -232,7 +381,19 @@
   border-radius: 16px;
   font-size: 0.7rem;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   z-index: 10;
+}
+
+/* No image state */
+.home-no-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: rgba(255, 255, 255, 0.1);
+  font-size: 2rem;
 }
 
 /* Explore link */
@@ -288,6 +449,53 @@
 }
 
 /* ============================================
+   STORE INFO - TOP LEFT WITH GLASS BACKGROUND
+   ============================================ */
+.home-store-top-left {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+
+.home-store-name-top {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: clamp(0.85rem, 1.6vw, 1.3rem);
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+}
+
+.home-store-location-top {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: clamp(0.55rem, 0.9vw, 0.75rem);
+  font-weight: 400;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 3px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  letter-spacing: 0.2px;
+  margin-left: 4px;
+}
+
+/* Remove the old store info from bottom */
+.home-store-info {
+  display: none !important;
+}
+
+/* ============================================
    RESPONSIVE
    ============================================ */
 
@@ -303,20 +511,21 @@
   }
   
   .home-details-overlay {
-    bottom: 40px;
-    left: 30px;
-  }
-  
-  .home-nav-overlay {
-    bottom: 40px;
-    right: 30px;
+    padding: 16px 24px;
   }
   
   .home-view-store-btn {
-    bottom: 105px;
-    right: 30px;
-    padding: 12px 28px;
-    font-size: 1rem;
+    padding: 8px 20px;
+    font-size: 0.85rem;
+  }
+
+  .home-store-top-left {
+    top: 20px;
+    left: 20px;
+  }
+
+  .home-right-controls {
+    gap: 10px;
   }
 }
 
@@ -354,32 +563,39 @@
   }
   
   .home-details-overlay {
-    bottom: 24px;
-    left: 18px;
-  }
-  
-  .home-nav-overlay {
-    bottom: 24px;
-    right: 18px;
+    padding: 10px 16px;
+    min-width: 100px;
   }
   
   .home-view-store-btn {
-    bottom: 85px;
-    right: 18px;
-    padding: 8px 18px;
-    font-size: 0.8rem;
+    padding: 6px 14px;
+    font-size: 0.75rem;
   }
 
   .home-nav-btn {
-    width: 32px;
-    height: 32px;
-    font-size: 0.85rem;
-    padding: 6px 10px;
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+    padding: 4px 8px;
   }
 
   .home-footer {
     padding: 4px 14px;
     font-size: 0.5rem;
+  }
+
+  .drag-hint {
+    padding: 10px 24px;
+    font-size: 0.8rem;
+  }
+
+  .home-store-top-left {
+    top: 12px;
+    left: 12px;
+  }
+
+  .home-right-controls {
+    gap: 8px;
   }
 }
 
@@ -418,49 +634,67 @@
   }
   
   .home-details-overlay {
-    bottom: 16px;
-    left: 14px;
-  }
-  
-  .home-nav-overlay {
-    bottom: 16px;
-    right: 14px;
-    gap: 6px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    min-width: 80px;
   }
   
   .home-view-store-btn {
-    bottom: 75px;
-    right: 14px;
-    padding: 6px 14px;
-    font-size: 0.7rem;
-    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 0.65rem;
+    border-radius: 16px;
   }
 
   .home-nav-buttons {
-    gap: 6px;
-    padding: 4px 10px;
+    gap: 4px;
+    padding: 3px 6px;
   }
 
   .home-nav-btn {
-    width: 28px;
-    height: 28px;
-    font-size: 0.75rem;
-    padding: 4px 8px;
+    width: 24px;
+    height: 24px;
+    font-size: 0.65rem;
+    padding: 3px 6px;
   }
 
   .home-nav-counter {
-    font-size: 0.65rem;
-    min-width: 30px;
+    font-size: 0.55rem;
+    min-width: 24px;
   }
 
   .home-dot {
-    width: 6px;
-    height: 6px;
+    width: 4px;
+    height: 4px;
   }
 
   .home-footer {
     padding: 3px 10px;
     font-size: 0.45rem;
+  }
+
+  .drag-hint {
+    padding: 8px 18px;
+    font-size: 0.7rem;
+  }
+
+  .home-store-top-left {
+    top: 8px;
+    left: 8px;
+    gap: 2px;
+  }
+
+  .home-store-name-top {
+    font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+    padding: 4px 12px;
+  }
+
+  .home-store-location-top {
+    font-size: clamp(0.5rem, 0.8vw, 0.65rem);
+    padding: 2px 10px;
+  }
+
+  .home-right-controls {
+    gap: 6px;
   }
 }
 
@@ -490,27 +724,21 @@
   }
 
   .home-details-overlay {
-    bottom: 12px;
-    left: 12px;
-  }
-  
-  .home-nav-overlay {
-    bottom: 12px;
-    right: 12px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    min-width: 70px;
   }
   
   .home-view-store-btn {
-    bottom: 65px;
-    right: 12px;
-    padding: 5px 12px;
+    padding: 4px 10px;
     font-size: 0.6rem;
   }
 
   .home-nav-btn {
-    width: 24px;
-    height: 24px;
-    font-size: 0.65rem;
-    padding: 3px 6px;
+    width: 22px;
+    height: 22px;
+    font-size: 0.6rem;
+    padding: 2px 5px;
   }
 
   .home-360-badge {
@@ -523,5 +751,29 @@
   .home-footer {
     padding: 2px 8px;
     font-size: 0.4rem;
+  }
+
+  .drag-hint {
+    padding: 6px 14px;
+    font-size: 0.6rem;
+  }
+
+  .home-store-top-left {
+    top: 6px;
+    left: 6px;
+  }
+
+  .home-store-name-top {
+    font-size: 0.65rem;
+    padding: 3px 10px;
+  }
+
+  .home-store-location-top {
+    font-size: 0.5rem;
+    padding: 2px 8px;
+  }
+
+  .home-right-controls {
+    gap: 5px;
   }
 }

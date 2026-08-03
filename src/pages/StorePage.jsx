@@ -34,7 +34,14 @@ function StorePage() {
           uid: vendorId,
           storeName: userData.storeName || 'Unnamed Store',
           email: userData.email,
-          phone: userData.phone || '254700000000',
+          phone: userData.phone || '',
+          // NEW: Get location data
+          location: userData.location || {
+            city: '',
+            area: '',
+            street: '',
+            fullAddress: ''
+          }
         });
 
         const q = query(shoesCollection, where("userId", "==", vendorId));
@@ -128,6 +135,11 @@ function StorePage() {
     setTimeout(() => startAutoRotate(), 1500);
   };
 
+  // Check if store has phone
+  const hasPhone = storeInfo?.phone && storeInfo.phone.length > 0;
+  // Check if store has location
+  const hasLocation = storeInfo?.location?.fullAddress && storeInfo.location.fullAddress.length > 0;
+
   if (loading) {
     return (
       <div className="app">
@@ -174,7 +186,24 @@ function StorePage() {
     <div className="app home-fullscreen">
       <header className="header">
         <div className="logo-container">
-          <h1 className="logo-text">👟 {storeInfo.storeName}</h1>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+            <h1 className="logo-text" style={{ marginBottom: '2px' }}>
+              👟 {storeInfo.storeName}
+            </h1>
+            {/* NEW: Display location below store name */}
+            {hasLocation && (
+              <span style={{ 
+                fontSize: '0.7rem', 
+                color: 'rgba(255,255,255,0.5)',
+                marginLeft: '4px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px'
+              }}>
+                📍 {storeInfo.location.fullAddress}
+              </span>
+            )}
+          </div>
         </div>
         <div className="header-right">
           <span className="tagline">{storeShoes.length} shoes</span>
@@ -208,30 +237,39 @@ function StorePage() {
           <p className="home-shoe-price">Ksh {currentShoe?.price?.toLocaleString()}</p>
         </div>
 
-        {/* ===== CTA BUTTONS - USING CSS CLASSES ===== */}
-        <div className="store-cta-container">
-          {/* WhatsApp Button */}
-          <a 
-            href={`https://wa.me/${storeInfo.phone || '254700000000'}?text=Hi%20${encodeURIComponent(storeInfo.storeName)}%2C%20I%20saw%20your%20${encodeURIComponent(currentShoe?.name || 'shoes')}%20on%20NdulaBox!`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="store-cta-btn store-whatsapp"
-            title="Chat on WhatsApp"
-          >
-            <span className="store-cta-icon">💬</span>
-            WhatsApp
-          </a>
+        {/* ===== CTA BUTTONS - CONDITIONAL ===== */}
+        {hasPhone ? (
+          // ✅ Show buttons if phone exists
+          <div className="store-cta-container">
+            {/* WhatsApp Button */}
+            <a 
+              href={`https://wa.me/${storeInfo.phone}?text=Hi%20${encodeURIComponent(storeInfo.storeName)}%2C%20I%20saw%20your%20${encodeURIComponent(currentShoe?.name || 'shoes')}%20on%20NdulaBox!`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="store-cta-btn store-whatsapp"
+              title="Chat on WhatsApp"
+            >
+              <span className="store-cta-icon">💬</span>
+              WhatsApp
+            </a>
 
-          {/* Call Button */}
-          <a 
-            href={`tel:${storeInfo.phone || '254700000000'}`}
-            className="store-cta-btn store-call"
-            title="Call Store"
-          >
-            <span className="store-cta-icon">📞</span>
-            Call
-          </a>
-        </div>
+            {/* Call Button */}
+            <a 
+              href={`tel:${storeInfo.phone}`}
+              className="store-cta-btn store-call"
+              title="Call Store"
+            >
+              <span className="store-cta-icon">📞</span>
+              Call
+            </a>
+          </div>
+        ) : (
+          // ❌ Show message if no phone
+          <div className="store-no-phone">
+            <span className="store-no-phone-icon">📱</span>
+            <span className="store-no-phone-text">No contact number</span>
+          </div>
+        )}
 
         {/* Navigation - Bottom Right */}
         <div className="home-nav-overlay">

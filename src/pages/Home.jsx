@@ -10,22 +10,34 @@ function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isAutoRotating, setIsAutoRotating] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStartX, setDragStartX] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
   
   const autoRotateTimerRef = useRef(null);
-  const currentIndexRef = useRef(0);
+  const containerRef = useRef(null);
 
-  // Load stores and their shoes
+  const getOptimizedImage = (url) => {
+    if (!url) return '';
+    if (url.includes('cloudinary.com')) {
+      const parts = url.split('/upload/');
+      if (parts.length === 2) {
+        return `${parts[0]}/upload/q_auto:eco,f_auto,fl_lossy,w_800/${parts[1]}`;
+      }
+    }
+    return url;
+  };
+
   useEffect(() => {
     const loadStores = async () => {
       try {
-        // 1. Get ALL shoes first
         const shoesSnapshot = await getDocs(shoesCollection);
         const allShoes = [];
         shoesSnapshot.forEach((doc) => {
           allShoes.push({ id: doc.id, ...doc.data() });
         });
-
-        console.log('📦 Total shoes found:', allShoes.length);
 
         if (allShoes.length === 0) {
           setLoading(false);
@@ -33,29 +45,22 @@ function Home() {
           return;
         }
 
-        // 2. Group shoes by userId
         const shoesByUser = {};
         allShoes.forEach((shoe) => {
           const userId = shoe.userId;
-          if (!userId) {
-            console.warn('⚠️ Shoe has no userId:', shoe);
-            return;
-          }
+          if (!userId) return;
           if (!shoesByUser[userId]) {
             shoesByUser[userId] = [];
           }
           shoesByUser[userId].push(shoe);
         });
 
-        console.log('👥 Users with shoes:', Object.keys(shoesByUser).length);
-
-        // 3. Get user info for each userId
         const storesData = [];
         for (const userId of Object.keys(shoesByUser)) {
           let storeName = 'Unnamed Store';
           let userEmail = '';
+          let location = { city: '', area: '', street: '', fullAddress: '' };
           
-          // Try to get user info from users collection
           try {
             const userDocRef = doc(usersCollection, userId);
             const userDoc = await getDoc(userDocRef);
@@ -63,6 +68,9 @@ function Home() {
               const userData = userDoc.data();
               storeName = userData.storeName || 'Unnamed Store';
               userEmail = userData.email || '';
+              location = userData.location || { city: '', area: '', street: '', fullAddress: '' };
+            } else {
+              console.warn('⚠️ User document missing for:', userId);
             }
           } catch (error) {
             console.warn('Could not fetch user info for:', userId);
@@ -72,26 +80,26 @@ function Home() {
             uid: userId,
             storeName: storeName,
             email: userEmail,
+            location: location,
             shoes: shoesByUser[userId]
           });
         }
 
-        console.log('🏪 Stores created:', storesData.length);
-
-        // 4. Shuffle stores for random display
         const shuffled = shuffleArray(storesData);
         setStores(shuffled);
         
-        // 5. Select first store and a random shoe from it
         if (shuffled.length > 0) {
           const firstStore = shuffled[0];
           const randomShoe = getRandomShoe(firstStore.shoes);
           setCurrentShoe(randomShoe);
           setCurrentImageIndex(0);
-          currentIndexRef.current = 0;
           
-          console.log('👟 First store:', firstStore.storeName, 'with', firstStore.shoes.length, 'shoes');
-          console.log('👟 Random shoe:', randomShoe?.name);
+          if (randomShoe && randomShoe.images && randomShoe.images.length > 0) {
+            const img = new Image();
+            img.src = getOptimizedImage(randomShoe.images[0]);
+            img.onload = () => setImageLoaded(true);
+            img.onerror = () => setImageLoaded(false);
+          }
         }
         
         setLoading(false);
@@ -104,13 +112,22 @@ function Home() {
     loadStores();
   }, []);
 
-  // Start auto-rotation when shoe changes
   useEffect(() => {
     if (currentShoe && currentShoe.images && currentShoe.images.length > 1) {
       startAutoRotate();
     }
     return () => stopAutoRotate();
   }, [currentShoe]);
+
+  useEffect(() => {
+    setImageLoaded(false);
+    if (currentShoe && currentShoe.images && currentShoe.images.length > 0) {
+      const img = new Image();
+      img.src = getOptimizedImage(currentShoe.images[currentImageIndex]);
+      img.onload = () => setImageLoaded(true);
+      img.onerror = () => setImageLoaded(false);
+    }
+  }, [currentShoe, currentImageIndex]);
 
   const shuffleArray = (array) => {
     const shuffled = [...array];
@@ -126,30 +143,28 @@ function Home() {
     return shoes[Math.floor(Math.random() * shoes.length)];
   };
 
-  // ===== ROTATION FUNCTIONS =====
   const goToNextImage = () => {
     if (!currentShoe || currentShoe.images.length <= 1) return;
-    
     const totalImages = currentShoe.images.length;
-    const nextIndex = (currentIndexRef.current + 1) % totalImages;
-    
+    const nextIndex = (currentImageIndex + 1) % totalImages;
     setCurrentImageIndex(nextIndex);
-    currentIndexRef.current = nextIndex;
-    
-    // When we complete all images, move to next store
-    if (nextIndex === 0 && stores.length > 1) {
-      setTimeout(() => {
-        goToNextStore();
-      }, 1000);
-    }
+  };
+
+  const goToPreviousImage = () => {
+    if (!currentShoe || currentShoe.images.length <= 1) return;
+    const totalImages = currentShoe.images.length;
+    const prevIndex = (currentImageIndex - 1 + totalImages) % totalImages;
+    setCurrentImageIndex(prevIndex);
   };
 
   const startAutoRotate = () => {
-    if (!currentShoe || currentShoe.images.length <= 1) return;
+    if (!currentShoe || currentShoe.images.length <= 1 || isDragging) return;
     stopAutoRotate();
     setIsAutoRotating(true);
     autoRotateTimerRef.current = setInterval(() => {
-      goToNextImage();
+      if (!isDragging) {
+        goToNextImage();
+      }
     }, 3000);
   };
 
@@ -161,7 +176,42 @@ function Home() {
     }
   };
 
-  // ===== STORE NAVIGATION =====
+  const handleDragStart = (e) => {
+    const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+    setIsDragging(true);
+    setDragStartX(clientX);
+    setDragOffset(0);
+    stopAutoRotate();
+  };
+
+  const handleDragMove = (e) => {
+    if (!isDragging) return;
+    const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+    const delta = clientX - dragStartX;
+    setDragOffset(delta);
+    
+    if (Math.abs(delta) > 50) {
+      const direction = delta > 0 ? -1 : 1;
+      const totalImages = currentShoe?.images?.length || 0;
+      if (totalImages > 1) {
+        const newIndex = (currentImageIndex + direction + totalImages) % totalImages;
+        setCurrentImageIndex(newIndex);
+        setDragStartX(clientX);
+        setDragOffset(0);
+      }
+    }
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+    setDragOffset(0);
+    setTimeout(() => {
+      if (!isDragging && currentShoe && currentShoe.images && currentShoe.images.length > 1) {
+        startAutoRotate();
+      }
+    }, 5000);
+  };
+
   const goToNextStore = () => {
     if (stores.length === 0) return;
     stopAutoRotate();
@@ -172,9 +222,7 @@ function Home() {
     const randomShoe = getRandomShoe(nextStore.shoes);
     setCurrentShoe(randomShoe);
     setCurrentImageIndex(0);
-    currentIndexRef.current = 0;
-    
-    console.log('➡️ Next store:', nextStore.storeName, 'shoe:', randomShoe?.name);
+    setImageLoaded(false);
     
     setTimeout(() => startAutoRotate(), 1500);
   };
@@ -189,9 +237,7 @@ function Home() {
     const randomShoe = getRandomShoe(prevStore.shoes);
     setCurrentShoe(randomShoe);
     setCurrentImageIndex(0);
-    currentIndexRef.current = 0;
-    
-    console.log('⬅️ Previous store:', prevStore.storeName, 'shoe:', randomShoe?.name);
+    setImageLoaded(false);
     
     setTimeout(() => startAutoRotate(), 1500);
   };
@@ -237,6 +283,8 @@ function Home() {
 
   const currentStore = stores[currentStoreIndex];
   const totalImages = currentShoe?.images?.length || 0;
+  const hasLocation = currentStore?.location?.fullAddress && currentStore.location.fullAddress.length > 0;
+  const has360View = totalImages > 1;
 
   return (
     <div className="app home-fullscreen">
@@ -254,87 +302,148 @@ function Home() {
       </header>
 
       <div className="home-image-container">
-        {/* Main Image */}
-        {currentShoe && (
-          <img 
-            src={currentShoe.images[currentImageIndex]} 
-            alt={currentShoe.name}
-            className="home-shoe-image"
-            key={`${currentShoe.id}-${currentImageIndex}`}
-          />
-        )}
-        
-        {/* 360° Badge */}
-        {totalImages > 1 && (
-          <div className="home-360-badge">
-            🔄 {currentImageIndex + 1}/{totalImages}
-          </div>
-        )}
-
-        {/* Shoe Details - Bottom Left */}
-        <div className="home-details-overlay">
-          <h2 className="home-shoe-name">{currentShoe?.name}</h2>
-          <p className="home-shoe-brand">{currentShoe?.brand}</p>
-          <p className="home-shoe-price">Ksh {currentShoe?.price?.toLocaleString()}</p>
-        </div>
-
-        {/* ===== STORE INFO - BOTTOM RIGHT (ABOVE VIEW STORE) ===== */}
-        <div className="home-store-info">
-          <span className="home-store-name">📍 {currentStore?.storeName}</span>
-        </div>
-
-        {/* ===== VIEW STORE BUTTON - BOTTOM RIGHT ===== */}
-        <Link 
-          to={`/store/${currentStore?.uid}`} 
-          className="home-view-store-btn"
-        >
-          👁️ View Store
-        </Link>
-
-        {/* Navigation - Bottom Right (BELOW View Store) */}
-        <div className="home-nav-overlay">
-          <div className="home-nav-buttons">
-            <button 
-              onClick={goToPreviousStore}
-              className="home-nav-btn"
-              aria-label="Previous store"
+        {/* ===== MAIN IMAGE WITH DRAG ===== */}
+        {currentShoe && currentShoe.images && currentShoe.images.length > 0 ? (
+          <>
+            <div
+              ref={containerRef}
+              className="home-image-wrapper"
+              onMouseDown={handleDragStart}
+              onMouseMove={handleDragMove}
+              onMouseUp={handleDragEnd}
+              onMouseLeave={handleDragEnd}
+              onTouchStart={handleDragStart}
+              onTouchMove={handleDragMove}
+              onTouchEnd={handleDragEnd}
+              style={{
+                width: '100%',
+                height: '100%',
+                position: 'relative',
+                cursor: has360View ? 'grab' : 'default',
+                touchAction: 'none',
+                userSelect: 'none',
+                WebkitUserSelect: 'none',
+                overflow: 'hidden'
+              }}
             >
-              ◀
-            </button>
-            
-            <span className="home-nav-counter">
-              {currentStoreIndex + 1} / {stores.length}
-            </span>
-            
-            <button 
-              onClick={goToNextStore}
-              className="home-nav-btn home-nav-btn-next"
-              aria-label="Next store"
-            >
-              ▶
-            </button>
-          </div>
-          
-          {/* Store Dots */}
-          <div className="home-dots">
-            {stores.map((store, index) => (
-              <div
-                key={store.uid}
-                className={`home-dot ${index === currentStoreIndex ? 'active' : ''}`}
-                onClick={() => {
-                  stopAutoRotate();
-                  setCurrentStoreIndex(index);
-                  const selectedStore = stores[index];
-                  const randomShoe = getRandomShoe(selectedStore.shoes);
-                  setCurrentShoe(randomShoe);
-                  setCurrentImageIndex(0);
-                  currentIndexRef.current = 0;
-                  setTimeout(() => startAutoRotate(), 1500);
+              <img 
+                src={getOptimizedImage(currentShoe.images[currentImageIndex])}
+                alt={currentShoe.name}
+                className="home-shoe-image"
+                onLoad={() => setImageLoaded(true)}
+                onError={() => setImageLoaded(false)}
+                style={{ 
+                  opacity: imageLoaded ? 1 : 0,
+                  transition: 'opacity 0.3s ease'
                 }}
+                draggable={false}
+                key={`${currentShoe.id}-${currentImageIndex}`}
               />
-            ))}
+              
+              {!imageLoaded && (
+                <div className="image-loading">
+                  <div className="spinner">🔄</div>
+                </div>
+              )}
+              
+              {/* 360° Badge - Top Right */}
+              {has360View && (
+                <div className="home-360-badge">
+                  🔄 {currentImageIndex + 1}/{totalImages}
+                </div>
+              )}
+              
+              {/* ===== STORE INFO - TOP LEFT ===== */}
+              <div className="home-store-top-left">
+                <span className="home-store-name-top">📍 {currentStore?.storeName}</span>
+                {hasLocation && (
+                  <span className="home-store-location-top">
+                    {currentStore.location.city}
+                  </span>
+                )}
+              </div>
+              
+              {/* Drag hint */}
+              {has360View && !isDragging && imageLoaded && (
+                <div className="drag-hint">
+                  <span>
+                    <span className="drag-arrow">↔</span> Drag to rotate
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* ===== BOTTOM OVERLAY - DETAILS LEFT, CONTROLS RIGHT ===== */}
+            <div className="home-bottom-overlay">
+              {/* Left side - Shoe Details */}
+              <div className="home-details-overlay">
+                <h2 className="home-shoe-name">{currentShoe?.name}</h2>
+                <p className="home-shoe-brand">{currentShoe?.brand}</p>
+                <p className="home-shoe-price">Ksh {currentShoe?.price?.toLocaleString()}</p>
+              </div>
+
+              {/* Right side - Controls (Stacked Vertically) */}
+              <div className="home-right-controls">
+                {/* View Store Button */}
+                <Link 
+                  to={`/store/${currentStore?.uid}`} 
+                  className="home-view-store-btn"
+                >
+                  👁️ View Store
+                </Link>
+
+                {/* Navigation */}
+                <div className="home-nav-overlay">
+                  <div className="home-nav-buttons">
+                    <button 
+                      onClick={goToPreviousStore}
+                      className="home-nav-btn"
+                      aria-label="Previous store"
+                    >
+                      ◀
+                    </button>
+                    
+                    <span className="home-nav-counter">
+                      {currentStoreIndex + 1} / {stores.length}
+                    </span>
+                    
+                    <button 
+                      onClick={goToNextStore}
+                      className="home-nav-btn home-nav-btn-next"
+                      aria-label="Next store"
+                    >
+                      ▶
+                    </button>
+                  </div>
+                  
+                  {/* Store Dots */}
+                  <div className="home-dots">
+                    {stores.map((store, index) => (
+                      <div
+                        key={store.uid}
+                        className={`home-dot ${index === currentStoreIndex ? 'active' : ''}`}
+                        onClick={() => {
+                          stopAutoRotate();
+                          setCurrentStoreIndex(index);
+                          const selectedStore = stores[index];
+                          const randomShoe = getRandomShoe(selectedStore.shoes);
+                          setCurrentShoe(randomShoe);
+                          setCurrentImageIndex(0);
+                          setImageLoaded(false);
+                          setTimeout(() => startAutoRotate(), 1500);
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="home-no-image">
+            <span>📷 No Image</span>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Minimal Footer */}

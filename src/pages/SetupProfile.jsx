@@ -4,16 +4,19 @@ import { auth, usersCollection, setDoc, doc } from '../firebase';
 
 function SetupProfile({ user }) {
   const [storeName, setStoreName] = useState('');
-  const [phone, setPhone] = useState('');  // ← NEW: Phone state
+  const [phone, setPhone] = useState('');
+  // NEW: Location states
+  const [city, setCity] = useState('');
+  const [area, setArea] = useState('');
+  const [street, setStreet] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   // Validate phone number (Kenyan format)
   const validatePhone = (number) => {
-    if (!number) return true; // Optional field
+    if (!number) return true;
     const cleaned = number.replace(/\s/g, '');
-    // Kenyan format: 254XXXXXXXXX (12 digits total)
     return /^254\d{9}$/.test(cleaned);
   };
 
@@ -25,7 +28,11 @@ function SetupProfile({ user }) {
       return;
     }
 
-    // Validate phone if provided
+    if (!city.trim()) {
+      setError('Please enter your city/town');
+      return;
+    }
+
     if (phone && !validatePhone(phone)) {
       setError('Please enter a valid phone number (e.g., 254712345678)');
       return;
@@ -35,7 +42,6 @@ function SetupProfile({ user }) {
     setError('');
 
     try {
-      // Clean phone number (remove spaces, +, 0)
       const cleanPhone = phone ? phone.replace(/[\s+]/g, '') : '';
       
       // Save user profile to Firestore
@@ -44,13 +50,19 @@ function SetupProfile({ user }) {
         email: user.email,
         displayName: user.displayName || user.email.split('@')[0],
         storeName: storeName.trim(),
-        phone: cleanPhone,  // ← NEW: Save phone
+        phone: cleanPhone,
+        // NEW: Location fields
+        location: {
+          city: city.trim(),
+          area: area.trim() || '',
+          street: street.trim() || '',
+          fullAddress: `${city.trim()}${area ? `, ${area.trim()}` : ''}${street ? `, ${street.trim()}` : ''}`
+        },
         storeDescription: '',
         createdAt: new Date().toISOString(),
         logo: ''
       });
 
-      // Redirect to admin panel
       navigate('/admin');
     } catch (error) {
       console.error('Error saving profile:', error);
@@ -82,7 +94,7 @@ function SetupProfile({ user }) {
           🏪 Welcome, {user?.displayName || 'Vendor'}!
         </h1>
         <p style={{ color: 'rgba(255,255,255,0.6)', marginBottom: '30px' }}>
-          Please set up your store details to get started.
+          Set up your store details to get started.
         </p>
 
         {error && (
@@ -99,6 +111,7 @@ function SetupProfile({ user }) {
         )}
 
         <form onSubmit={handleSubmit}>
+          {/* Store Name */}
           <div style={{ marginBottom: '20px' }}>
             <label style={{ color: 'white', display: 'block', marginBottom: '8px' }}>
               Store Name *
@@ -107,7 +120,7 @@ function SetupProfile({ user }) {
               type="text"
               value={storeName}
               onChange={(e) => setStoreName(e.target.value)}
-              placeholder="e.g., John's Shoe Store"
+              placeholder="e.g., Safari Kick Ke"
               style={{
                 width: '100%',
                 padding: '12px 16px',
@@ -121,10 +134,84 @@ function SetupProfile({ user }) {
             />
           </div>
 
-          {/* NEW: Phone Field */}
+          {/* NEW: Location Section */}
+          <div style={{ 
+            marginBottom: '20px',
+            padding: '15px',
+            background: 'rgba(255,255,255,0.03)',
+            borderRadius: '10px',
+            border: '1px solid rgba(255,255,255,0.05)'
+          }}>
+            <label style={{ color: 'white', display: 'block', marginBottom: '10px', fontSize: '0.95rem' }}>
+              📍 Store Location
+            </label>
+            
+            {/* City/Town - Required */}
+            <div style={{ marginBottom: '12px' }}>
+              <input
+                type="text"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                placeholder="City/Town * (e.g., Nairobi, Mombasa)"
+                style={{
+                  width: '100%',
+                  padding: '10px 14px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  background: 'rgba(255,255,255,0.05)',
+                  color: 'white',
+                  fontSize: '0.95rem'
+                }}
+                required
+              />
+            </div>
+
+            {/* Estate/Area - Optional */}
+            <div style={{ marginBottom: '12px' }}>
+              <input
+                type="text"
+                value={area}
+                onChange={(e) => setArea(e.target.value)}
+                placeholder="Estate/Area (e.g., Langata, Westlands)"
+                style={{
+                  width: '100%',
+                  padding: '10px 14px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  background: 'rgba(255,255,255,0.05)',
+                  color: 'white',
+                  fontSize: '0.95rem'
+                }}
+              />
+            </div>
+
+            {/* Street/Shop - Optional */}
+            <div>
+              <input
+                type="text"
+                value={street}
+                onChange={(e) => setStreet(e.target.value)}
+                placeholder="Street/Shop (e.g., Moi Avenue, Shop 12)"
+                style={{
+                  width: '100%',
+                  padding: '10px 14px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  background: 'rgba(255,255,255,0.05)',
+                  color: 'white',
+                  fontSize: '0.95rem'
+                }}
+              />
+            </div>
+            <small style={{ color: 'rgba(255,255,255,0.3)', display: 'block', marginTop: '8px' }}>
+              Your location helps customers trust your store
+            </small>
+          </div>
+
+          {/* Phone */}
           <div style={{ marginBottom: '20px' }}>
             <label style={{ color: 'white', display: 'block', marginBottom: '8px' }}>
-              📞 Store Phone Number <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem' }}>(Optional)</span>
+              📞 Phone Number <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem' }}>(Optional)</span>
             </label>
             <input
               type="tel"
