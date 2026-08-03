@@ -359,11 +359,6 @@ function Home() {
               🛒 Seller
             </button>
           </div>
-          
-          {/* Explore Link */}
-          <Link to="/explore" className="admin-link explore-link">
-            🌐 Explore All
-          </Link>
         </div>
       </header>
 
