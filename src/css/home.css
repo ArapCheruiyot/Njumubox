@@ -323,6 +323,36 @@
 }
 
 /* ============================================
+   TRY ON BUTTON - COMING SOON
+   ============================================ */
+.home-tryon-btn {
+  padding: 8px 20px;
+  background: linear-gradient(135deg, #9b59b6, #8e44ad);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: clamp(0.8rem, 1.2vw, 1rem);
+  font-weight: 700;
+  box-shadow: 0 3px 20px rgba(155, 89, 182, 0.3);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.home-tryon-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 30px rgba(155, 89, 182, 0.5);
+}
+
+.home-tryon-btn:active {
+  transform: scale(0.95);
+}
+
+/* ============================================
    NAVIGATION - BOTTOM RIGHT
    ============================================ */
 .home-nav-overlay {
@@ -639,6 +669,236 @@
 }
 
 /* ============================================
+   TRY ON MODAL - COMING SOON
+   ============================================ */
+.tryon-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.tryon-modal {
+  background: linear-gradient(145deg, #1a1a2e, #16213e);
+  border-radius: 24px;
+  padding: 40px;
+  max-width: 480px;
+  width: 90%;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.tryon-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tryon-modal-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.8);
+  transform: rotate(90deg);
+}
+
+.tryon-modal-content {
+  text-align: center;
+  color: white;
+}
+
+.tryon-modal-icon {
+  font-size: 4rem;
+  margin-bottom: 12px;
+  display: block;
+  animation: floatIcon 3s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.tryon-modal h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #9b59b6, #3498db);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.tryon-coming-soon-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+  color: white;
+  padding: 4px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  animation: pulseBadge 2s ease-in-out infinite;
+}
+
+@keyframes pulseBadge {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.tryon-modal-description {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.tryon-modal-features {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.tryon-feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.tryon-feature:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.tryon-feature span {
+  font-size: 1.3rem;
+}
+
+.tryon-modal-btn {
+  padding: 12px 32px;
+  background: linear-gradient(135deg, #9b59b6, #8e44ad);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(155, 89, 182, 0.3);
+}
+
+.tryon-modal-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 30px rgba(155, 89, 182, 0.5);
+}
+
+.tryon-modal-footer {
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 0.7rem;
+  margin-top: 16px;
+  letter-spacing: 0.5px;
+}
+
+/* ============================================
+   TRY ON MODAL RESPONSIVE
+   ============================================ */
+
+@media (max-width: 480px) {
+  .tryon-modal {
+    padding: 28px 20px;
+    border-radius: 20px;
+  }
+
+  .tryon-modal h2 {
+    font-size: 1.5rem;
+  }
+
+  .tryon-modal-icon {
+    font-size: 3rem;
+  }
+
+  .tryon-modal-description {
+    font-size: 0.85rem;
+  }
+
+  .tryon-feature {
+    font-size: 0.8rem;
+    padding: 8px 12px;
+  }
+
+  .tryon-modal-btn {
+    padding: 10px 24px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .tryon-modal {
+    padding: 24px 16px;
+    border-radius: 16px;
+  }
+
+  .tryon-modal h2 {
+    font-size: 1.3rem;
+  }
+
+  .tryon-modal-icon {
+    font-size: 2.5rem;
+  }
+
+  .tryon-feature {
+    font-size: 0.75rem;
+    padding: 6px 10px;
+  }
+
+  .tryon-modal-btn {
+    padding: 8px 20px;
+    font-size: 0.8rem;
+  }
+}
+
+/* ============================================
    RESPONSIVE
    ============================================ */
 
@@ -659,6 +919,11 @@
   }
   
   .home-view-store-btn {
+    padding: 10px 24px;
+    font-size: 0.95rem;
+  }
+
+  .home-tryon-btn {
     padding: 10px 24px;
     font-size: 0.95rem;
   }
@@ -703,6 +968,11 @@
   }
   
   .home-view-store-btn {
+    padding: 7px 16px;
+    font-size: 0.8rem;
+  }
+
+  .home-tryon-btn {
     padding: 7px 16px;
     font-size: 0.8rem;
   }
@@ -791,6 +1061,12 @@
   }
   
   .home-view-store-btn {
+    padding: 6px 14px;
+    font-size: 0.7rem;
+    border-radius: 18px;
+  }
+
+  .home-tryon-btn {
     padding: 6px 14px;
     font-size: 0.7rem;
     border-radius: 18px;
@@ -899,6 +1175,12 @@
   }
   
   .home-view-store-btn {
+    padding: 5px 12px;
+    font-size: 0.65rem;
+    border-radius: 16px;
+  }
+
+  .home-tryon-btn {
     padding: 5px 12px;
     font-size: 0.65rem;
     border-radius: 16px;

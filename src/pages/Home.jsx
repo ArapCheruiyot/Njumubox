@@ -21,6 +21,9 @@ function Home() {
   const [filteredStores, setFilteredStores] = useState([]);
   const [showAllCategories, setShowAllCategories] = useState(false);
   
+  // Try On Modal state
+  const [showTryOnModal, setShowTryOnModal] = useState(false);
+  
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartX, setDragStartX] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
@@ -72,19 +75,16 @@ function Home() {
           const shoe = { id: doc.id, ...doc.data() };
           allShoes.push(shoe);
           
-          // Only add category if it exists and is not empty
           if (shoe.category && shoe.category.trim() !== '') {
             categorySet.add(shoe.category.trim());
           }
         });
 
-        // DEBUG: Log all shoes with their categories
         console.log('📊 All shoes with categories:', allShoes.map(s => ({ 
           name: s.name, 
           category: s.category || 'NO CATEGORY' 
         })));
 
-        // Set categories dynamically - only if they have shoes
         const categoryList = ['All', ...categorySet];
         setCategories(categoryList);
 
@@ -173,8 +173,6 @@ function Home() {
         )
       );
       setFilteredStores(filtered);
-      
-      // DEBUG: Log filtered results
       console.log(`🔍 Filtered stores for category "${selectedCategory}":`, filtered.length);
     }
   }, [selectedCategory, stores]);
@@ -188,7 +186,6 @@ function Home() {
       setCurrentShoe(randomShoe);
       setCurrentImageIndex(0);
     } else {
-      // No stores found for this category
       setCurrentShoe(null);
     }
   }, [filteredStores]);
@@ -323,6 +320,15 @@ function Home() {
     setTimeout(() => startAutoRotate(), 1500);
   };
 
+  // Try On handlers
+  const handleTryOnClick = () => {
+    setShowTryOnModal(true);
+  };
+
+  const closeTryOnModal = () => {
+    setShowTryOnModal(false);
+  };
+
   // Show "No stores found" message
   const noStoresFound = filteredStores.length === 0 && !loading;
 
@@ -382,7 +388,6 @@ function Home() {
   const hasLocation = currentStore?.location?.fullAddress && currentStore.location.fullAddress.length > 0;
   const has360View = totalImages > 1;
   
-  // Determine visible categories (show first 5, rest behind "More")
   const visibleCategories = showAllCategories ? categories : categories.slice(0, 5);
   const hasMoreCategories = categories.length > 5;
 
@@ -552,6 +557,14 @@ function Home() {
                   </Link>
                 )}
 
+                {/* Try On Button - Coming Soon */}
+                <button 
+                  onClick={handleTryOnClick}
+                  className="home-tryon-btn"
+                >
+                  👟 Try On
+                </button>
+
                 {/* Navigation */}
                 <div className="home-nav-overlay">
                   <div className="home-nav-buttons">
@@ -605,6 +618,43 @@ function Home() {
           </div>
         )}
       </div>
+
+      {/* ===== TRY ON COMING SOON MODAL ===== */}
+      {showTryOnModal && (
+        <div className="tryon-modal-overlay" onClick={closeTryOnModal}>
+          <div className="tryon-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="tryon-modal-close" onClick={closeTryOnModal}>
+              ✕
+            </button>
+            <div className="tryon-modal-content">
+              <div className="tryon-modal-icon">👟</div>
+              <h2>Try On Feature</h2>
+              <div className="tryon-coming-soon-badge">🚀 Coming Soon</div>
+              <p className="tryon-modal-description">
+                We're building an exciting AI-powered virtual try-on experience 
+                that will let you see how shoes look on your feet before you buy!
+              </p>
+              <div className="tryon-modal-features">
+                <div className="tryon-feature">
+                  <span>📸</span> Upload a photo of your feet
+                </div>
+                <div className="tryon-feature">
+                  <span>🤖</span> AI-powered shoe visualization
+                </div>
+                <div className="tryon-feature">
+                  <span>🔄</span> Try multiple styles instantly
+                </div>
+              </div>
+              <button className="tryon-modal-btn" onClick={closeTryOnModal}>
+                I'll Be Back! 🚀
+              </button>
+              <p className="tryon-modal-footer">
+                Stay tuned for this amazing feature!
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Minimal Footer */}
       <footer className="home-footer">
