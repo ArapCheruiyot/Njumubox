@@ -466,4 +466,928 @@
     font-size: 0.6rem;
     border-radius: 22px;
   }
+}/* ============================================
+   HOME PAGE - FULL SCREEN SHOE
+   ============================================ */
+
+/* Full screen container - NO SCROLLING */
+.home-fullscreen {
+  height: 100vh !important;
+  max-height: 100vh !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Home page image container - FLEXIBLE */
+.home-image-container {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  background: radial-gradient(ellipse at center, #1a1a2e 0%, #0f0f1a 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Image wrapper for drag */
+.home-image-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.home-image-wrapper:active {
+  cursor: grabbing;
+}
+
+/* Home page shoe image */
+.home-shoe-image {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 10px 40px rgba(0, 0, 0, 0.5));
+  max-height: 85vh;
+  max-width: 90vw;
+  z-index: 2;
+  transition: opacity 0.3s ease;
+}
+
+/* Gradient overlay behind shoe */
+.home-image-container::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60%;
+  height: 60%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center, rgba(52, 152, 219, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ============================================
+   IMAGE LOADING STATE
+   ============================================ */
+.image-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.spinner {
+  font-size: 3rem;
+  animation: spin 1.2s ease-in-out infinite;
+  opacity: 0.6;
+  filter: drop-shadow(0 0 20px rgba(52, 152, 219, 0.2));
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+/* ============================================
+   DRAG-TO-ROTATE HINT - CENTERED
+   ============================================ */
+.drag-hint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: rgba(255, 255, 255, 0.8);
+  padding: 14px 32px;
+  border-radius: 40px;
+  font-size: clamp(0.9rem, 1.4vw, 1.2rem);
+  font-weight: 600;
+  letter-spacing: 1px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  animation: dragHintFadeIn 0.5s ease forwards, dragHintFadeOut 0.5s ease 2.5s forwards;
+}
+
+.drag-hint span {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.drag-hint .drag-arrow {
+  display: inline-block;
+  font-size: 1.3em;
+  animation: arrowSway 1.2s ease-in-out infinite;
+}
+
+@keyframes arrowSway {
+  0% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  100% { transform: translateX(-6px); }
+}
+
+@keyframes dragHintFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes dragHintFadeOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+}
+
+.drag-hint.hidden {
+  opacity: 0 !important;
+  animation: none !important;
+  transform: translate(-50%, -50%) scale(0.9) !important;
+  pointer-events: none;
+}
+
+/* ============================================
+   BOTTOM OVERLAY - DETAILS LEFT, CONTROLS RIGHT
+   ============================================ */
+.home-bottom-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 12px 20px 16px 20px;
+  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%);
+}
+
+/* ============================================
+   SHOE DETAILS - BOTTOM LEFT WITH GLASS BACKGROUND
+   ============================================ */
+.home-details-overlay {
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 16px 24px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-width: 160px;
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.4);
+  display: inline-block;
+  max-width: 70%;
+}
+
+.home-shoe-name {
+  color: white;
+  font-size: clamp(1.4rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  margin-bottom: 2px;
+  text-shadow: none;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+  /* Fix for long names */
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+}
+
+.home-shoe-brand {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+  margin-bottom: 2px;
+  text-shadow: none;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  /* Fix for long brand names */
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-shoe-price {
+  color: #2ecc71;
+  font-size: clamp(1.5rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  text-shadow: none;
+  letter-spacing: -0.5px;
+}
+
+/* ============================================
+   RIGHT CONTROLS - BOTTOM RIGHT (STACKED VERTICALLY)
+   ============================================ */
+.home-right-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   VIEW STORE BUTTON - BOTTOM RIGHT
+   ============================================ */
+.home-view-store-btn {
+  padding: 8px 20px;
+  background: linear-gradient(135deg, #27ae60, #1e8449);
+  color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  font-size: clamp(0.8rem, 1.2vw, 1rem);
+  font-weight: 700;
+  box-shadow: 0 3px 20px rgba(39, 174, 96, 0.3);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.home-view-store-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 30px rgba(39, 174, 96, 0.4);
+}
+
+.home-view-store-btn:active {
+  transform: scale(0.95);
+}
+
+/* ============================================
+   NAVIGATION - BOTTOM RIGHT
+   ============================================ */
+.home-nav-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.home-nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 6px 14px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.home-nav-btn {
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.home-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.home-nav-btn:active {
+  transform: scale(0.92);
+}
+
+.home-nav-btn-next {
+  background: rgba(52, 152, 219, 0.3);
+  border-color: rgba(52, 152, 219, 0.3);
+}
+
+.home-nav-btn-next:hover {
+  background: rgba(52, 152, 219, 0.5);
+  border-color: rgba(52, 152, 219, 0.5);
+}
+
+.home-nav-counter {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+  font-weight: 600;
+  min-width: 40px;
+  text-align: center;
+}
+
+/* Store Dots */
+.home-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.home-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1.5px solid transparent;
+}
+
+.home-dot:hover {
+  transform: scale(1.4);
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.home-dot.active {
+  background: #3498db;
+  border-color: #3498db;
+  transform: scale(1.3);
+}
+
+/* Hide bottom controls - not used anymore */
+.home-bottom-controls {
+  display: none !important;
+}
+
+/* 360° Badge */
+.home-360-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  padding: 5px 14px;
+  border-radius: 18px;
+  font-size: 0.8rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+/* No image state */
+.home-no-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: rgba(255, 255, 255, 0.1);
+  font-size: 2rem;
+}
+
+/* No stores found state */
+.home-no-stores {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 1.2rem;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Home footer */
+.home-footer {
+  text-align: center;
+  padding: 4px 16px;
+  background: rgba(15,15,26,0.95);
+  color: rgba(255,255,255,0.15);
+  font-size: 0.55rem;
+  border-top: 1px solid rgba(255,255,255,0.03);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+
+/* Loading & Empty states */
+.home-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  color: white;
+}
+
+.home-empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.home-empty h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.home-empty p {
+  color: rgba(255,255,255,0.6);
+}
+
+.home-empty-link {
+  color: #3498db;
+  text-decoration: none;
+}
+
+/* ============================================
+   STORE INFO - TOP LEFT WITH GLASS BACKGROUND
+   ============================================ */
+.home-store-top-left {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  max-width: 70%;
+}
+
+.home-store-name-top {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: clamp(1rem, 1.8vw, 1.5rem);
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 8px 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+  /* Fix for long store names */
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-store-location-top {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: clamp(0.65rem, 1vw, 0.85rem);
+  font-weight: 400;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 4px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  letter-spacing: 0.2px;
+  margin-left: 4px;
+  /* Fix for long location names */
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Remove the old store info from bottom */
+.home-store-info {
+  display: none !important;
+}
+
+/* ============================================
+   CATEGORIES - ON TOP OF IMAGE
+   ============================================ */
+.home-categories-wrapper {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  max-width: 90%;
+  width: auto;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 4px 6px;
+  overflow: hidden;
+}
+
+.home-categories {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 2px 4px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.home-categories::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.home-category-btn {
+  padding: 4px 14px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  border: none;
+  border-radius: 16px;
+  font-size: clamp(0.55rem, 0.8vw, 0.7rem);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.home-category-btn:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.home-category-btn.active {
+  background: #3498db;
+  color: white;
+  box-shadow: 0 2px 12px rgba(52, 152, 219, 0.3);
+}
+
+.home-category-more {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: clamp(0.5rem, 0.7vw, 0.6rem);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0;
+}
+
+.home-category-more:hover {
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+/* Desktop */
+@media (min-width: 769px) {
+  .home-image-container {
+    height: calc(100vh - 70px);
+  }
+  
+  .home-loading,
+  .home-empty {
+    height: calc(100vh - 70px);
+  }
+  
+  .home-details-overlay {
+    padding: 20px 28px;
+  }
+  
+  .home-view-store-btn {
+    padding: 10px 24px;
+    font-size: 0.95rem;
+  }
+
+  .home-store-top-left {
+    top: 20px;
+    left: 20px;
+  }
+
+  .home-right-controls {
+    gap: 12px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .home-image-container {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  
+  .home-360-badge {
+    top: 12px;
+    right: 12px;
+    font-size: 0.7rem;
+    padding: 4px 12px;
+  }
+  
+  .home-details-overlay {
+    padding: 14px 20px;
+    min-width: 140px;
+    max-width: 75%;
+  }
+  
+  .home-shoe-name {
+    font-size: clamp(1.2rem, 2.8vw, 2rem);
+  }
+  
+  .home-shoe-price {
+    font-size: clamp(1.2rem, 2.8vw, 2rem);
+  }
+  
+  .home-view-store-btn {
+    padding: 7px 16px;
+    font-size: 0.8rem;
+  }
+
+  .home-nav-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+    padding: 5px 12px;
+  }
+
+  .home-footer {
+    padding: 4px 14px;
+    font-size: 0.5rem;
+  }
+
+  .drag-hint {
+    padding: 10px 24px;
+    font-size: 0.8rem;
+  }
+
+  .home-store-top-left {
+    top: 12px;
+    left: 12px;
+    max-width: 75%;
+  }
+
+  .home-right-controls {
+    gap: 8px;
+  }
+
+  .home-bottom-overlay {
+    padding: 10px 16px 14px 16px;
+  }
+
+  .home-categories-wrapper {
+    top: 10px;
+    padding: 3px 5px;
+    border-radius: 20px;
+  }
+
+  .home-category-btn {
+    padding: 3px 10px;
+    font-size: clamp(0.5rem, 0.7vw, 0.6rem);
+    border-radius: 12px;
+  }
+
+  .home-category-more {
+    font-size: clamp(0.45rem, 0.6vw, 0.55rem);
+  }
+}
+
+/* Small Phone */
+@media (max-width: 480px) {
+  .home-image-container {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: calc(100vh - 100px);
+  }
+  
+  .home-360-badge {
+    top: 8px;
+    right: 8px;
+    font-size: 0.6rem;
+    padding: 3px 10px;
+  }
+  
+  .home-details-overlay {
+    padding: 12px 16px;
+    border-radius: 16px;
+    min-width: 120px;
+    max-width: 80%;
+  }
+  
+  .home-shoe-name {
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+  }
+  
+  .home-shoe-brand {
+    font-size: clamp(0.75rem, 1.2vw, 0.9rem);
+  }
+  
+  .home-shoe-price {
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+  }
+  
+  .home-view-store-btn {
+    padding: 6px 14px;
+    font-size: 0.7rem;
+    border-radius: 18px;
+  }
+
+  .home-nav-buttons {
+    gap: 6px;
+    padding: 4px 10px;
+  }
+
+  .home-nav-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+    padding: 4px 10px;
+  }
+
+  .home-nav-counter {
+    font-size: 0.7rem;
+    min-width: 30px;
+  }
+
+  .home-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .home-footer {
+    padding: 3px 10px;
+    font-size: 0.45rem;
+  }
+
+  .drag-hint {
+    padding: 8px 18px;
+    font-size: 0.7rem;
+    border-radius: 28px;
+  }
+
+  .home-store-top-left {
+    top: 8px;
+    left: 8px;
+    gap: 3px;
+    max-width: 80%;
+  }
+
+  .home-store-name-top {
+    font-size: clamp(0.8rem, 1.4vw, 1rem);
+    padding: 5px 14px;
+  }
+
+  .home-store-location-top {
+    font-size: clamp(0.55rem, 0.9vw, 0.7rem);
+    padding: 3px 12px;
+  }
+
+  .home-right-controls {
+    gap: 6px;
+  }
+
+  .home-bottom-overlay {
+    padding: 8px 12px 12px 12px;
+  }
+
+  .home-categories-wrapper {
+    top: 8px;
+    padding: 2px 4px;
+    border-radius: 16px;
+  }
+
+  .home-category-btn {
+    padding: 2px 8px;
+    font-size: clamp(0.4rem, 0.6vw, 0.5rem);
+    border-radius: 10px;
+  }
+
+  .home-category-more {
+    font-size: clamp(0.4rem, 0.5vw, 0.45rem);
+    padding: 2px 6px;
+  }
+}
+
+/* Extra Small Phones */
+@media (max-width: 375px) {
+  .home-image-container {
+    max-height: calc(100vh - 90px);
+  }
+
+  .home-details-overlay {
+    padding: 10px 14px;
+    border-radius: 14px;
+    min-width: 100px;
+    max-width: 85%;
+  }
+  
+  .home-shoe-name {
+    font-size: clamp(0.85rem, 2vw, 1.2rem);
+  }
+  
+  .home-shoe-brand {
+    font-size: clamp(0.65rem, 1vw, 0.8rem);
+  }
+  
+  .home-shoe-price {
+    font-size: clamp(0.9rem, 2vw, 1.3rem);
+  }
+  
+  .home-view-store-btn {
+    padding: 5px 12px;
+    font-size: 0.65rem;
+    border-radius: 16px;
+  }
+
+  .home-nav-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 0.65rem;
+    padding: 3px 8px;
+  }
+
+  .home-360-badge {
+    top: 6px;
+    right: 6px;
+    font-size: 0.5rem;
+    padding: 2px 8px;
+  }
+
+  .home-footer {
+    padding: 2px 8px;
+    font-size: 0.4rem;
+  }
+
+  .drag-hint {
+    padding: 6px 14px;
+    font-size: 0.6rem;
+    border-radius: 22px;
+  }
+
+  .home-store-top-left {
+    top: 6px;
+    left: 6px;
+    max-width: 85%;
+  }
+
+  .home-store-name-top {
+    font-size: 0.7rem;
+    padding: 4px 12px;
+  }
+
+  .home-store-location-top {
+    font-size: 0.55rem;
+    padding: 2px 10px;
+  }
+
+  .home-right-controls {
+    gap: 5px;
+  }
+
+  .home-categories-wrapper {
+    top: 6px;
+    padding: 2px 3px;
+    border-radius: 14px;
+  }
+
+  .home-category-btn {
+    padding: 2px 6px;
+    font-size: clamp(0.35rem, 0.5vw, 0.45rem);
+    border-radius: 8px;
+  }
 }

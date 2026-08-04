@@ -201,35 +201,85 @@
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   min-width: 160px;
+  max-width: 60%;
   box-shadow: 0 4px 40px rgba(0, 0, 0, 0.4);
   display: inline-block;
 }
 
 .home-shoe-name {
   color: white;
-  font-size: clamp(1.4rem, 3.5vw, 2.8rem);
+  font-size: clamp(1.2rem, 3vw, 2.2rem);
   font-weight: 800;
   margin-bottom: 2px;
   text-shadow: none;
-  line-height: 1.1;
-  letter-spacing: -0.5px;
+  line-height: 1.3;
+  letter-spacing: -0.3px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
 }
 
 .home-shoe-brand {
   color: rgba(255, 255, 255, 0.8);
-  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+  font-size: clamp(0.8rem, 1.2vw, 1rem);
   margin-bottom: 2px;
   text-shadow: none;
   font-weight: 400;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .home-shoe-price {
   color: #2ecc71;
-  font-size: clamp(1.5rem, 3.5vw, 2.8rem);
+  font-size: clamp(1.3rem, 3vw, 2.2rem);
   font-weight: 800;
   text-shadow: none;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.3px;
+}
+
+/* ============================================
+   SHOE SIZES - BOTTOM LEFT
+   ============================================ */
+.shoe-sizes-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+
+.shoe-sizes-label {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.shoe-sizes {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+
+.shoe-size-tag {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.6rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0;
 }
 
 /* ============================================
@@ -400,9 +450,17 @@
   font-size: 2rem;
 }
 
-/* Explore link */
-.explore-link {
-  border-color: #27ae60 !important;
+/* No stores found state */
+.home-no-stores {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 1.2rem;
+  flex-direction: column;
+  gap: 10px;
 }
 
 /* Home footer */
@@ -464,39 +522,120 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 4px;
+  max-width: 60%;
 }
 
 .home-store-name-top {
   color: rgba(255, 255, 255, 0.95);
-  font-size: clamp(1rem, 1.8vw, 1.5rem);
+  font-size: clamp(0.9rem, 1.5vw, 1.3rem);
   font-weight: 700;
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  padding: 8px 18px;
-  border-radius: 22px;
+  padding: 6px 16px;
+  border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   letter-spacing: 0.3px;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .home-store-location-top {
   color: rgba(255, 255, 255, 0.6);
-  font-size: clamp(0.65rem, 1vw, 0.85rem);
+  font-size: clamp(0.6rem, 0.9vw, 0.8rem);
   font-weight: 400;
   background: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  padding: 4px 16px;
-  border-radius: 14px;
+  padding: 3px 14px;
+  border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.05);
   letter-spacing: 0.2px;
   margin-left: 4px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Remove the old store info from bottom */
 .home-store-info {
   display: none !important;
+}
+
+/* ============================================
+   CATEGORIES - ON TOP OF IMAGE
+   ============================================ */
+.home-categories-wrapper {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  max-width: 90%;
+  width: auto;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 4px 6px;
+  overflow: hidden;
+}
+
+.home-categories {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 2px 4px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.home-categories::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.home-category-btn {
+  padding: 4px 14px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  border: none;
+  border-radius: 16px;
+  font-size: clamp(0.55rem, 0.8vw, 0.7rem);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.home-category-btn:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.home-category-btn.active {
+  background: #3498db;
+  color: white;
+  box-shadow: 0 2px 12px rgba(52, 152, 219, 0.3);
+}
+
+.home-category-more {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: clamp(0.5rem, 0.7vw, 0.6rem);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0;
+}
+
+.home-category-more:hover {
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* ============================================
@@ -516,6 +655,7 @@
   
   .home-details-overlay {
     padding: 20px 28px;
+    max-width: 55%;
   }
   
   .home-view-store-btn {
@@ -526,6 +666,7 @@
   .home-store-top-left {
     top: 20px;
     left: 20px;
+    max-width: 55%;
   }
 
   .home-right-controls {
@@ -535,25 +676,6 @@
 
 /* Tablet */
 @media (max-width: 768px) {
-  .header {
-    height: 60px !important;
-    padding: 4px 14px !important;
-  }
-
-  .logo-image {
-    width: 36px !important;
-    height: 36px !important;
-  }
-
-  .logo-text {
-    font-size: 1.2rem !important;
-  }
-
-  .admin-link {
-    font-size: 0.6rem !important;
-    padding: 4px 12px !important;
-  }
-
   .home-image-container {
     flex: 1 1 auto;
     min-height: 0;
@@ -569,14 +691,15 @@
   .home-details-overlay {
     padding: 14px 20px;
     min-width: 140px;
+    max-width: 65%;
   }
   
   .home-shoe-name {
-    font-size: clamp(1.2rem, 2.8vw, 2rem);
+    font-size: clamp(1.1rem, 2.5vw, 1.8rem);
   }
   
   .home-shoe-price {
-    font-size: clamp(1.2rem, 2.8vw, 2rem);
+    font-size: clamp(1.1rem, 2.5vw, 1.8rem);
   }
   
   .home-view-store-btn {
@@ -604,6 +727,7 @@
   .home-store-top-left {
     top: 12px;
     left: 12px;
+    max-width: 65%;
   }
 
   .home-right-controls {
@@ -613,29 +737,26 @@
   .home-bottom-overlay {
     padding: 10px 16px 14px 16px;
   }
+
+  .home-categories-wrapper {
+    top: 10px;
+    padding: 3px 5px;
+    border-radius: 20px;
+  }
+
+  .home-category-btn {
+    padding: 3px 10px;
+    font-size: clamp(0.5rem, 0.7vw, 0.6rem);
+    border-radius: 12px;
+  }
+
+  .home-category-more {
+    font-size: clamp(0.45rem, 0.6vw, 0.55rem);
+  }
 }
 
 /* Small Phone */
 @media (max-width: 480px) {
-  .header {
-    height: 48px !important;
-    padding: 3px 10px !important;
-  }
-
-  .logo-image {
-    width: 28px !important;
-    height: 28px !important;
-  }
-
-  .logo-text {
-    font-size: 0.85rem !important;
-  }
-
-  .admin-link {
-    font-size: 0.45rem !important;
-    padding: 2px 8px !important;
-  }
-
   .home-image-container {
     flex: 1 1 auto;
     min-height: 0;
@@ -653,18 +774,20 @@
     padding: 12px 16px;
     border-radius: 16px;
     min-width: 120px;
+    max-width: 70%;
   }
   
   .home-shoe-name {
-    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    font-size: clamp(0.9rem, 2.2vw, 1.3rem);
+    -webkit-line-clamp: 2;
   }
   
   .home-shoe-brand {
-    font-size: clamp(0.75rem, 1.2vw, 0.9rem);
+    font-size: clamp(0.7rem, 1vw, 0.85rem);
   }
   
   .home-shoe-price {
-    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    font-size: clamp(0.9rem, 2.2vw, 1.3rem);
   }
   
   .home-view-store-btn {
@@ -710,16 +833,17 @@
     top: 8px;
     left: 8px;
     gap: 3px;
+    max-width: 70%;
   }
 
   .home-store-name-top {
-    font-size: clamp(0.8rem, 1.4vw, 1rem);
-    padding: 5px 14px;
+    font-size: clamp(0.75rem, 1.2vw, 0.9rem);
+    padding: 4px 12px;
   }
 
   .home-store-location-top {
-    font-size: clamp(0.55rem, 0.9vw, 0.7rem);
-    padding: 3px 12px;
+    font-size: clamp(0.5rem, 0.8vw, 0.65rem);
+    padding: 3px 10px;
   }
 
   .home-right-controls {
@@ -729,29 +853,27 @@
   .home-bottom-overlay {
     padding: 8px 12px 12px 12px;
   }
+
+  .home-categories-wrapper {
+    top: 8px;
+    padding: 2px 4px;
+    border-radius: 16px;
+  }
+
+  .home-category-btn {
+    padding: 2px 8px;
+    font-size: clamp(0.4rem, 0.6vw, 0.5rem);
+    border-radius: 10px;
+  }
+
+  .home-category-more {
+    font-size: clamp(0.4rem, 0.5vw, 0.45rem);
+    padding: 2px 6px;
+  }
 }
 
 /* Extra Small Phones */
 @media (max-width: 375px) {
-  .header {
-    height: 44px !important;
-    padding: 2px 8px !important;
-  }
-
-  .logo-image {
-    width: 24px !important;
-    height: 24px !important;
-  }
-
-  .logo-text {
-    font-size: 0.75rem !important;
-  }
-
-  .admin-link {
-    font-size: 0.4rem !important;
-    padding: 2px 6px !important;
-  }
-
   .home-image-container {
     max-height: calc(100vh - 90px);
   }
@@ -760,18 +882,20 @@
     padding: 10px 14px;
     border-radius: 14px;
     min-width: 100px;
+    max-width: 75%;
   }
   
   .home-shoe-name {
-    font-size: clamp(0.85rem, 2vw, 1.2rem);
+    font-size: clamp(0.8rem, 1.8vw, 1.1rem);
+    -webkit-line-clamp: 2;
   }
   
   .home-shoe-brand {
-    font-size: clamp(0.65rem, 1vw, 0.8rem);
+    font-size: clamp(0.6rem, 0.9vw, 0.75rem);
   }
   
   .home-shoe-price {
-    font-size: clamp(0.9rem, 2vw, 1.3rem);
+    font-size: clamp(0.8rem, 1.8vw, 1.1rem);
   }
   
   .home-view-store-btn {
@@ -808,19 +932,32 @@
   .home-store-top-left {
     top: 6px;
     left: 6px;
+    max-width: 75%;
   }
 
   .home-store-name-top {
-    font-size: 0.7rem;
-    padding: 4px 12px;
+    font-size: 0.65rem;
+    padding: 3px 10px;
   }
 
   .home-store-location-top {
-    font-size: 0.55rem;
-    padding: 2px 10px;
+    font-size: 0.5rem;
+    padding: 2px 8px;
   }
 
   .home-right-controls {
     gap: 5px;
+  }
+
+  .home-categories-wrapper {
+    top: 6px;
+    padding: 2px 3px;
+    border-radius: 14px;
+  }
+
+  .home-category-btn {
+    padding: 2px 6px;
+    font-size: clamp(0.35rem, 0.5vw, 0.45rem);
+    border-radius: 8px;
   }
 }

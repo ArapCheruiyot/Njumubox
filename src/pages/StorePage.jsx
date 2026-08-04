@@ -422,11 +422,23 @@ function StorePage() {
 
             {/* ===== BOTTOM OVERLAY - DETAILS LEFT, CONTROLS RIGHT ===== */}
             <div className="home-bottom-overlay">
-              {/* Left side - Shoe Details */}
+              {/* Left side - Shoe Details WITH SIZES */}
               <div className="home-details-overlay">
                 <h2 className="home-shoe-name">{currentShoe?.name}</h2>
                 <p className="home-shoe-brand">{currentShoe?.brand}</p>
                 <p className="home-shoe-price">Ksh {currentShoe?.price?.toLocaleString()}</p>
+                
+                {/* ===== SIZES DISPLAY ===== */}
+                {currentShoe?.sizes && currentShoe.sizes.length > 0 && (
+                  <div className="shoe-sizes-container">
+                    <span className="shoe-sizes-label">📏 Sizes:</span>
+                    <div className="shoe-sizes">
+                      {currentShoe.sizes.map((size, index) => (
+                        <span key={index} className="shoe-size-tag">{size}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Right side - Controls (Stacked Vertically) */}

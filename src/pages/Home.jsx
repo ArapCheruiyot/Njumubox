@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { usersCollection, shoesCollection, getDocs, query, where, doc, getDoc } from '../firebase';
 import logo from '../assets/logo.png';
-import '../css/mode.css';  // Import mode styles
+import '../css/mode.css';
 
 function Home() {
   const navigate = useNavigate();
@@ -15,12 +15,19 @@ function Home() {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isSellerMode, setIsSellerMode] = useState(false);
   
+  // Category states
+  const [categories, setCategories] = useState(['All']);
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [filteredStores, setFilteredStores] = useState([]);
+  const [showAllCategories, setShowAllCategories] = useState(false);
+  
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartX, setDragStartX] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   
   const autoRotateTimerRef = useRef(null);
   const containerRef = useRef(null);
+  const categoriesRef = useRef(null);
 
   const getOptimizedImage = (url) => {
     if (!url) return '';
@@ -53,14 +60,33 @@ function Home() {
     }
   }, []);
 
+  // Load stores and categories
   useEffect(() => {
     const loadStores = async () => {
       try {
         const shoesSnapshot = await getDocs(shoesCollection);
         const allShoes = [];
+        const categorySet = new Set();
+        
         shoesSnapshot.forEach((doc) => {
-          allShoes.push({ id: doc.id, ...doc.data() });
+          const shoe = { id: doc.id, ...doc.data() };
+          allShoes.push(shoe);
+          
+          // Only add category if it exists and is not empty
+          if (shoe.category && shoe.category.trim() !== '') {
+            categorySet.add(shoe.category.trim());
+          }
         });
+
+        // DEBUG: Log all shoes with their categories
+        console.log('📊 All shoes with categories:', allShoes.map(s => ({ 
+          name: s.name, 
+          category: s.category || 'NO CATEGORY' 
+        })));
+
+        // Set categories dynamically - only if they have shoes
+        const categoryList = ['All', ...categorySet];
+        setCategories(categoryList);
 
         if (allShoes.length === 0) {
           setLoading(false);
@@ -110,6 +136,7 @@ function Home() {
 
         const shuffled = shuffleArray(storesData);
         setStores(shuffled);
+        setFilteredStores(shuffled);
         
         if (shuffled.length > 0) {
           const firstStore = shuffled[0];
@@ -134,6 +161,37 @@ function Home() {
     
     loadStores();
   }, []);
+
+  // Filter stores when category changes
+  useEffect(() => {
+    if (selectedCategory === 'All') {
+      setFilteredStores(stores);
+    } else {
+      const filtered = stores.filter(store => 
+        store.shoes.some(shoe => 
+          shoe.category && shoe.category.trim() === selectedCategory
+        )
+      );
+      setFilteredStores(filtered);
+      
+      // DEBUG: Log filtered results
+      console.log(`🔍 Filtered stores for category "${selectedCategory}":`, filtered.length);
+    }
+  }, [selectedCategory, stores]);
+
+  // Reset to first store when filtered stores change
+  useEffect(() => {
+    if (filteredStores.length > 0) {
+      setCurrentStoreIndex(0);
+      const firstStore = filteredStores[0];
+      const randomShoe = getRandomShoe(firstStore.shoes);
+      setCurrentShoe(randomShoe);
+      setCurrentImageIndex(0);
+    } else {
+      // No stores found for this category
+      setCurrentShoe(null);
+    }
+  }, [filteredStores]);
 
   useEffect(() => {
     if (currentShoe && currentShoe.images && currentShoe.images.length > 1) {
@@ -236,12 +294,12 @@ function Home() {
   };
 
   const goToNextStore = () => {
-    if (stores.length === 0) return;
+    if (filteredStores.length === 0) return;
     stopAutoRotate();
     
-    const nextIndex = (currentStoreIndex + 1) % stores.length;
+    const nextIndex = (currentStoreIndex + 1) % filteredStores.length;
     setCurrentStoreIndex(nextIndex);
-    const nextStore = stores[nextIndex];
+    const nextStore = filteredStores[nextIndex];
     const randomShoe = getRandomShoe(nextStore.shoes);
     setCurrentShoe(randomShoe);
     setCurrentImageIndex(0);
@@ -251,12 +309,12 @@ function Home() {
   };
 
   const goToPreviousStore = () => {
-    if (stores.length === 0) return;
+    if (filteredStores.length === 0) return;
     stopAutoRotate();
     
-    const prevIndex = (currentStoreIndex - 1 + stores.length) % stores.length;
+    const prevIndex = (currentStoreIndex - 1 + filteredStores.length) % filteredStores.length;
     setCurrentStoreIndex(prevIndex);
-    const prevStore = stores[prevIndex];
+    const prevStore = filteredStores[prevIndex];
     const randomShoe = getRandomShoe(prevStore.shoes);
     setCurrentShoe(randomShoe);
     setCurrentImageIndex(0);
@@ -264,6 +322,9 @@ function Home() {
     
     setTimeout(() => startAutoRotate(), 1500);
   };
+
+  // Show "No stores found" message
+  const noStoresFound = filteredStores.length === 0 && !loading;
 
   if (loading) {
     return (
@@ -274,7 +335,6 @@ function Home() {
             <h1 className="logo-text">NdulaBox</h1>
           </div>
           <div className="header-right">
-            {/* Buyer/Seller Toggle - Loading State */}
             <div className="mode-toggle">
               <span className="mode-label mode-buyer active">👤 Buyer</span>
               <div className="toggle-switch">
@@ -300,7 +360,6 @@ function Home() {
             <h1 className="logo-text">NdulaBox</h1>
           </div>
           <div className="header-right">
-            {/* Buyer/Seller Toggle - Empty State */}
             <div className="mode-toggle">
               <span className="mode-label mode-buyer active">👤 Buyer</span>
               <div className="toggle-switch" onClick={toggleMode}>
@@ -318,10 +377,14 @@ function Home() {
     );
   }
 
-  const currentStore = stores[currentStoreIndex];
+  const currentStore = filteredStores[currentStoreIndex];
   const totalImages = currentShoe?.images?.length || 0;
   const hasLocation = currentStore?.location?.fullAddress && currentStore.location.fullAddress.length > 0;
   const has360View = totalImages > 1;
+  
+  // Determine visible categories (show first 5, rest behind "More")
+  const visibleCategories = showAllCategories ? categories : categories.slice(0, 5);
+  const hasMoreCategories = categories.length > 5;
 
   return (
     <div className="app home-fullscreen">
@@ -331,7 +394,6 @@ function Home() {
           <h1 className="logo-text">NdulaBox</h1>
         </div>
         <div className="header-right">
-          {/* ===== BUYER/SELLER TOGGLE ===== */}
           <div className="mode-toggle">
             <button 
               className={`mode-label mode-buyer ${!isSellerMode ? 'active' : ''}`}
@@ -363,8 +425,41 @@ function Home() {
       </header>
 
       <div className="home-image-container">
+        {/* ===== CATEGORIES - ON TOP OF IMAGE ===== */}
+        {categories.length > 1 && (
+          <div className="home-categories-wrapper">
+            <div className="home-categories" ref={categoriesRef}>
+              {visibleCategories.map((category) => (
+                <button
+                  key={category}
+                  className={`home-category-btn ${selectedCategory === category ? 'active' : ''}`}
+                  onClick={() => {
+                    setSelectedCategory(category);
+                    setCurrentStoreIndex(0);
+                    if (showAllCategories) setShowAllCategories(false);
+                  }}
+                >
+                  {category === 'All' ? '👟 All' : category}
+                </button>
+              ))}
+              {hasMoreCategories && (
+                <button
+                  className="home-category-btn home-category-more"
+                  onClick={() => setShowAllCategories(!showAllCategories)}
+                >
+                  {showAllCategories ? '▲ Less' : '▼ More'}
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* ===== MAIN IMAGE WITH DRAG ===== */}
-        {currentShoe && currentShoe.images && currentShoe.images.length > 0 ? (
+        {noStoresFound ? (
+          <div className="home-no-stores">
+            <span>😕 No stores found in this category</span>
+          </div>
+        ) : currentShoe && currentShoe.images && currentShoe.images.length > 0 ? (
           <>
             <div
               ref={containerRef}
@@ -415,14 +510,16 @@ function Home() {
               )}
               
               {/* ===== STORE INFO - TOP LEFT ===== */}
-              <div className="home-store-top-left">
-                <span className="home-store-name-top">📍 {currentStore?.storeName}</span>
-                {hasLocation && (
-                  <span className="home-store-location-top">
-                    {currentStore.location.city}
-                  </span>
-                )}
-              </div>
+              {currentStore && (
+                <div className="home-store-top-left">
+                  <span className="home-store-name-top">📍 {currentStore?.storeName}</span>
+                  {hasLocation && (
+                    <span className="home-store-location-top">
+                      {currentStore.location.city}
+                    </span>
+                  )}
+                </div>
+              )}
               
               {/* Drag hint */}
               {has360View && !isDragging && imageLoaded && (
@@ -446,12 +543,14 @@ function Home() {
               {/* Right side - Controls (Stacked Vertically) */}
               <div className="home-right-controls">
                 {/* View Store Button */}
-                <Link 
-                  to={`/store/${currentStore?.uid}`} 
-                  className="home-view-store-btn"
-                >
-                  👁️ View Store
-                </Link>
+                {currentStore && (
+                  <Link 
+                    to={`/store/${currentStore?.uid}`} 
+                    className="home-view-store-btn"
+                  >
+                    👁️ View Store
+                  </Link>
+                )}
 
                 {/* Navigation */}
                 <div className="home-nav-overlay">
@@ -465,7 +564,7 @@ function Home() {
                     </button>
                     
                     <span className="home-nav-counter">
-                      {currentStoreIndex + 1} / {stores.length}
+                      {currentStoreIndex + 1} / {filteredStores.length}
                     </span>
                     
                     <button 
@@ -479,14 +578,14 @@ function Home() {
                   
                   {/* Store Dots */}
                   <div className="home-dots">
-                    {stores.map((store, index) => (
+                    {filteredStores.map((store, index) => (
                       <div
                         key={store.uid}
                         className={`home-dot ${index === currentStoreIndex ? 'active' : ''}`}
                         onClick={() => {
                           stopAutoRotate();
                           setCurrentStoreIndex(index);
-                          const selectedStore = stores[index];
+                          const selectedStore = filteredStores[index];
                           const randomShoe = getRandomShoe(selectedStore.shoes);
                           setCurrentShoe(randomShoe);
                           setCurrentImageIndex(0);
