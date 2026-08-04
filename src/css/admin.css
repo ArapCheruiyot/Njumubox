@@ -4,7 +4,7 @@
 
 /* --- Admin Panel Container --- */
 .admin-panel {
-  max-width: 700px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 30px;
   background: white;
@@ -22,6 +22,128 @@
   color: #888;
   margin-bottom: 30px;
   font-size: 1rem;
+}
+
+/* --- Store Link Section --- */
+.store-link-section {
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  padding: 20px 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  border: 2px solid #86efac;
+  transition: all 0.3s ease;
+}
+
+.store-link-section:hover {
+  border-color: #22c55e;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.15);
+}
+
+.store-link-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.store-link-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: #166534;
+  font-size: 1.05rem;
+}
+
+.store-link-label .icon {
+  font-size: 1.3rem;
+}
+
+.store-link-display {
+  margin-top: 8px;
+  background: rgba(0, 0, 0, 0.06);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  color: #15803d;
+  word-break: break-all;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.store-link-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.store-link-btn {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.store-link-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.store-link-btn:active {
+  transform: scale(0.97);
+}
+
+.store-link-btn.copy-link {
+  background: #2563eb;
+  color: white;
+}
+
+.store-link-btn.copy-link:hover {
+  background: #1d4ed8;
+}
+
+.store-link-btn.whatsapp {
+  background: #25D366;
+  color: white;
+}
+
+.store-link-btn.whatsapp:hover {
+  background: #1da851;
+}
+
+.store-link-btn.facebook {
+  background: #1877F2;
+  color: white;
+}
+
+.store-link-btn.facebook:hover {
+  background: #0d65d9;
+}
+
+.store-link-btn.copy-message {
+  background: #6b7280;
+  color: white;
+}
+
+.store-link-btn.copy-message:hover {
+  background: #4b5563;
+}
+
+.store-link-hint {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 /* --- Form Layout --- */
@@ -282,86 +404,273 @@
   border: 1px solid #ffc107;
 }
 
-/* --- View Shoes Section --- */
-.view-shoes {
-  margin-top: 20px;
-  padding: 20px;
-  background: #f8f9fa;
+/* ============================================
+   SHOE SEARCH - NEW
+   ============================================ */
+
+.shoe-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  flex: 1;
+  max-width: 420px;
+  min-width: 200px;
+}
+
+.shoe-search-input {
+  width: 100%;
+  padding: 10px 18px;
+  padding-right: 44px;
+  border: 2px solid #e5e7eb;
   border-radius: 12px;
-  border: 1px solid #e0e0e0;
+  font-size: 0.9rem;
+  background: white;
+  transition: all 0.3s ease;
+  outline: none;
+  color: #1a1a2e;
+}
+
+.shoe-search-input:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+}
+
+.shoe-search-input::placeholder {
+  color: #9ca3af;
+}
+
+.shoe-search-input:focus::placeholder {
+  color: #d1d5db;
+}
+
+.shoe-search-clear {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.shoe-search-clear:hover {
+  color: #ef4444;
+  background: #fee2e2;
+  transform: scale(1.1);
+}
+
+.shoe-search-clear:active {
+  transform: scale(0.9);
+}
+
+/* ============================================
+   SHOE GRID - REORGANISED
+   ============================================ */
+
+.view-shoes {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 2px solid #f0f0f0;
+}
+
+.shoe-grid-header {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
-.view-shoes .view-shoes-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.view-shoes h3 {
+.shoe-grid-header h3 {
   margin: 0;
   color: #1a1a2e;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
+  font-weight: 700;
 }
 
-.view-shoes .shoe-count {
-  color: #888;
-  font-weight: 400;
-  font-size: 0.9rem;
+.shoe-grid-header .shoe-count-badge {
+  background: #e0e7ff;
+  color: #4338ca;
+  padding: 3px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-left: 6px;
 }
 
-.view-shoes .view-shoes-right {
+.shoe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 16px;
+  margin-top: 6px;
+}
+
+.shoe-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  padding: 14px;
+  transition: all 0.3s ease;
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  position: relative;
 }
 
-/* --- Buttons --- */
-.view-btn {
-  padding: 10px 24px;
+.shoe-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e1;
+}
+
+.shoe-card .shoe-thumb {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #e5e7eb;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
+}
+
+.shoe-card:hover .shoe-thumb {
+  transform: scale(1.02);
+}
+
+.shoe-card .shoe-name {
+  font-weight: 700;
+  color: #1a1a2e;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+
+.shoe-card .shoe-brand {
+  color: #6b7280;
+  font-size: 0.8rem;
+  margin-bottom: 2px;
+}
+
+.shoe-card .shoe-price {
+  font-weight: 700;
+  color: #059669;
+  font-size: 1rem;
+  margin-top: 2px;
+}
+
+.shoe-card .shoe-sizes {
+  color: #6b7280;
+  font-size: 0.7rem;
+  margin-top: 2px;
+}
+
+.shoe-card .shoe-category {
+  display: inline-block;
+  background: #e0e7ff;
+  color: #4338ca;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  margin-top: 6px;
+  align-self: flex-start;
+  letter-spacing: 0.3px;
+}
+
+.shoe-card .shoe-actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 6px;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 10px;
+}
+
+.shoe-card .shoe-actions button {
+  flex: 1;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.shoe-card .shoe-actions .delete-btn {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.shoe-card .shoe-actions .delete-btn:hover {
+  background: #fecaca;
+  transform: scale(1.02);
+}
+
+.shoe-card .shoe-actions .edit-btn {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.shoe-card .shoe-actions .edit-btn:hover {
+  background: #bfdbfe;
+  transform: scale(1.02);
+}
+
+/* --- Empty State --- */
+.empty-shoes {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 50px 20px;
+  color: #9ca3af;
+  font-size: 0.95rem;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 2px dashed #e5e7eb;
+}
+
+.empty-shoes .empty-icon {
+  font-size: 3.5rem;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.empty-shoes strong {
+  color: #6b7280;
+}
+
+.empty-shoes .clear-search-btn {
+  margin-top: 14px;
+  padding: 8px 20px;
   background: #3498db;
   color: white;
   border: none;
   border-radius: 8px;
-  font-weight: 600;
   cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
   transition: all 0.3s ease;
-  font-size: 0.95rem;
 }
 
-.view-btn:hover {
+.empty-shoes .clear-search-btn:hover {
   background: #2980b9;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
 }
 
-.delete-all-btn {
-  padding: 10px 24px;
-  background: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 0.95rem;
-}
-
-.delete-all-btn:hover {
-  background: #c0392b;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
-}
-
 /* ============================================
-   NEW: ADMIN PHONE INPUT STYLES
+   ADMIN PHONE INPUT STYLES
    ============================================ */
 
-/* --- Phone Input Field --- */
 .admin-phone-input {
   flex: 1;
   padding: 10px 16px;
@@ -386,7 +695,6 @@
   color: rgba(255, 255, 255, 0.3);
 }
 
-/* --- Phone Save Button --- */
 .admin-save-phone-btn {
   padding: 10px 24px;
   background: #27ae60;
@@ -416,6 +724,7 @@
   .admin-panel {
     padding: 20px;
     margin: 0 5px;
+    border-radius: 16px;
   }
   
   .admin-panel h1 {
@@ -426,21 +735,29 @@
     padding: 20px;
   }
   
-  .view-shoes {
-    flex-direction: column;
-    align-items: stretch;
-    text-align: center;
-  }
-  
-  .view-shoes .view-shoes-left {
-    justify-content: center;
-  }
-  
-  .view-shoes .view-shoes-right {
-    justify-content: center;
+  .shoe-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
   }
 
-  /* Phone input responsive */
+  .shoe-card .shoe-thumb {
+    height: 110px;
+  }
+
+  .store-link-section {
+    padding: 16px 18px;
+  }
+
+  .store-link-display {
+    font-size: 0.75rem;
+    padding: 8px 12px;
+  }
+
+  .store-link-btn {
+    padding: 6px 14px;
+    font-size: 0.75rem;
+  }
+
   .admin-phone-input {
     min-width: 150px;
     font-size: 0.9rem;
@@ -450,11 +767,37 @@
     padding: 10px 18px;
     font-size: 0.9rem;
   }
+
+  /* Search responsive */
+  .shoe-search {
+    max-width: 100%;
+    min-width: 120px;
+    flex: 1 1 100%;
+  }
+
+  .shoe-search-input {
+    font-size: 0.85rem;
+    padding: 8px 16px;
+    padding-right: 40px;
+  }
+
+  .shoe-grid-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .shoe-grid-header > div:first-child {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
 }
 
 @media (max-width: 480px) {
   .admin-panel {
-    padding: 15px;
+    padding: 12px;
+    border-radius: 12px;
   }
   
   .admin-panel h1 {
@@ -485,15 +828,50 @@
     height: 50px;
   }
   
-  .view-btn,
-  .delete-all-btn {
-    padding: 8px 16px;
-    font-size: 0.85rem;
-    width: 100%;
-    justify-content: center;
+  .shoe-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
   }
 
-  /* Phone input responsive */
+  .shoe-card {
+    padding: 10px;
+  }
+
+  .shoe-card .shoe-thumb {
+    height: 90px;
+  }
+
+  .shoe-card .shoe-name {
+    font-size: 0.8rem;
+  }
+
+  .shoe-card .shoe-price {
+    font-size: 0.85rem;
+  }
+
+  .shoe-card .shoe-actions button {
+    font-size: 0.65rem;
+    padding: 4px 6px;
+  }
+
+  .store-link-section {
+    padding: 12px 14px;
+  }
+
+  .store-link-display {
+    font-size: 0.7rem;
+    padding: 6px 10px;
+  }
+
+  .store-link-btn {
+    padding: 5px 10px;
+    font-size: 0.7rem;
+  }
+
+  .store-link-actions {
+    gap: 6px;
+  }
+
   .admin-phone-input {
     min-width: 120px;
     font-size: 0.85rem;
@@ -503,5 +881,349 @@
   .admin-save-phone-btn {
     padding: 8px 14px;
     font-size: 0.85rem;
+  }
+
+  /* Search responsive */
+  .shoe-search {
+    min-width: 80px;
+  }
+
+  .shoe-search-input {
+    font-size: 0.8rem;
+    padding: 7px 12px;
+    padding-right: 36px;
+    border-radius: 10px;
+  }
+
+  .shoe-search-clear {
+    font-size: 0.9rem;
+    right: 8px;
+    padding: 2px 6px;
+  }
+
+  .shoe-grid-header h3 {
+    font-size: 1rem;
+  }
+
+  .shoe-grid-header .shoe-count-badge {
+    font-size: 0.65rem;
+    padding: 2px 10px;
+  }
+
+  .empty-shoes {
+    padding: 30px 15px;
+  }
+
+  .empty-shoes .empty-icon {
+    font-size: 2.5rem;
+  }
+}
+
+/* --- Extra small screens --- */
+@media (max-width: 380px) {
+  .shoe-grid {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 8px;
+  }
+
+  .shoe-card .shoe-thumb {
+    height: 70px;
+  }
+
+  .shoe-card {
+    padding: 8px;
+  }
+
+  .shoe-card .shoe-name {
+    font-size: 0.7rem;
+  }
+
+  .shoe-card .shoe-price {
+    font-size: 0.75rem;
+  }
+
+  .shoe-card .shoe-sizes {
+    font-size: 0.6rem;
+  }
+
+  .shoe-card .shoe-actions button {
+    font-size: 0.55rem;
+    padding: 3px 4px;
+  }
+}
+
+
+
+/* ============================================
+   CAMERA & UPLOAD OPTIONS
+   ============================================ */
+
+.upload-options {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.camera-btn {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.camera-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+.camera-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.upload-divider {
+  color: #9ca3af;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.upload-area-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.file-input-hidden {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.upload-label {
+  padding: 12px 24px;
+  background: #f3f4f6;
+  color: #374151;
+  border: 2px dashed #d1d5db;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.upload-label:hover {
+  border-color: #3498db;
+  background: #eff6ff;
+  color: #1a1a2e;
+}
+
+/* Camera Container */
+.camera-container {
+  margin-top: 12px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #1a1a2e;
+  border: 2px solid #8b5cf6;
+  padding: 4px;
+}
+
+.camera-view {
+  position: relative;
+  width: 100%;
+  background: #0f0f1a;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.camera-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.camera-controls {
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.capture-btn {
+  padding: 10px 28px;
+  background: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.capture-btn:hover:not(:disabled) {
+  background: #16a34a;
+  transform: scale(1.02);
+}
+
+.capture-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.close-camera-btn {
+  padding: 10px 28px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.close-camera-btn:hover {
+  background: #dc2626;
+  transform: scale(1.02);
+}
+
+.camera-hint {
+  display: block;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 8px;
+  background: rgba(0,0,0,0.2);
+}
+
+/* Image preview with remove button */
+.preview-item {
+  position: relative;
+  display: inline-block;
+}
+
+.preview-item .preview-thumb {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  transition: transform 0.2s ease;
+}
+
+.preview-item .preview-thumb:hover {
+  transform: scale(1.1);
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ef4444;
+  color: white;
+  border: none;
+  font-size: 0.65rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.remove-image-btn:hover {
+  background: #dc2626;
+  transform: scale(1.15);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .upload-options {
+    gap: 10px;
+  }
+  
+  .camera-btn,
+  .upload-label {
+    padding: 10px 18px;
+    font-size: 0.85rem;
+  }
+  
+  .camera-view {
+    aspect-ratio: 4/3;
+  }
+  
+  .capture-btn,
+  .close-camera-btn {
+    padding: 8px 20px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .upload-options {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .upload-divider {
+    text-align: center;
+    font-size: 0.8rem;
+  }
+  
+  .camera-btn,
+  .upload-label {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 16px;
+    font-size: 0.85rem;
+  }
+  
+  .camera-view {
+    aspect-ratio: 4/3;
+    min-height: 200px;
+  }
+  
+  .camera-controls {
+    flex-direction: row;
+    gap: 8px;
+    padding: 10px;
+  }
+  
+  .capture-btn,
+  .close-camera-btn {
+    flex: 1;
+    padding: 8px 16px;
+    font-size: 0.8rem;
+    text-align: center;
+  }
+  
+  .preview-item .preview-thumb {
+    width: 50px;
+    height: 50px;
   }
 }
