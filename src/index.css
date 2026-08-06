@@ -1,6 +1,531 @@
-/* ============================================
-   MAIN ENTRY - Import all CSS modules
-   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-/* Import all CSS modules */
-@import './css/index.css';
+body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: #0a0a0a;
+    color: #ededed;
+    line-height: 1.5;
+}
+
+/* Navigation - Transparent on hero */
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    background: transparent;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: -0.02em;
+}
+
+.logo span {
+    color: #3b82f6;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: #ededed;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover {
+    color: #3b82f6;
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+/* Mobile menu - Hidden by default, shown via JS */
+.mobile-menu {
+    display: none;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background: #1a1a1a;
+    padding: 1rem 5%;
+    flex-direction: column;
+    gap: 1rem;
+    z-index: 199;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.mobile-menu a {
+    color: white;
+    text-decoration: none;
+    padding: 0.75rem 0;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #333;
+}
+
+.mobile-menu a:last-child {
+    border-bottom: none;
+}
+
+.mobile-menu a:hover {
+    color: #3b82f6;
+}
+
+/* Hero Section - FULL SCREEN WITH BACKGROUND IMAGE */
+.hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Background Image - Full cover with sharpness fix */
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.hero-background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+    image-rendering: crisp-edges;
+    transform: scale(1.01);
+}
+
+/* Dark overlay for text readability - REDUCED for less fog */
+.hero-background::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.2) 0%,
+        rgba(0, 0, 0, 0.4) 40%,
+        rgba(0, 0, 0, 0.7) 100%
+    );
+    pointer-events: none;
+}
+
+/* Hero Content - Overlay on top of image */
+.hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    max-width: 800px;
+    padding: 2rem;
+    margin: 0 auto;
+}
+
+.hero-content h1 {
+    font-size: 4rem;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+.hero-content .highlight {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.tagline {
+    font-size: 1.25rem;
+    color: #e0e0e0;
+    margin-bottom: 2rem;
+    font-style: italic;
+    border-left: 3px solid #3b82f6;
+    padding-left: 1rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.signature {
+    margin: 1.5rem 0;
+    color: #c0c0c0;
+    font-size: 1rem;
+}
+
+.cta-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 40px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+/* Scroll hint - VISIBLE WITHOUT SCROLLING */
+.scroll-hint {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 1rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+    background: transparent;
+    z-index: 15;
+    letter-spacing: 1px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+}
+
+/* Sections - Normal flow after hero */
+.section {
+    padding: 5rem 5%;
+    position: relative;
+    z-index: 5;
+    background: #0a0a0a;
+}
+
+.section-dark {
+    background: #111111;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-size: 2.2rem;
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.badge {
+    background: #3b82f6;
+    font-size: 0.8rem;
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    vertical-align: middle;
+    margin-left: 0.5rem;
+}
+
+/* Grids */
+.portfolio-grid, .envisioned-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.loading {
+    text-align: center;
+    color: #888;
+    padding: 3rem;
+    grid-column: 1 / -1;
+}
+
+/* Card Links & Story Button */
+.card-links {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.card-link {
+    color: #3b82f6;
+    text-decoration: none;
+    font-size: 0.85rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.card-link:hover {
+    text-decoration: underline;
+}
+
+.story-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Contact */
+.contact-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    background: #1a1a1a;
+    padding: 2.5rem;
+    border-radius: 24px;
+}
+
+.contact-info p {
+    margin-bottom: 1rem;
+    color: #ccc;
+}
+
+.contact-email {
+    font-size: 1.5rem;
+    color: #3b82f6 !important;
+    font-weight: bold;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.contact-form input, .contact-form textarea {
+    background: #2a2a2a;
+    border: 1px solid #3a3a3a;
+    padding: 0.8rem;
+    border-radius: 12px;
+    color: white;
+    font-family: inherit;
+}
+
+.contact-form button {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.contact-form button:hover {
+    background: #2563eb;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+    border-top: 1px solid #222;
+}
+
+/* Portfolio Card Styling */
+.portfolio-card, .envisioned-card {
+    background: #121212;
+    border-radius: 20px;
+    padding: 1.5rem;
+    border: 1px solid #252525;
+    transition: all 0.2s;
+}
+
+.portfolio-card:hover, .envisioned-card:hover {
+    border-color: #3b82f6;
+    transform: translateY(-4px);
+}
+
+.portfolio-card h3, .envisioned-card h3 {
+    margin-bottom: 0.75rem;
+    font-size: 1.3rem;
+}
+
+.portfolio-card p, .envisioned-card p {
+    color: #aaa;
+    margin-bottom: 1rem;
+}
+
+.portfolio-card small {
+    color: #3b82f6;
+    font-size: 0.75rem;
+}
+
+.status-badge {
+    display: inline-block;
+    background: #2a2a2a;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    color: #90cdf4;
+}
+
+/* Story Section */
+.story-section {
+    background: linear-gradient(135deg, #0a0a0a 0%, #0f0f1a 100%);
+}
+
+.story-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.story-card {
+    background: rgba(20, 20, 30, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 2rem;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.story-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(59, 130, 246, 0.5);
+}
+
+.story-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.story-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.story-card p {
+    color: #b0b0b0;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.story-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.story-tags span {
+    background: rgba(59, 130, 246, 0.15);
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    color: #90cdf4;
+}
+
+/* Screenshot Styles */
+.card-screenshot {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    border: 1px solid #2a2a2a;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.portfolio-card:hover .card-screenshot {
+    border-color: #3b82f6;
+    transform: scale(1.01);
+}
+
+/* Optional: Fallback for missing images */
+.card-screenshot[src=""] {
+    display: none;
+}
+
+/* ============================================ */
+/* RESPONSIVE STYLES - Mobile Menu Fix */
+/* ============================================ */
+
+/* Desktop: Hide mobile menu, show nav links */
+@media (min-width: 769px) {
+    .mobile-menu {
+        display: none !important;
+    }
+    
+    .nav-links {
+        display: flex !important;
+    }
+}
+
+/* Mobile: Show hamburger, hide nav links, mobile menu controlled by JS */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none !important;
+    }
+    
+    .mobile-menu-btn {
+        display: block !important;
+    }
+    
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .tagline {
+        font-size: 1rem;
+        border-left: none;
+        padding-left: 0;
+    }
+
+    .contact-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero {
+        min-height: 500px;
+    }
+    
+    .hero-background img {
+        object-position: center 20%;
+    }
+    
+    .scroll-hint {
+        bottom: 10px;
+        font-size: 0.7rem;
+    }
+    
+    .section {
+        padding: 3rem 5%;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+}
