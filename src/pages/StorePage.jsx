@@ -4,6 +4,7 @@ import { shoesCollection, usersCollection, getDocs, query, where, getDoc, doc } 
 import logo from '../assets/logo.png';
 import '../css/store.css';
 import '../css/mode.css';
+import { trackAppEvents } from '../utils/analytics';
 
 function StorePage() {
   const { vendorId } = useParams();
@@ -44,6 +45,7 @@ function StorePage() {
   const toggleMode = () => {
     const newMode = !isSellerMode;
     setIsSellerMode(newMode);
+    trackAppEvents.modeSwitch(newMode ? 'Seller' : 'Buyer');
     if (newMode) {
       navigate('/admin');
     } else {
@@ -148,6 +150,13 @@ function StorePage() {
       return () => clearTimeout(timer);
     }
   }, [imageLoaded, currentShoe]);
+
+  // Track shoe view when shoe changes
+  useEffect(() => {
+    if (currentShoe && storeInfo) {
+      trackAppEvents.viewShoe(currentShoe.name, storeInfo.storeName);
+    }
+  }, [currentShoe, storeInfo]);
 
   const goToNextImage = () => {
     if (!currentShoe || currentShoe.images.length <= 1) return;
@@ -335,6 +344,7 @@ function StorePage() {
                 if (isSellerMode) {
                   setIsSellerMode(false);
                   navigate('/');
+                  trackAppEvents.modeSwitch('Buyer');
                 }
               }}
             >
@@ -349,6 +359,7 @@ function StorePage() {
                 if (!isSellerMode) {
                   setIsSellerMode(true);
                   navigate('/admin');
+                  trackAppEvents.modeSwitch('Seller');
                 }
               }}
             >
@@ -452,6 +463,7 @@ function StorePage() {
                       rel="noopener noreferrer"
                       className="store-cta-btn store-whatsapp"
                       title="Chat on WhatsApp"
+                      onClick={() => trackAppEvents.whatsappClick(storeInfo?.storeName)}
                     >
                       <span className="store-cta-icon">💬</span>
                       WhatsApp
@@ -460,6 +472,7 @@ function StorePage() {
                       href={`tel:${storeInfo.phone}`}
                       className="store-cta-btn store-call"
                       title="Call Store"
+                      onClick={() => trackAppEvents.callClick(storeInfo?.storeName)}
                     >
                       <span className="store-cta-icon">📞</span>
                       Call

@@ -10,8 +10,9 @@ import {
   getDoc,
   doc
 } from '../firebase';
-import AdminPanel from '../admin/AdminPanel.jsx';  // ← Added .jsx
-import SetupProfile from './SetupProfile.jsx';      // ← Added .jsx
+import AdminPanel from '../admin/AdminPanel.jsx';
+import SetupProfile from './SetupProfile.jsx';
+import { trackAppEvents } from '../utils/analytics';
 
 function AdminPage() {
   const [user, setUser] = useState(null);
@@ -34,6 +35,8 @@ function AdminPage() {
             setUserProfile(data);
             setHasProfile(true);
             console.log('👤 User profile found:', data.storeName);
+            // Track user login
+            trackAppEvents.userLogin('Google');
           } else {
             setHasProfile(false);
             console.log('👤 New user - needs profile setup');
@@ -56,6 +59,7 @@ function AdminPage() {
     try {
       const result = await signInWithPopup(auth, provider);
       console.log('✅ Login success:', result.user);
+      // Login is tracked in the auth state change above
     } catch (error) {
       console.error('❌ Login error:', error);
       alert('Login failed: ' + error.message);
@@ -68,6 +72,8 @@ function AdminPage() {
       setUser(null);
       setUserProfile(null);
       setHasProfile(false);
+      // Track user logout
+      trackAppEvents.userLogout();
       console.log('👋 Logged out');
     } catch (error) {
       console.error('Logout error:', error);

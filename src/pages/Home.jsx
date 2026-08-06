@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { usersCollection, shoesCollection, getDocs, query, where, doc, getDoc } from '../firebase';
 import logo from '../assets/logo.png';
 import '../css/mode.css';
+import { trackAppEvents } from '../utils/analytics';
 
 function Home() {
   const navigate = useNavigate();
@@ -47,6 +48,8 @@ function Home() {
   const toggleMode = () => {
     const newMode = !isSellerMode;
     setIsSellerMode(newMode);
+    // Track mode switch
+    trackAppEvents.modeSwitch(newMode ? 'Seller' : 'Buyer');
     if (newMode) {
       navigate('/admin');
     } else {
@@ -323,6 +326,8 @@ function Home() {
   // Try On handlers
   const handleTryOnClick = () => {
     setShowTryOnModal(true);
+    // Track Try On click
+    trackAppEvents.tryOnClick();
   };
 
   const closeTryOnModal = () => {
@@ -406,6 +411,7 @@ function Home() {
                 if (isSellerMode) {
                   setIsSellerMode(false);
                   navigate('/');
+                  trackAppEvents.modeSwitch('Buyer');
                 }
               }}
             >
@@ -420,6 +426,7 @@ function Home() {
                 if (!isSellerMode) {
                   setIsSellerMode(true);
                   navigate('/admin');
+                  trackAppEvents.modeSwitch('Seller');
                 }
               }}
             >
@@ -442,6 +449,8 @@ function Home() {
                     setSelectedCategory(category);
                     setCurrentStoreIndex(0);
                     if (showAllCategories) setShowAllCategories(false);
+                    // Track category selection
+                    trackAppEvents.categorySelect(category);
                   }}
                 >
                   {category === 'All' ? '👟 All' : category}
@@ -552,6 +561,7 @@ function Home() {
                   <Link 
                     to={`/store/${currentStore?.uid}`} 
                     className="home-view-store-btn"
+                    onClick={() => trackAppEvents.viewStore(currentStore?.storeName)}
                   >
                     👁️ View Store
                   </Link>
